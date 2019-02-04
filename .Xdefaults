@@ -1,0 +1,69 @@
+! urxvt monokai theme adapted from:
+! https://gist.github.com/vkobel/fc4ae63f391623309826ca31702c594c
+! special
+*.foreground:   #d1d1d1
+!*.background:   #221e2d
+*.cursorColor:  #d1d1d1
+
+! black
+*.color0:       #272822
+*.color8:       #75715e
+
+! red
+*.color1:       #f92672
+*.color9:       #f92672
+
+! green
+*.color2:       #a6e22e
+*.color10:      #a6e22e
+
+! yellow
+*.color3:       #f4bf75
+*.color11:      #f4bf75
+
+! blue
+*.color4:       #66d9ef
+*.color12:      #66d9ef
+
+! magenta
+*.color5:       #ae81ff
+*.color13:      #ae81ff
+
+! cyan
+*.color6:       #a1efe4
+*.color14:      #a1efe4
+
+! white
+*.color7:       #f8f8f2
+*.color15:      #f9f8f5
+
+Xft.dpi: 96
+Xft.antialias: true
+Xft.hinting: true
+Xft.rgba: rgb
+!Xft.autohint: false
+!Xft.hintstyle: hintslight
+Xft.hintstyle: hintfull
+!Xft.lcdfilter: lcddefault
+Xcursor.theme: Chameleon-Pearl-Regular-0.5
+Xcursor.size:  0
+
+!URxvt*termName:rxvt-unicode-256color
+URxvt*termName:screen
+
+URxvt.font: xft:Hack-Regular:size=10:antialias=true
+URxvt.depth: 32
+
+!! BACKGROUND TRANSPARENT
+URxvt.background: [98]#262626
+
+URxvt*scrollBar:                      false
+URxvt*mouseWheelScrollPage:           false
+URxvt*cursorBlink:                    false
+URxvt*saveLines:                      5000
+URxvt.geometry:	120x32
+
+URxvt.modifier: super
+
+URxvt.iso14755: false
+URxvt.iso14755_52: false
