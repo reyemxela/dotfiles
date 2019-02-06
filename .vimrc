@@ -1,8 +1,9 @@
 "
 " .vimrc
 "
+colorscheme noctu
 
-colorscheme monokai
+set t_Co=16
 
 set nocompatible
 
