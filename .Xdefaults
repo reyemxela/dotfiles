@@ -48,19 +48,16 @@ Xft.hintstyle: hintfull
 Xcursor.theme: Chameleon-Pearl-Regular-0.5
 Xcursor.size:  0
 
-!URxvt*termName:rxvt-unicode-256color
-!URxvt*termName:screen
-
 URxvt.font: xft:Hack-Regular:size=10:antialias=true
 URxvt.depth: 32
 
 !! BACKGROUND TRANSPARENT
-URxvt.background: [85]#262626
+!URxvt.background: [85]#262626
 
 URxvt*scrollBar:                      false
 URxvt*mouseWheelScrollPage:           false
 URxvt*cursorBlink:                    false
-URxvt*saveLines:                      5000
+URxvt*saveLines:                      10000
 URxvt.geometry:	120x32
 
 URxvt.modifier: super
