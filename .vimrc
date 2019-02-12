@@ -19,9 +19,11 @@ set smartindent
 set shiftround
 
 " Behavior
-set autoread	" read open files again when changed outside Vim
+set autoread            " read open files again when changed outside Vim
 set ttyfast		" Improves redrawing on newer computers
 set mouse=a		" Mouse mode
+set foldmethod=marker   " folding
+
 
 " Tab settings
 set tabstop=8		" Tab size
