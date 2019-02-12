@@ -5,7 +5,7 @@ cursor_blink = off
 
 [colors]
 
-background = rgba({background.rgb}, .9)
+background = rgba({background.rgb}, .95)
 
 color0 = {color0}
 color1 = {color1}
