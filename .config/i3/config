@@ -9,7 +9,8 @@ gaps outer 2
 
 for_window [class="^.*"] border pixel 0
 
-font pango:Hack-Regular 8
+#font pango:Hack-Regular 8
+font pango:Hack Nerd Font 10
 
 floating_modifier $mod
 
@@ -147,6 +148,7 @@ exec --no-startup-id xcompmgr
 exec --no-startup-id autorandr -c
 
 exec --no-startup-id ~/bin/setbg
+exec --no-startup-id polybar base
 # }}}
 
 # Start i3bar to display a workspace bar (plus the system information i3status

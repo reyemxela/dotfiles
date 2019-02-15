@@ -1,6 +1,6 @@
 #!/bin/sh
 
-alias ls="command ls -v --color=auto"
+#alias ls="command ls -v --color=auto"
 alias la="command ls -la -v --color=auto"
 alias ll="command ls -lhAF -v --color=auto"
 alias l="command ls -l -v --color=auto"
