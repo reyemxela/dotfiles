@@ -14,7 +14,7 @@ font pango:Hack Nerd Font 10
 
 floating_modifier $mod
 
-set $terminal termite
+set $terminal alacritty
 # }}}
 
 # launch keys {{{
