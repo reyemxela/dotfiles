@@ -1,9 +1,9 @@
 #!/bin/sh
 
-#alias ls="command ls -v --color=auto"
-alias la="command ls -la -v --color=auto"
+alias ls="command ls -vF --color=auto"
+alias la="command ls -laF -v --color=auto"
 alias ll="command ls -lhAF -v --color=auto"
-alias l="command ls -l -v --color=auto"
+alias l="command ls -lF -v --color=auto"
 alias xc="xclip -in -selection clipboard"
 alias wifi-menu="sudo wifi-menu"
 alias pacs="sudo pacman -S"

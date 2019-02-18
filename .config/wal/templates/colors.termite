@@ -3,6 +3,8 @@ font = Hack Nerd Font 12
 
 cursor_blink = off
 
+scrollback_lines = 10000
+
 [colors]
 
 background = rgba({background.rgb}, .95)

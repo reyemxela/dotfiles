@@ -1,13 +1,13 @@
 "
 " .vimrc
 "
-colorscheme noctu
-
-set t_Co=16
-
 set nocompatible
 
+colorscheme noctu
+set t_Co=16
 syntax on
+set number
+
 
 " Encoding
 set termencoding=utf-8
@@ -46,9 +46,22 @@ set wildmenu
 nnoremap <silent><C-o> o<Esc>k
 " new line above current position in normal mode
 "nnoremap <silent>O O<Esc>j
+" space toggles fold
+nnoremap <space> za
 
 " home/end/top/bottom shortcuts on shift+arrows
 noremap <S-Left> ^
 noremap <S-Right> $
 noremap <S-Up> gg
 noremap <S-Down> G
+
+" autocomplete in insert mode
+inoremap <Tab> <C-P>
+inoremap <S-Tab> <Tab>
+
+
+" Filetypes
+autocmd FileType python set commentstring=#\ %s
+autocmd FileType cfg set commentstring=#\ %s
+autocmd FileType ini set commentstring=;\ %s
+

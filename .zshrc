@@ -87,6 +87,6 @@ bindkey "\e[1;5C" forward-word
 
 
 # custom functions/hooks
-chpwd () { pwd | toilet -t -f smblock; ls -C; }
+chpwd () { pwd | toilet -t -f smblock; ls -FC; }
 preexec () { print -Pn "\e]2;$1\a" }
 precmd () { print -Pn "\e]2;$PWD\a" }
