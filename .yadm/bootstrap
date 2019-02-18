@@ -1,5 +1,0 @@
-#!/bin/bash
-
-echo "README.md" >> ~/.yadm/repo.git/info/exclude
-
-rm ~/README.md
