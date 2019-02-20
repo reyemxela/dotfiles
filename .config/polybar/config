@@ -1,19 +1,28 @@
 ; polybar config
 ;
 
+[colors]
+    include-file = ~/.cache/wal/colors.polybar
+    foreground  = ${xrdb:color7}
+    
+
 [bar/base]
+    inherit = colors
+
     width       = 100%
     height      = 22
     fixed-center = true
 
     bottom      = false
 
-    font-0      = "Hack Nerd Font:size=11;2"
+    ;font-0      = "Hack Nerd Font:size=11;2"
+    font-0      = "Roboto:style=Medium:size=11;2"
+    font-1      = "RobotoMono Nerd Font:size=11;2"
     padding-left = 0
     padding-right = 1
 
-    include-file = ~/.cache/wal/colors.polybar
-    foreground  = ${xrdb:color7}
+    module-margin-left = 2
+    module-margin-right = 2
 
     border-color   = #60ffffff
     border-size = 0
@@ -25,7 +34,7 @@
     border-left-color   = #00000000
 
 
-    separator   = " | "
+    separator   = "  "
 
 
     modules-left  = i3
@@ -48,9 +57,19 @@
     strip-wsnumbers = true
     index-sort      = true
 
+    format = <label-state>
+
+    label-focused = %index%
+    label-focused-foreground = ${colors.background}
+    label-focused-background = ${colors.foreground}
+    label-focused-padding = 1
+
+    label-unfocused = %index%
+    label-unfocused-padding = 1
+
 [module/xwindow]
     type = internal/xwindow
-    label = %title:0:30:...%
+    label = %title:0:40:...%
 
 [module/filesystem]
     type = internal/fs

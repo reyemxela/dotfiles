@@ -8,7 +8,8 @@ if [ -n "$1" ]; then
     wal -c
 fi
 
-wal -a 90 -n -q -i $wallpaper
+#wal -a 90 -n -q -i $wallpaper
+wal -R
 #xwallpaper --zoom $wallpaper
 nitrogen --set-zoom-fill $wallpaper
 killall -SIGUSR1 termite

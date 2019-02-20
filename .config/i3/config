@@ -1,20 +1,31 @@
-# i3 config file (v4)
-#
+# i3 config file (i3 v4)
 
 # customization{{{
 set $mod Mod4
 
-gaps inner 15
-gaps outer 2
+set $gapinner 15
+set $gapouter 2
+
+gaps inner $gapinner
+gaps outer $gapouter
 
 for_window [class="^.*"] border pixel 0
+
+for_window [class="fontforge"] floating enable
+
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="Preferences"] floating enable
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
 
 #font pango:Hack-Regular 8
 font pango:Hack Nerd Font 10
 
 floating_modifier $mod
 
-set $terminal alacritty
+set $terminal termite
 # }}}
 
 # launch keys {{{
@@ -58,6 +69,8 @@ bindsym $mod+a focus parent
 
 # switch between workspaces
 bindsym $mod+Tab workspace back_and_forth
+
+bindsym $mod+Shift+g mode "gaps_mode"
 # }}}
 
 # workspaces {{{
@@ -106,30 +119,59 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 bindsym $mod+l exec --no-startup-id ~/bin/lockscreen
 # }}}
 
+# gap adjustment modes {{{
+mode "gaps_mode" {
+    bindsym o      mode "gaps_outer"
+    bindsym i      mode "gaps_inner"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+mode "gaps_outer" {
+    bindsym plus gaps outer all plus 5
+    bindsym minus gaps outer all minus 5
+    bindsym 0 gaps outer all set $gapouter
+
+    bindsym i      mode "gaps_inner"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+mode "gaps_inner" {
+    bindsym plus gaps inner all plus 5
+    bindsym minus gaps inner all minus 5
+    bindsym 0 gaps inner all set $gapinner
+
+    bindsym o      mode "gaps_outer"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+# }}}
+
 # resize mode {{{
 # resize window (you can also use the mouse for that)
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
+    # These bindings trigger as soon as you enter the resize mode
 
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-        bindsym h resize shrink width 10 px or 10 ppt
-        bindsym j resize grow height 10 px or 10 ppt
-        bindsym k resize shrink height 10 px or 10 ppt
-        bindsym l resize grow width 10 px or 10 ppt
+    # Pressing left will shrink the window’s width.
+    # Pressing right will grow the window’s width.
+    # Pressing up will shrink the window’s height.
+    # Pressing down will grow the window’s height.
+    bindsym h resize shrink width 10 px or 10 ppt
+    bindsym j resize grow height 10 px or 10 ppt
+    bindsym k resize shrink height 10 px or 10 ppt
+    bindsym l resize grow width 10 px or 10 ppt
 
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
+    # same bindings, but for the arrow keys
+    bindsym Left resize shrink width 10 px or 10 ppt
+    bindsym Down resize grow height 10 px or 10 ppt
+    bindsym Up resize shrink height 10 px or 10 ppt
+    bindsym Right resize grow width 10 px or 10 ppt
 
-        # back to normal: Enter or Escape or $mod+r
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-        bindsym $mod+r mode "default"
+    # back to normal: Enter or Escape or $mod+r
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $mod+r mode "default"
 }
 
 bindsym $mod+r mode "resize"
@@ -144,18 +186,20 @@ bindsym XF86MonBrightnessDown   exec --no-startup-id xbacklight -dec 15
 # }}}
 
 # Startup {{{
-exec --no-startup-id compton -c -C
+#exec --no-startup-id compton -c -C -r 15
+exec --no-startup-id compton -c -C -o .3 --backend glx --blur-background --blur-method kawase --blur-strength 15 -i .9
 exec --no-startup-id autorandr -c
 
 exec --no-startup-id ~/bin/setbg
 exec --no-startup-id polybar base
 # }}}
 
+# bar (disabled) {{{
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 #bar {
 #        status_command i3status
 #}
+# }}}
 
-
-# vi: ft=config
+# vi: ft=cfg

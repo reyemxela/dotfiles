@@ -1,5 +1,5 @@
 [options]
-font = Hack Nerd Font 12
+font = RobotoMono Nerd Font 11
 
 cursor_blink = off
 
@@ -7,7 +7,7 @@ scrollback_lines = 10000
 
 [colors]
 
-background = rgba({background.rgb}, .95)
+background = rgba({background.rgb}, .50)
 
 color0 = {color0}
 color1 = {color1}

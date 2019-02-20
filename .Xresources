@@ -37,8 +37,10 @@
 *.color7:       #f8f8f2
 *.color15:      #f9f8f5
 
-!URxvt.font: xft:LiberationMono:size=10:antialiasing=true
+URxvt.font: xft:LiberationMono:size=10
+!URxvt.font: xft:PowerlineSymbols:size=10
 !URxvt.font: xft:Hack-Regular:size=10:antialiasing=true
+!URxvt.font: xft:Exo2-Medium:size=10:antialiasing=true
 URxvt.depth: 32
 
 !! BACKGROUND TRANSPARENT
