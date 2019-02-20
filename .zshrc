@@ -4,55 +4,87 @@
 [ -f ~/.aliasrc ] && . ~/.aliasrc
 
 export PATH="$PATH:$HOME/bin/"
+export EDITOR=vim
 
-# prompt stuff
+eval `dircolors`
+
+# prompt stuff {{{
 computer="@"
-[ -n "$(fc-list :family='Hack Nerd Font')" ] && fontavailable=true
+$(fc-list |grep -qi "nerd") && fontavailable=true
 if [ ! -z $DISPLAY ] && [ $fontavailable ]; then
-    separator=""
-    separator2=""
-    computer=""
-    folder=""
+    computer=" "
+    folder="  "
+    #separator1=""
+    #separator2=""
 fi
+separator1="▉▊▋▌▍▎▏"
+separator2="▏▎▍▌▋▊▉"
+
+if [ ${EUID} -eq 0 ]; then
+    accentcolor=1
+else
+    accentcolor=$[${RANDOM}%5+2]
+fi
+
+accentfg="%F{$accentcolor}"
+accentbg="%K{$accentcolor}"
+
+maincolor=7
+
+mainfg="%F{$maincolor}"
+mainbg="%K{$maincolor}"
+
 bg0="%K{0}" bg1="%K{1}" bg2="%K{2}" bg3="%K{3}"
-bg4="%K{4}" bg5="%K{5}" bg6="%K{6}" bg7="%K{7}" nobg="%k" 
+bg4="%K{4}" bg5="%K{5}" bg6="%K{6}" bg7="%K{7}"
 
 fg0="%F{0}" fg1="%F{1}" fg2="%F{2}" fg3="%F{3}"
-fg4="%F{4}" fg5="%F{5}" fg6="%F{6}" fg7="%F{7}" nofg="%f" 
+fg4="%F{4}" fg5="%F{5}" fg6="%F{6}" fg7="%F{7}"
 
+nobg="%k" nofg="%f"
 bold="%B" unbold="%b"
 
 user="%n"
 host="%m"
 
-PS1="$bg7$fg0$bold$user$nofg$nobg$unbold$bg3$fg7$separator$nofg $fg0$computer $host$nobg$fg3$separator$nofg $folder $bold%40<..<%~%<< $unbold
-$bg7$fg0%# $nofg$nobg$fg7$separator2$nofg "
+usersection="$mainbg$fg0$bold $user$nofg$nobg$unbold"
+hostsection="$accentbg$fg0$computer$host $nobg$nofg"
+pathsection="$nobg$mainfg$folder$bold%40<..<%~%<<$unbold$nofg$nobg"
 
+line1="$mainfg╭─$separator2$usersection$mainfg$accentbg$separator1 $hostsection$accentfg$separator1$pathsection"
+line2="$mainfg╰─╼$nofg "
 
-# history
+PS1="$line1"$'\n'"$line2"
+
+# }}}
+
+# history {{{
 HISTFILE=$HOME/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
+# }}}
 
-
-# completion stuff
+# completion stuff {{{
 zstyle ':completion:*' menu select
+# color in completion
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' completer _complete
 # case-insensitive completion
 zstyle ':completion:*' matcher-list '' '+m:{a-z}={A-Z}' '+m:{A-Z}={a-z}'
+# }}}
 
-
-# modules
+# modules {{{
 autoload -U compinit && compinit
 zmodload -i zsh/complist
 #autoload -Uz predict-on
+autoload -U run-help
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
 #zle -N predict-on && predict-on
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
+# }}}
 
-# options
+# options {{{
 setopt autocd
 setopt append_history
 setopt autopushd
@@ -70,23 +102,28 @@ setopt longlistjobs
 setopt monitor
 setopt pushdignoredups
 setopt sharehistory
+# }}}
 
-
-
-# keybindings
+# keybindings {{{
+# partial word search:
 bindkey "\e[A" up-line-or-beginning-search
 bindkey "\e[B" down-line-or-beginning-search
-bindkey "${terminfo[khome]}" beginning-of-line
-bindkey "${terminfo[kend]}" end-of-line
-bindkey "${terminfo[kdch1]}" delete-char
-bindkey "${terminfo[kich1]}" quoted-insert
+# home/end stuff:
 bindkey "\e[H" beginning-of-line
 bindkey "\e[F" end-of-line
+bindkey "${terminfo[kdch1]}" delete-char
+bindkey "${terminfo[kich1]}" quoted-insert
+# ctrl+arrows to move back/forward whole words:
 bindkey "\e[1;5D" backward-word
 bindkey "\e[1;5C" forward-word
+# escape+./meta+. to insert last word. not sure how it broke.
+bindkey '\e.' insert-last-word
+# + in menu select to add on:
+bindkey -M menuselect "+" accept-and-menu-complete
+# }}}
 
-
-# custom functions/hooks
+# custom functions/hooks {{{
 chpwd () { pwd | toilet -t -f smblock; ls -FC; }
 preexec () { print -Pn "\e]2;$1\a" }
 precmd () { print -Pn "\e]2;$PWD\a" }
+# }}}
