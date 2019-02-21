@@ -187,7 +187,7 @@ bindsym XF86MonBrightnessDown   exec --no-startup-id xbacklight -dec 15
 
 # Startup {{{
 #exec --no-startup-id compton -c -C -r 15
-exec --no-startup-id compton -c -C -o .3 --backend glx --blur-background --blur-method kawase --blur-strength 15 -i .9
+exec --no-startup-id compton
 exec --no-startup-id autorandr -c
 
 exec --no-startup-id ~/bin/setbg
