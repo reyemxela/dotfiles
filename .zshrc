@@ -6,11 +6,11 @@
 export PATH="$PATH:$HOME/bin/"
 export EDITOR=vim
 
-eval `dircolors`
+dircolors &>/dev/null && eval `dircolors`
 
 # prompt stuff {{{
 computer="@"
-$(fc-list |grep -qi "nerd") && fontavailable=true
+fc-list 2>/dev/null|grep -qi "nerd" && fontavailable=true
 if [ ! -z $DISPLAY ] && [ $fontavailable ]; then
     computer=" "
     folder="  "
@@ -58,7 +58,7 @@ PS1="$line1"$'\n'"$line2"
 # }}}
 
 # history {{{
-HISTFILE=$HOME/.zsh_history
+HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 # }}}
@@ -123,7 +123,7 @@ bindkey -M menuselect "+" accept-and-menu-complete
 # }}}
 
 # custom functions/hooks {{{
-chpwd () { pwd | toilet -t -f smblock; ls -FC; }
+chpwd () { pwd | toil -t -f smblock 2>/dev/null || echo "[ $(pwd) ]\n"; ls -FC; }
 preexec () { print -Pn "\e]2;$1\a" }
 precmd () { print -Pn "\e]2;$PWD\a" }
 # }}}
