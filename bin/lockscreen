@@ -3,8 +3,11 @@
 image=~/.config/i3/.tmp.png
 lockicon=~/.config/i3/.lockicon.png
 
+sleep .1
 scrot $image
 
 convert $image -scale 50% -modulate 100,75 -blur 0x3 -scale 200% $lockicon -compose Over -gravity center -composite $image
 
 i3lock -e -i $image -u
+
+rm -f $image
