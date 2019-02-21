@@ -123,7 +123,7 @@ bindkey -M menuselect "+" accept-and-menu-complete
 # }}}
 
 # custom functions/hooks {{{
-chpwd () { pwd | toil -t -f smblock 2>/dev/null || echo "[ $(pwd) ]\n"; ls -FC; }
+chpwd () { pwd | toilet -t -f smblock 2>/dev/null || echo "[ $(pwd) ]\n"; ls -FC; }
 preexec () { print -Pn "\e]2;$1\a" }
 precmd () { print -Pn "\e]2;$PWD\a" }
 # }}}
