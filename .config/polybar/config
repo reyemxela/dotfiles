@@ -2,7 +2,7 @@
 ;
 
 [colors]
-    include-file = ~/.cache/wal/colors.polybar
+    background  = ${xrdb:alphabackground}
     foreground  = ${xrdb:color7}
     
 

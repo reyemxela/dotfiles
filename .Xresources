@@ -1,56 +1,73 @@
-! urxvt monokai theme adapted from:
-! https://gist.github.com/vkobel/fc4ae63f391623309826ca31702c594c
-! special
-*.foreground:   #d1d1d1
-*.background:   #221e2d
-*.cursorColor:  #d1d1d1
+! ~/.Xresources file
+!
+! base16-gruvbox-hard theme
 
-! black
-*.color0:       #272822
-*.color8:       #75715e
+*.background:           #1d2021
+*.color0:               #1d2021
+*.color1:               #fb4934
+*.color10:              #b8bb26
+*.color11:              #fabd2f
+*.color12:              #83a598
+*.color13:              #d3869b
+*.color14:              #8ec07c
+*.color15:              #fbf1c7
+*.color2:               #b8bb26
+*.color3:               #fabd2f
+*.color4:               #83a598
+*.color5:               #d3869b
+*.color6:               #8ec07c
+*.color66:              #1d2021
+*.color7:               #d5c4a1
+*.color8:               #665c54
+*.color9:               #fb4934
+*.foreground:           #d5c4a1
+*background:            #1d2021
+*color0:                #1d2021
+*color1:                #fb4934
+*color10:               #b8bb26
+*color11:               #fabd2f
+*color12:               #83a598
+*color13:               #d3869b
+*color14:               #8ec07c
+*color15:               #fbf1c7
+*color2:                #b8bb26
+*color3:                #fabd2f
+*color4:                #83a598
+*color5:                #d3869b
+*color6:                #8ec07c
+*color66:               #1d2021
+*color7:                #d5c4a1
+*color8:                #665c54
+*color9:                #fb4934
+*foreground:            #d5c4a1
 
-! red
-*.color1:       #f92672
-*.color9:       #f92672
+*alphabackground:       #881d2021
 
-! green
-*.color2:       #a6e22e
-*.color10:      #a6e22e
+URxvt*background:       [100]#1d2021
+URxvt*borderColor:      [100]#1d2021
+URxvt*cursorColor:      #d5c4a1
+URxvt*depth:            32
+URxvt*foreground:       #d5c4a1
+URxvt*scrollBar:        false
+URxvt*cursorBlink:      false
+URxvt*saveLines:        10000
 
-! yellow
-*.color3:       #f4bf75
-*.color11:      #f4bf75
 
-! blue
-*.color4:       #66d9ef
-*.color12:      #66d9ef
+UXTerm*background:      #1d2021
+UXTerm*cursorColor:     #d5c4a1
+UXTerm*foreground:      #d5c4a1
 
-! magenta
-*.color5:       #ae81ff
-*.color13:      #ae81ff
+XClock*background:      #1d2021
+XClock*foreground:      #d5c4a1
+XClock*hourColor:       rgba:fb/f1/c7/ff
+XClock*majorColor:      rgba:fb/f1/c7/ff
+XClock*minorColor:      rgba:fb/f1/c7/ff
+XClock*minuteColor:     rgba:fb/f1/c7/ff
+XClock*secondColor:     rgba:fb/f1/c7/ff
 
-! cyan
-*.color6:       #a1efe4
-*.color14:      #a1efe4
+XTerm*background:       #1d2021
+XTerm*cursorColor:      #d5c4a1
+XTerm*foreground:       #d5c4a1
 
-! white
-*.color7:       #f8f8f2
-*.color15:      #f9f8f5
-
-URxvt.font: xft:LiberationMono:size=10
-!URxvt.font: xft:PowerlineSymbols:size=10
-!URxvt.font: xft:Hack-Regular:size=10:antialiasing=true
-!URxvt.font: xft:Exo2-Medium:size=10:antialiasing=true
-URxvt.depth: 32
-
-!! BACKGROUND TRANSPARENT
-!URxvt.background: [85]#262626
-
-URxvt*scrollBar:                      false
-URxvt*mouseWheelScrollPage:           false
-URxvt*cursorBlink:                    false
-URxvt*saveLines:                      10000
-URxvt.geometry:	120x32
-
-URxvt.iso14755: false
-URxvt.iso14755_52: false
+emacs*background:       #1d2021
+emacs*foreground:       #d5c4a1
