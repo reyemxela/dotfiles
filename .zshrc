@@ -1,24 +1,30 @@
 #!/usr/bin/zsh
-#zstyle ':prompt:grml:left:setup' items user at host path newline percent
+
+function _installed {
+    command -v "$1" >/dev/null 2>&1
+    return $?
+}
 
 [ -f ~/.aliasrc ] && . ~/.aliasrc
 
-export PATH="$PATH:$HOME/bin/"
+export PATH="$HOME/bin:$PATH"
 export EDITOR=vim
 
-dircolors &>/dev/null && eval `dircolors`
+_installed dircolors && eval `dircolors`
 
 # prompt stuff {{{
 computer="@"
-fc-list 2>/dev/null|grep -qi "nerd" && fontavailable=true
+_installed fclist && { fc-list 2>/dev/null|grep -qi "nerd" && fontavailable=true }
 if [ ! -z $DISPLAY ] && [ $fontavailable ]; then
     computer=" "
     folder="  "
     #separator1=""
     #separator2=""
 fi
-separator1="▉▊▋▌▍▎▏"
-separator2="▏▎▍▌▋▊▉"
+#separator1="▉▊▋▌▍▎▏"
+#separator2="▏▎▍▌▋▊▉"
+separator1="▓▒░ "
+separator2=" ░▒▓"
 
 if [ ${EUID} -eq 0 ]; then
     accentcolor=1
@@ -45,6 +51,7 @@ bold="%B" unbold="%b"
 
 user="%n"
 host="%m"
+newline=$'\n'
 
 usersection="$mainbg$fg0$bold $user$nofg$nobg$unbold"
 hostsection="$accentbg$fg0$computer$host $nobg$nofg"
@@ -53,7 +60,7 @@ pathsection="$nobg$mainfg$folder$bold%40<..<%~%<<$unbold$nofg$nobg"
 line1="$mainfg╭─$separator2$usersection$mainfg$accentbg$separator1 $hostsection$accentfg$separator1$pathsection"
 line2="$mainfg╰─╼$nofg "
 
-PS1="$line1"$'\n'"$line2"
+PS1="$line1${newline}$line2"
 
 # }}}
 
@@ -123,7 +130,7 @@ bindkey -M menuselect "+" accept-and-menu-complete
 # }}}
 
 # custom functions/hooks {{{
-chpwd () { pwd | toilet -t -f smblock 2>/dev/null || echo "[ $(pwd) ]\n"; ls -FC; }
+chpwd () { _installed toilet && { pwd | toilet -t -f smblock 2>/dev/null } || echo "[ $(pwd) ]\n"; ls; }
 preexec () { print -Pn "\e]2;$1\a" }
 precmd () { print -Pn "\e]2;$PWD\a" }
 # }}}

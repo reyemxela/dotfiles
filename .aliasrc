@@ -1,9 +1,17 @@
 #!/bin/sh
 
-alias ls="command ls -vF --color=auto"
-alias la="command ls -laF -v --color=auto"
-alias ll="command ls -lhAF -v --color=auto"
-alias l="command ls -lF -v --color=auto"
+if command -v exa >/dev/null 2>&1; then
+    alias l="command exa -l"
+    alias ls="command exa"
+    alias la="command exa -laa"
+    alias ll="command exa -la"
+else
+    alias l="command ls -lF -v --color=auto"
+    alias ls="command ls -vF --color=auto"
+    alias la="command ls -laF -v --color=auto"
+    alias ll="command ls -lhAF -v --color=auto"
+fi
+
 alias xc="xclip -in -selection clipboard"
 alias wifi-menu="sudo wifi-menu"
 alias pacs="sudo pacman -S"
