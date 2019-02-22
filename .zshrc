@@ -13,13 +13,20 @@ export EDITOR=vim
 _installed dircolors && eval `dircolors`
 
 # prompt stuff {{{
+_installed fc-list && { fc-list 2>/dev/null|grep -qi "nerd" && fontavailable=true }
+
 computer="@"
-_installed fclist && { fc-list 2>/dev/null|grep -qi "nerd" && fontavailable=true }
-if [ ! -z $DISPLAY ] && [ $fontavailable ]; then
-    computer=" "
-    folder="  "
-    #separator1=""
-    #separator2=""
+arrowline1="┌─"
+arrowline2="└──"
+if [ ! -z $DISPLAY ]; then
+    if [ $fontavailable ]; then
+        computer=" "
+        folder="  "
+        #separator1=""
+        #separator2=""
+    fi
+    arrowline1="╭─"
+    arrowline2="╰─╼"
 fi
 #separator1="▉▊▋▌▍▎▏"
 #separator2="▏▎▍▌▋▊▉"
@@ -28,23 +35,17 @@ separator2=" ░▒▓"
 
 if [ ${EUID} -eq 0 ]; then
     accentcolor=1
+    # red for root
 else
     accentcolor=$[${RANDOM}%5+2]
+    # random colors (except red)  for user
 fi
+accentfg="%F{$accentcolor}" accentbg="%K{$accentcolor}"
 
-accentfg="%F{$accentcolor}"
-accentbg="%K{$accentcolor}"
+maincolor="white"
+mainfg="%F{$maincolor}" mainbg="%K{$maincolor}"
 
-maincolor=7
-
-mainfg="%F{$maincolor}"
-mainbg="%K{$maincolor}"
-
-bg0="%K{0}" bg1="%K{1}" bg2="%K{2}" bg3="%K{3}"
-bg4="%K{4}" bg5="%K{5}" bg6="%K{6}" bg7="%K{7}"
-
-fg0="%F{0}" fg1="%F{1}" fg2="%F{2}" fg3="%F{3}"
-fg4="%F{4}" fg5="%F{5}" fg6="%F{6}" fg7="%F{7}"
+textfg="%F{black}"
 
 nobg="%k" nofg="%f"
 bold="%B" unbold="%b"
@@ -53,12 +54,12 @@ user="%n"
 host="%m"
 newline=$'\n'
 
-usersection="$mainbg$fg0$bold $user$nofg$nobg$unbold"
-hostsection="$accentbg$fg0$computer$host $nobg$nofg"
+usersection="$mainbg$textfg$bold $user $nofg$nobg$unbold"
+hostsection="$accentbg$textfg$computer$host $nobg$nofg"
 pathsection="$nobg$mainfg$folder$bold%40<..<%~%<<$unbold$nofg$nobg"
 
-line1="$mainfg╭─$separator2$usersection$mainfg$accentbg$separator1 $hostsection$accentfg$separator1$pathsection"
-line2="$mainfg╰─╼$nofg "
+line1="$mainfg$arrowline1$separator2$usersection$mainfg$accentbg$separator1 $hostsection$accentfg$separator1$pathsection"
+line2="$mainfg$arrowline2$nofg "
 
 PS1="$line1${newline}$line2"
 
