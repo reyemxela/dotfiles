@@ -56,8 +56,7 @@ noremap <S-Up> gg
 noremap <S-Down> G
 
 " autocomplete in insert mode
-inoremap <Tab> <C-P>
-inoremap <S-Tab> <Tab>
+inoremap <S-Tab> <C-P>
 
 
 " Filetypes
