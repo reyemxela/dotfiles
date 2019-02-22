@@ -1,4 +1,4 @@
-## dotfiles
+# dotfiles
 
 I use [yadm](https://github.com/TheLocehiliosan/yadm) to manage my dotfiles between devices.
 
