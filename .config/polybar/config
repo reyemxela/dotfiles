@@ -36,6 +36,7 @@
 
     separator   = "  "
 
+    tray-position = right
 
     modules-left  = i3
     modules-center = xwindow
@@ -133,4 +134,4 @@
 
 ; ﬙ 
 
-; vi: ft=config
+; vi: ft=dosini

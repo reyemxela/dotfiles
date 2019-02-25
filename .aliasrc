@@ -12,6 +12,9 @@ else
     alias ll="command ls -lhAF -v --color=auto"
 fi
 
+alias scr="systemctl restart"
+alias scs="systemctl start"
+alias scst="systemctl stop"
 alias xc="xclip -in -selection clipboard"
 alias wifi-menu="sudo wifi-menu"
 alias pacs="sudo pacman -S"

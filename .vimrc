@@ -60,9 +60,9 @@ inoremap <S-Tab> <C-P>
 
 
 " Filetypes
-autocmd FileType python set commentstring=#\ %s
-autocmd FileType cfg set commentstring=#\ %s
-autocmd FileType config set commentstring=#\ %s
-autocmd FileType zsh set commentstring=#\ %s
-autocmd FileType ini set commentstring=;\ %s
+autocmd FileType python set commentstring=#%s
+autocmd FileType cfg set commentstring=#%s
+autocmd FileType config set commentstring=#%s
+autocmd FileType zsh set commentstring=#%s
+autocmd FileType dosini set commentstring=;%s
 

@@ -125,13 +125,17 @@ bindkey "${terminfo[kich1]}" quoted-insert
 bindkey "\e[1;5D" backward-word
 bindkey "\e[1;5C" forward-word
 # escape+./meta+. to insert last word. not sure how it broke.
-bindkey '\e.' insert-last-word
+bindkey "\e." insert-last-word
 # + in menu select to add on:
 bindkey -M menuselect "+" accept-and-menu-complete
+# remove double-escape/pageup/pagedn for vi-mode:
+bindkey -r "\e"
 # }}}
 
 # custom functions/hooks {{{
 chpwd () { _installed toilet && { pwd | toilet -t -f smblock 2>/dev/null } || echo "[ $(pwd) ]\n"; ls; }
-preexec () { print -Pn "\e]2;$1\a" }
-precmd () { print -Pn "\e]2;$PWD\a" }
+
+set_title () { print -rn $'\e]0;'${${:-${(%):-$1}$2}//[^[:print:]]/_}$'\a' }
+preexec () { set_title "$1" }
+precmd () { set_title "$PWD" }
 # }}}

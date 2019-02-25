@@ -32,6 +32,7 @@ set $terminal termite
 bindsym $mod+Return exec --no-startup-id $terminal
 bindsym $mod+Shift+q kill
 bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+bindsym $mod+Shift+d exec --no-startup-id nmcli d wifi >/dev/null 2>&1 && networkmanager_dmenu
 # }}}
 
 # window keys {{{
