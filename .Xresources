@@ -41,7 +41,7 @@
 *color9:                #fb4934
 *foreground:            #d5c4a1
 
-*alphabackground:       #881d2021
+*alphabg:               #881d2021
 
 URxvt*background:       [100]#1d2021
 URxvt*borderColor:      [100]#1d2021

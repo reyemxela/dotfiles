@@ -5,7 +5,7 @@ wallpaper=~/photos/wallpapers/_wallpaper
 if [ -n "$1" ]; then
     cd $(dirname $1)
     ln -sf $(pwd)/$(basename $1) $wallpaper
-    wal -c
+#    wal -c
 fi
 
 #wal -a 90 -n -q -i $wallpaper

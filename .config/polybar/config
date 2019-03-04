@@ -2,7 +2,7 @@
 ;
 
 [colors]
-    background  = ${xrdb:alphabackground}
+    background  = ${xrdb:alphabg}
     foreground  = ${xrdb:color7}
     
 
