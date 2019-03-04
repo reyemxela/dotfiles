@@ -1,0 +1,10 @@
+#!/usr/bin/zsh
+
+cat <<EOF
+[30m[40m   [31m[41m   [32m[42m   [33m[43m   [34m[44m   [35m[45m   [36m[46m   [37m[47m   [0m
+[38;5;8m[48;5;8m   [38;5;9m[48;5;9m   [38;5;10m[48;5;10m   [38;5;11m[48;5;11m   [38;5;12m[48;5;12m   [38;5;13m[48;5;13m   [38;5;14m[48;5;14m   [38;5;15m[48;5;15m   [0m
+EOF
+
+print -P "\n"
+print -P "%F{red}%K{yellow}▓▒░ %F{yellow}%K{green}▓▒░ %F{green}%K{cyan}▓▒░ %F{cyan}%K{blue}▓▒░ %F{blue}%K{magenta}▓▒░ %f%k"
+print -P "%K{red} %K{yellow} %K{green} %K{cyan} %K{blue} %f%k"
