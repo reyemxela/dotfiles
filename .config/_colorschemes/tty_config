@@ -1,5 +1,4 @@
 #!/bin/sh
-# base16-gruvbox-hard for TTYs
 
 [ "${TERM:-none}" = "linux" ] && \
     printf '%b' '\e]P01d2021

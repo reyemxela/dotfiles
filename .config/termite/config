@@ -1,8 +1,6 @@
 # termite config
 #
-# base16-gruvbox-hard colorscheme
 # 85% background opacity
-#
 
 [options]
 font = RobotoMono Nerd Font 9
@@ -22,12 +20,12 @@ color3 = #fabd2f
 color4 = #83a598
 color5 = #d3869b
 color6 = #8ec07c
-color7 = #d5c4a1
-color8 = #665c54
+color7 = #d5d5d5
+color8 = #666666
 color9 = #fb4934
 color10 = #b8bb26
 color11 = #fabd2f
 color12 = #83a598
 color13 = #d3869b
 color14 = #8ec07c
-color15 = #fbf1c7
+color15 = #e5e5e5
