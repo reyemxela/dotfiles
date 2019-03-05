@@ -10,57 +10,63 @@ listschemes() {
     done
 }
 
-newscheme=$dir/_$1
-
 if [ -n "$1" ]; then
-    if [ -f "$newscheme" ]; then
-        sed -i -E -n --follow-symlinks "s/^\*\.//;s/^\!.*$//;s/\: */=\"/;/\"$/! s/$/\"/;/color|background|foreground/ p" "$newscheme"
-        source "$newscheme"
-    
-        ### Color loop
-        for i in {0..15}; do
-            ### xresources {{{
-            sed -i -E --follow-symlinks "s/(color${i}.*)#.*/\1$(eval echo '$color'$i)/" $dir/xresources_config
-            ### xresources }}}
-            ### termite {{{
-            sed -i -E --follow-symlinks "s/(color${i}.*)#.*/\1$(eval echo '$color'$i)/" $dir/termite_config
-            ### termite }}}
-            ### tty {{{
-            sed -i -E --follow-symlinks "s/(\]P$(printf '%X' $i)).*/\1$(eval echo '${color'$i':1}')/" $dir/tty_config
-            ### tty }}}
-        done
-    
-        ### bg/fg
-        ### termite {{{
-        sed -i -E --follow-symlinks "s/(background.*rgba\().*,.*,.*(,.*)/\1$(echo $((16#${background:1:2})),$((16#${background:3:2})),$((16#${background:5:2})))\2/" $dir/termite_config
-        ### termite }}}
-    
-        ### xresources {{{
-        sed -i -E --follow-symlinks "
-        s/(background.*)#.*/\1${background}/
-        s/(alphabg.*#..).*/\1${background:1}/
-        s/(foreground.*)#.*/\1${foreground}/
-        s/(borderColor.*)#.*/\1${foreground}/
-        s/(cursorColor.*)#.*/\1${foreground}/
-        " $dir/xresources_config
-        ### xresources }}}
-
-        ### dunst {{{
-        sed -i -E --follow-symlinks "
-        s/(.*background.*\")#.*(\")/\1$background\2/
-        s/(.*foreground.*\")#.*(\")/\1$foreground\2/
-        s/(.*frame_color.*\")#.*(\")/\1$foreground\2/
-        " $dir/dunst_config
-        ### dunst }}}
-    
-        xrdb -merge ~/.Xresources
-        killall dunst
-        killall -SIGUSR1 polybar
-        killall -SIGUSR1 termite
+    if [ "$1" == "--test" ]; then
+        if [ -n "$2" ]; then
+            sed -E -n "s/^\*\.//;s/^[\!\[].*$//;s/\: */=\"/;s/ *= */=\"/;/\"$/! s/$/\"/;s/\#//;/color|background|foreground/ p" $dir/_$2
+        fi
     else
-        echo "Colorcheme $1 not found"
-        echo
-        listschemes
+        newscheme=$dir/_$1
+        if [ -f "$newscheme" ]; then
+    
+            eval $(sed -E -n "s/^\*\.//;s/^[\!\[].*$//;s/\: */=\"/;s/ *= */=\"/;/\"$/! s/$/\"/;s/\#//;/color|background|foreground/ p" "$newscheme")
+            #source "$newscheme"
+        
+            ### Color loop
+            for i in {0..15}; do
+                ### xresources {{{
+                sed -i -E --follow-symlinks "s/(color${i}.*#).*/\1$(eval echo '$color'$i)/" $dir/xresources_config
+                ### xresources }}}
+                ### termite {{{
+                sed -i -E --follow-symlinks "s/(color${i}.*#).*/\1$(eval echo '$color'$i)/" $dir/termite_config
+                ### termite }}}
+                ### tty {{{
+                sed -i -E --follow-symlinks "s/(\]P$(printf '%X' $i)).*/\1$(eval echo '$color'$i)/" $dir/tty_config
+                ### tty }}}
+            done
+        
+            ### bg/fg
+            ### termite {{{
+            sed -i -E --follow-symlinks "s/(background.*rgba\().*,.*,.*(,.*)/\1$(echo $((16#${background:0:2})),$((16#${background:2:2})),$((16#${background:4:2})))\2/" $dir/termite_config
+            ### termite }}}
+        
+            ### xresources {{{
+            sed -i -E --follow-symlinks "
+            s/(background.*#).*/\1${background}/
+            s/(alphabg.*#..).*/\1${background}/
+            s/(foreground.*#).*/\1${foreground}/
+            s/(borderColor.*#).*/\1${foreground}/
+            s/(cursorColor.*#).*/\1${foreground}/
+            " $dir/xresources_config
+            ### xresources }}}
+    
+            ### dunst {{{
+            sed -i -E --follow-symlinks "
+            s/(.*background.*\"#).*(\")/\1$background\2/
+            s/(.*foreground.*\"#).*(\")/\1$foreground\2/
+            s/(.*frame_color.*\"#).*(\")/\1$foreground\2/
+            " $dir/dunst_config
+            ### dunst }}}
+        
+            xrdb -merge ~/.Xresources
+            killall dunst 2>/dev/null
+            killall -SIGUSR1 polybar
+            killall -SIGUSR1 termite
+        else
+            echo "Colorcheme $1 not found"
+            echo
+            listschemes
+        fi
     fi
 else
     exit

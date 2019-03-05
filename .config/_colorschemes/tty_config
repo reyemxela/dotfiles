@@ -2,19 +2,19 @@
 
 [ "${TERM:-none}" = "linux" ] && \
     printf '%b' '\e]P01d2021
-                 \e]P1fb4934
-                 \e]P2b8bb26
-                 \e]P3fabd2f
-                 \e]P483a598
-                 \e]P5d3869b
-                 \e]P68ec07c
+                 \e]P1d72638
+                 \e]P288b92d
+                 \e]P3f1991a
+                 \e]P41e8bac
+                 \e]P5be4264
+                 \e]P61ba595
                  \e]P7d5d5d5
                  \e]P8666666
-                 \e]P9fb4934
-                 \e]PAb8bb26
-                 \e]PBfabd2f
-                 \e]PC83a598
-                 \e]PDd3869b
-                 \e]PE8ec07c
+                 \e]P9d72638
+                 \e]PA88b92d
+                 \e]PBf1991a
+                 \e]PC1e8bac
+                 \e]PDbe4264
+                 \e]PE1ba595
                  \e]PFe5e5e5
                  \ec'
