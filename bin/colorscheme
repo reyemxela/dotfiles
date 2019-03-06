@@ -36,6 +36,10 @@ if [ -n "$1" ]; then
             done
         
             ### bg/fg
+            ### i3 {{{
+            sed -i -E --follow-symlinks "s/(client\..* *#).*( #).*( #).*( #).*( #).*/\1${foreground}\2${foreground}\3${foreground}\4${foreground}\5${foreground}/" $dir/i3_config
+            ### i3 {{{
+
             ### termite {{{
             sed -i -E --follow-symlinks "s/(background.*rgba\().*,.*,.*(,.*)/\1$(echo $((16#${background:0:2})),$((16#${background:2:2})),$((16#${background:4:2})))\2/" $dir/termite_config
             ### termite }}}
@@ -59,9 +63,10 @@ if [ -n "$1" ]; then
             ### dunst }}}
         
             xrdb -merge ~/.Xresources
-            killall dunst 2>/dev/null
-            killall -SIGUSR1 polybar
-            killall -SIGUSR1 termite
+            i3-msg reload >/dev/null 2>&1
+            killall dunst >/dev/null 2>&1
+            killall -SIGUSR1 polybar >/dev/null 2>&1
+            killall -SIGUSR1 termite >/dev/null 2>&1
         else
             echo "Colorcheme $1 not found"
             echo
@@ -69,7 +74,6 @@ if [ -n "$1" ]; then
         fi
     fi
 else
-    exit
     echo "No colorscheme specified"
     echo
     listschemes

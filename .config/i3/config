@@ -9,10 +9,20 @@ set $gapouter 2
 gaps inner $gapinner
 gaps outer $gapouter
 
-for_window [class="^.*"] border pixel 0
+for_window [class="^.*"] border pixel 1
 
+# class                 border  backgr  text    indicat child_border
+client.focused          #d5d5d5 #d5d5d5 #d5d5d5 #d5d5d5 #d5d5d5
+client.focused_inactive #d5d5d5 #d5d5d5 #d5d5d5 #d5d5d5 #d5d5d5
+client.unfocused        #d5d5d5 #d5d5d5 #d5d5d5 #d5d5d5 #d5d5d5
+client.urgent           #d5d5d5 #d5d5d5 #d5d5d5 #d5d5d5 #d5d5d5
+client.placeholder      #d5d5d5 #d5d5d5 #d5d5d5 #d5d5d5 #d5d5d5
+
+
+# apps
 for_window [class="fontforge"] floating enable
 
+# dialogs/menus
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="bubble"] floating enable
 for_window [window_role="task_dialog"] floating enable
@@ -20,8 +30,12 @@ for_window [window_role="Preferences"] floating enable
 for_window [window_type="dialog"] floating enable
 for_window [window_type="menu"] floating enable
 
+# desktops 5-9 are floating
+for_window [workspace="[5-9]"] floating enable
+
 #font pango:Hack-Regular 8
-font pango:Hack Nerd Font 10
+#font pango:Hack Nerd Font 10
+font pango:Roboto Medium 10
 
 floating_modifier $mod
 
@@ -193,6 +207,7 @@ exec --no-startup-id autorandr -c
 
 exec --no-startup-id ~/bin/setbg
 exec --no-startup-id polybar base
+exec --no-startup-id polybar offset
 # }}}
 
 # bar (disabled) {{{

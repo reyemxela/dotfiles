@@ -6,16 +6,27 @@
     foreground  = ${xrdb:color7}
     
 
+[bar/offset]
+    width   = 1
+    height  = 25
+    background = #00000000
+
+    modules-left = offset
+
+[module/offset]
+    type = custom/text
+    content = " " 
+
 [bar/base]
     inherit = colors
 
-    width       = 100%
-    height      = 22
+    width       = 80%
+    height      = 23
+    offset-x    = 10%
+    offset-y    = 3
+    override-redirect = true
+
     fixed-center = true
-
-    bottom      = false
-
-    ;font-0      = "Hack Nerd Font:size=11;2"
     font-0      = "Roboto:style=Medium:size=11;2"
     font-1      = "RobotoMono Nerd Font:size=11;2"
     padding-left = 0
@@ -24,21 +35,24 @@
     module-margin-left = 2
     module-margin-right = 2
 
-    border-color   = #60ffffff
-    border-size = 0
+    border-color   = ${colors.foreground}
+    border-size = 1
 
     ;fake width/offset
-    border-left-size = 30
-    border-right-size = 30
-    border-right-color   = #00000000
-    border-left-color   = #00000000
+;    width       = 80%
+;    height      = 22
+;    border-left-size = 30
+;    border-right-size = 30
+;    border-right-color   = #00000000
+;    border-left-color   = #00000000
 
 
-    separator   = "  "
+;    separator   = ""
+    separator   = " // "
 
     tray-position = right
 
-    modules-left  = i3
+    modules-left  = i3 bspwm
     modules-center = xwindow
     modules-right = pulseaudio battery network date
 
@@ -51,6 +65,22 @@
     date = "%Y-%m-%d "
 
     label = %date% %time%
+
+[module/bspwm]
+    type    = internal/bspwm
+    pin-workspaces  = true
+    strip-wsnumbers = true
+    index-sort      = true
+
+    format = <label-state>
+
+    label-focused = %index%
+    label-focused-foreground = ${colors.background}
+    label-focused-background = ${colors.foreground}
+    label-focused-padding = 1
+
+    label-unfocused = %index%
+    label-unfocused-padding = 1
 
 [module/i3]
     type    = internal/i3
@@ -70,7 +100,7 @@
 
 [module/xwindow]
     type = internal/xwindow
-    label = %title:0:40:...%
+    label = [ %title:0:40:...% ]
 
 [module/filesystem]
     type = internal/fs
