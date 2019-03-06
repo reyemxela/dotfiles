@@ -15,3 +15,4 @@ xset s 3600 3600 dpms 3600 3600 3600
 
 exec i3
 #exec bspwm
+#exec awesome
