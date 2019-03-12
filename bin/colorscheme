@@ -37,8 +37,8 @@ if [ -n "$1" ]; then
         
             ### bg/fg
             ### i3 {{{
-            sed -i -E --follow-symlinks "s/(client\..* *#).*( #).*( #).*( #).*( #).*/\1${foreground}\2${foreground}\3${foreground}\4${foreground}\5${foreground}/" $dir/i3_config
-            ### i3 {{{
+            sed -i -E --follow-symlinks "s/(client\..* *#).*( #).*( #).*( #).*( #).*/\1${foreground}\2${background}\3${foreground}\4${foreground}\5${foreground}/" $dir/i3_config
+            ### i3 }}}
 
             ### termite {{{
             sed -i -E --follow-symlinks "s/(background.*rgba\().*,.*,.*(,.*)/\1$(echo $((16#${background:0:2})),$((16#${background:2:2})),$((16#${background:4:2})))\2/" $dir/termite_config

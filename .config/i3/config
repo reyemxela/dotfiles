@@ -12,11 +12,11 @@ gaps outer $gapouter
 for_window [class="^.*"] border pixel 1
 
 # class                 border  backgr  text    indicat child_border
-client.focused          #d5d5d5 #d5d5d5 #d5d5d5 #d5d5d5 #d5d5d5
-client.focused_inactive #d5d5d5 #d5d5d5 #d5d5d5 #d5d5d5 #d5d5d5
-client.unfocused        #d5d5d5 #d5d5d5 #d5d5d5 #d5d5d5 #d5d5d5
-client.urgent           #d5d5d5 #d5d5d5 #d5d5d5 #d5d5d5 #d5d5d5
-client.placeholder      #d5d5d5 #d5d5d5 #d5d5d5 #d5d5d5 #d5d5d5
+client.focused          #d5d5d5 #1d2021 #d5d5d5 #d5d5d5 #d5d5d5
+client.focused_inactive #d5d5d5 #1d2021 #d5d5d5 #d5d5d5 #d5d5d5
+client.unfocused        #d5d5d5 #1d2021 #d5d5d5 #d5d5d5 #d5d5d5
+client.urgent           #d5d5d5 #1d2021 #d5d5d5 #d5d5d5 #d5d5d5
+client.placeholder      #d5d5d5 #1d2021 #d5d5d5 #d5d5d5 #d5d5d5
 
 
 # apps
@@ -46,7 +46,8 @@ set $terminal termite
 bindsym $mod+Return exec --no-startup-id $terminal
 bindsym $mod+Shift+q kill
 bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
-bindsym $mod+Shift+d exec --no-startup-id nmcli d wifi >/dev/null 2>&1 && networkmanager_dmenu
+#bindsym $mod+Shift+d exec --no-startup-id nmcli d wifi >/dev/null 2>&1 && networkmanager_dmenu
+bindsym $mod+Shift+d exec --no-startup-id ~/bin/nmgui
 # }}}
 
 # window keys {{{
@@ -207,7 +208,6 @@ exec --no-startup-id autorandr -c
 
 exec --no-startup-id ~/bin/setbg
 exec --no-startup-id polybar base
-exec --no-startup-id polybar offset
 # }}}
 
 # bar (disabled) {{{

@@ -3,7 +3,12 @@
 # 85% background opacity
 
 [options]
-font = RobotoMono Nerd Font 9
+#font = Misc Termsyn 10
+#font = Hermit Regular 11px
+#font = RobotoMono Nerd Font 9
+font = Hack Nerd Font 9
+
+allow_bold = true
 
 cursor_blink = off
 
@@ -11,7 +16,7 @@ scrollback_lines = 10000
 
 [colors]
 
-background = rgba(29,32,33, .85)
+background = rgba(29,32,33, 1.00)
 
 color0 = #1d2021
 color1 = #d72638

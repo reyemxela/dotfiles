@@ -7,6 +7,7 @@ colorscheme noctu
 set t_Co=16
 syntax on
 set number
+set cursorline
 
 
 " Encoding

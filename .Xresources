@@ -37,13 +37,13 @@
 *color15:              #e5e5e5
 *foreground:           #d5d5d5
 
-*alphabg:               #881d2021
+*alphabg:              #ff1d2021
 
-URxvt*background:       [100]1d2021
-URxvt*borderColor:      [100]d5c4a1
-URxvt*cursorColor:      #d5d5d5
-URxvt*depth:            32
-URxvt*foreground:       #d5d5d5
-URxvt*scrollBar:        false
-URxvt*cursorBlink:      false
-URxvt*saveLines:        10000
+URxvt*background:      [100]#1d2021
+!URxvt*borderColor:     [100]#d5d5d5
+URxvt*cursorColor:     #d5d5d5
+URxvt*depth:           32
+URxvt*foreground:      #d5d5d5
+URxvt*scrollBar:       false
+URxvt*cursorBlink:     false
+URxvt*saveLines:       10000

@@ -43,7 +43,7 @@ for i in "${!leftSymbolsCodes[@]}"; do
 		code2='None'
 	fi
 
-	echo -e "$colorBg1$colorFg1$text1 $code $colorFg2$colorBg2$symbol $text2 $colorFg1$colorBgDefault$symbol -- $colorFg1$colorBgDefault$symbol2$colorFg2$colorBg2 $text2 $symbol2$colorBg1$colorFg1 $code2 $colorReset$colorBgWhite\\n$colorReset"
+	echo -e "$colorBg1$colorFg1$text1 $code $colorFg2$colorBg2$symbol $text2 $colorFg1$colorBgDefault$symbol -- $colorFg1$colorBgDefault$symbol2$colorFg2$colorBg2 $text2 $symbol2$colorBg1$colorFg1 $code2 $colorReset$colorBgBlack\\n$colorReset"
 
 done
 

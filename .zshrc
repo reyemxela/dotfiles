@@ -72,6 +72,8 @@ SAVEHIST=10000
 # }}}
 
 # completion stuff {{{
+fpath=(~/.zfunc $fpath)
+
 zstyle ':completion:*' menu select
 # color in completion
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}

@@ -4,6 +4,10 @@
 [colors]
     background  = ${xrdb:alphabg}
     foreground  = ${xrdb:color7}
+
+    red         = ${xrdb:color1}
+
+    highlight   = ${xrdb:color2}
     
 
 [bar/offset]
@@ -20,15 +24,18 @@
 [bar/base]
     inherit = colors
 
-    width       = 80%
+;    width       = 80%
+;    height      = 23
+;    offset-x    = 10%
+;    offset-y    = 3
+;    override-redirect = true
+
+    width       = 100%
     height      = 23
-    offset-x    = 10%
-    offset-y    = 3
-    override-redirect = true
 
     fixed-center = true
     font-0      = "Roboto:style=Medium:size=11;2"
-    font-1      = "RobotoMono Nerd Font:size=11;2"
+    font-1      = "RobotoMono Nerd Font:size=13;3"
     padding-left = 0
     padding-right = 1
 
@@ -36,7 +43,7 @@
     module-margin-right = 2
 
     border-color   = ${colors.foreground}
-    border-size = 1
+    border-size = 0
 
     ;fake width/offset
 ;    width       = 80%
@@ -48,7 +55,8 @@
 
 
 ;    separator   = ""
-    separator   = " // "
+;    separator   = " // "
+    separator   = " | "
 
     tray-position = right
 
@@ -62,8 +70,12 @@
 
     time = "%H:%M:%S"
 
-    date = "%Y-%m-%d "
+    date = "%m-%d-%y "
 
+    format-foreground = ${colors.highlight}
+    format =   <label>
+
+    label-foreground = ${colors.foreground}
     label = %date% %time%
 
 [module/bspwm]
@@ -92,7 +104,7 @@
 
     label-focused = %index%
     label-focused-foreground = ${colors.background}
-    label-focused-background = ${colors.foreground}
+    label-focused-background = ${colors.highlight}
     label-focused-padding = 1
 
     label-unfocused = %index%
@@ -100,7 +112,7 @@
 
 [module/xwindow]
     type = internal/xwindow
-    label = [ %title:0:40:...% ]
+    label = %title:0:40:...%
 
 [module/filesystem]
     type = internal/fs
@@ -114,18 +126,26 @@
     type            = internal/network
     interface       = wlp4s0
     interval        = 3
-    format-connected    = <label-connected>
-    format-disconnected = <label-disconnected>
+    format-connected-foreground     = ${colors.highlight}
+    format-disconnected-foreground  = ${colors.highlight}
+    format-connected    = 直  <label-connected>
+    format-disconnected = 睊  <label-disconnected>
 
-    label-connected     = 直 %essid%
-    label-disconnected  = 睊 not connected
+    label-connected-foreground      = ${colors.foreground}
+    label-disconnected-foreground   = ${colors.foreground}
+    label-connected     = %essid%
+    label-disconnected  = not connected
 
 [module/pulseaudio]
     type = internal/pulseaudio
     format-volume   = <ramp-volume> <label-volume>
-    label-volume    = %percentage:3%%
-    label-muted     = ﱝ Mute
+    format-muted    = <label-muted> Mute
 
+    label-volume    = %percentage:4%%
+    label-muted-foreground = ${colors.red}
+    label-muted     = ﱝ
+
+    ramp-volume-foreground = ${colors.highlight}
     ramp-volume-0   = 奄
     ramp-volume-1   = 奔
     ramp-volume-2   = 墳
@@ -140,13 +160,17 @@
     adapter = AC
     full-at = 98
 
-    label-full =  %percentage:3%%
+    format-full = <ramp-capacity> <label-full>
     format-charging = <animation-charging> <label-charging>
     format-discharging = <ramp-capacity> <label-discharging>
     
     label-charging = %percentage:3%%
     label-discharging = %percentage:3%%
+    label-full = %percentage:3%%
 
+    ramp-capacity-foreground   = ${colors.highlight}
+    ramp-capacity-0-foreground = ${colors.red}
+    ramp-capacity-1-foreground = ${colors.red}
     ramp-capacity-0 = 
     ramp-capacity-1 = 
     ramp-capacity-2 = 
@@ -158,6 +182,7 @@
     ramp-capacity-8 = 
     ramp-capacity-9 = 
 
+    animation-charging-foreground = ${colors.highlight}
     animation-charging-0 = 
     animation-charging-1 = 
     animation-charging-framerate = 1000
