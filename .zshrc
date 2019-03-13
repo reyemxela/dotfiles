@@ -6,6 +6,7 @@ function _installed {
 }
 
 [ -f ~/.aliasrc ] && . ~/.aliasrc
+[ -f ~/.envrc ]   && . ~/.envrc
 
 export PATH="$HOME/bin:$PATH"
 export EDITOR=vim
@@ -74,6 +75,9 @@ SAVEHIST=10000
 # completion stuff {{{
 fpath=(~/.zfunc $fpath)
 
+# persistent rehash
+zstyle ':completion:*' rehash true
+# menu selection
 zstyle ':completion:*' menu select
 # color in completion
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
@@ -114,6 +118,24 @@ setopt pushdignoredups
 setopt sharehistory
 # }}}
 
+# custom functions {{{
+cdUndo() {
+    echo
+    cd "$OLDPWD"
+    zle reset-prompt
+    echo
+}
+cdParent() {
+    echo
+    cd ..
+    zle reset-prompt
+    echo
+}
+
+zle -N cdUndo
+zle -N cdParent
+# }}}
+
 # keybindings {{{
 # partial word search:
 bindkey "\e[A" up-line-or-beginning-search
@@ -132,10 +154,15 @@ bindkey "\e." insert-last-word
 bindkey -M menuselect "+" accept-and-menu-complete
 # remove double-escape/pageup/pagedn for vi-mode:
 bindkey -r "\e"
+# run-help
+bindkey "\eh" run-help
+# custom functions
+bindkey "\e[1;3D" cdUndo
+bindkey "\e[1;3A" cdParent
 # }}}
 
-# custom functions/hooks {{{
-chpwd () { _installed toilet && { pwd | toilet -t -f smblock 2>/dev/null } || echo "[ $(pwd) ]\n"; ls; }
+# hook functions {{{
+chpwd () { (_installed toilet && { pwd | toilet -t -f smblock 2>/dev/null } || echo "[ $(pwd) ]\n") && ls; }
 
 set_title () { print -rn $'\e]0;'${${:-${(%):-$1}$2}//[^[:print:]]/_}$'\a' }
 preexec () { set_title "$1" }

@@ -8,3 +8,4 @@
 PS1='[\u@\h \W]\$ '
 
 [ -f ~/.aliasrc ] && . ~/.aliasrc
+[ -f ~/.envrc ]   && . ~/.envrc
