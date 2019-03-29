@@ -29,6 +29,7 @@ for_window [window_role="task_dialog"] floating enable
 for_window [window_role="Preferences"] floating enable
 for_window [window_type="dialog"] floating enable
 for_window [window_type="menu"] floating enable
+for_window [class="^[xX]fce4.*"] floating enable
 
 # desktops 5-9 are floating
 for_window [workspace="[5-9]"] floating enable

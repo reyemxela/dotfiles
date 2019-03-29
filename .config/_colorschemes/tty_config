@@ -1,7 +1,7 @@
 #!/bin/sh
 
 [ "${TERM:-none}" = "linux" ] && \
-    printf '%b' '\e]P01d2021
+    printf '%b' '\e]P037393a
                  \e]P1d72638
                  \e]P288b92d
                  \e]P3f1991a
@@ -9,7 +9,7 @@
                  \e]P5be4264
                  \e]P61ba595
                  \e]P7d5d5d5
-                 \e]P8666666
+                 \e]P86b6d6e
                  \e]P9d72638
                  \e]PA88b92d
                  \e]PBf1991a
