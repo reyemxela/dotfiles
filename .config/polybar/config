@@ -133,7 +133,8 @@
 
     label-connected-foreground      = ${colors.foreground}
     label-disconnected-foreground   = ${colors.foreground}
-    label-connected     = %essid%
+;   label-connected     = %essid%
+    label-connected     = %local_ip%
     label-disconnected  = not connected
 
 [module/pulseaudio]

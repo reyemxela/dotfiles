@@ -1,12 +1,53 @@
 #!/usr/bin/zsh
 
+echo " 0  1  2  3  4  5  6  7"
 cat <<EOF
- 0  1  2  3  4  5  6  7
 [30m[40m   [31m[41m   [32m[42m   [33m[43m   [34m[44m   [35m[45m   [36m[46m   [37m[47m   [0m
 [38;5;8m[48;5;8m   [38;5;9m[48;5;9m   [38;5;10m[48;5;10m   [38;5;11m[48;5;11m   [38;5;12m[48;5;12m   [38;5;13m[48;5;13m   [38;5;14m[48;5;14m   [38;5;15m[48;5;15m   [0m
- 8  9 10 11 12 13 14 15
 EOF
+echo " 8  9 10 11 12 13 14 15"
 
-print -P "\n"
+echo
+echo "16 17 18 19 20 21"
+print -P "%K{16}   %K{17}   %K{18}   %K{19}   %K{20}   %K{21}   %k"
+
+#print -P "%B%K{0} 0 %K{1} 1 %K{2} 2 %K{3} 3 %K{4} 4 %K{5} 5 %K{6} 6 %F{0}%K{7} 7 "
+#print -P "%B%f%K{8} 8 %K{9} 9 %K{10} 10%K{11} 11%K{12} 12%K{13} 13%K{14} 14%F{0}%K{15} 15"
+
+print -P ""
 print -P "%F{red}%K{yellow}▓▒░ %F{yellow}%K{green}▓▒░ %F{green}%K{cyan}▓▒░ %F{cyan}%K{blue}▓▒░ %F{blue}%K{magenta}▓▒░ %f%k"
-print -P "%K{red}  %K{yellow}  %K{green}  %K{cyan}  %K{blue}  %f%k"
+print -P "%K{red}  %K{yellow}  %K{green}  %K{cyan}  %K{blue}  %K{magenta}  %f%k"
+
+print -P ""
+print -P  "%K{0}    %k   %Bbase00%b"
+print -P "%K{18}    %k   %Bbase01%b"
+print -P "%K{19}    %k   %Bbase02%b"
+print -P  "%K{8}    %k   %Bbase03%b"
+print -P "%K{20}    %k   %Bbase04%b"
+print -P  "%K{7}    %k   %Bbase05%b"
+print -P "%K{21}    %k   %Bbase06%b"
+print -P "%K{15}    %k   %Bbase07%b"
+print -P  "%K{1}    %k   %Bbase08%b"
+print -P "%K{16}    %k   %Bbase09%b"
+print -P  "%K{3}    %k   %Bbase0A%b"
+print -P  "%K{2}    %k   %Bbase0B%b"
+print -P  "%K{6}    %k   %Bbase0C%b"
+print -P  "%K{4}    %k   %Bbase0D%b"
+print -P  "%K{5}    %k   %Bbase0E%b"
+print -P "%K{17}    %k   %Bbase0F%b"
+
+
+print -P ""
+print -P "%K{0}     %K{18}     %K{19}     %K{8}     %K{20}     %K{7}     %K{21}     %K{15}     %K{1}     %K{16}     %K{3}     %K{2}     %K{6}     %K{4}     %K{5}     %K{17}     %k"
+print -P "%K{0}     %K{18}     %K{19}     %K{8}     %K{20}     %K{7}     %K{21}     %K{15}     %K{1}     %K{16}     %K{3}     %K{2}     %K{6}     %K{4}     %K{5}     %K{17}     %k"
+print -P ""
+
+print -P ""
+print -P "  %K{0}       %k  %K{18}       %k  %K{19}       %k  %K{8}       %k  %K{20}       %k  %K{7}       %k  %K{21}       %k  %K{15}       %k"
+print -P "  %K{0}       %k  %K{18}       %k  %K{19}       %k  %K{8}       %k  %K{20}       %k  %K{7}       %k  %K{21}       %k  %K{15}       %k"
+print -P "  %K{0}       %k  %K{18}       %k  %K{19}       %k  %K{8}       %k  %K{20}       %k  %K{7}       %k  %K{21}       %k  %K{15}       %k"
+print -P ""
+print -P "  %K{1}       %k  %K{16}       %k  %K{3}       %k  %K{2}       %k  %K{6}       %k  %K{4}       %k  %K{5}       %k  %K{17}       %k"
+print -P "  %K{1}       %k  %K{16}       %k  %K{3}       %k  %K{2}       %k  %K{6}       %k  %K{4}       %k  %K{5}       %k  %K{17}       %k"
+print -P "  %K{1}       %k  %K{16}       %k  %K{3}       %k  %K{2}       %k  %K{6}       %k  %K{4}       %k  %K{5}       %k  %K{17}       %k"
+print -P ""
