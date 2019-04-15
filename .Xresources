@@ -18,6 +18,13 @@
 *.color14:             #1ba595
 *.color15:             #e5e5e5
 *.foreground:          #d5d5d5
+*.color16:             #eb8413
+*.color17:             #c85e0d
+*.color18:             #303335
+*.color19:             #434749
+*.color20:             #cdcdcd
+*.color21:             #dddddd
+
 *background:           #1d2021
 *color0:               #1d2021
 *color1:               #d72638
@@ -36,12 +43,15 @@
 *color14:              #1ba595
 *color15:              #e5e5e5
 *foreground:           #d5d5d5
-
-*alphabg:              #ff1d2021
+*color16:             #eb8413
+*color17:             #c85e0d
+*color18:             #303335
+*color19:             #434749
+*color20:             #cdcdcd
+*color21:             #dddddd
 
 URxvt*background:      [100]#1d2021
-!URxvt*borderColor:     [100]#d5d5d5
-URxvt*cursorColor:     #d5d5d5
+URxvt*cursorColor:     #dddddd
 URxvt*depth:           32
 URxvt*foreground:      #d5d5d5
 URxvt*scrollBar:       false
