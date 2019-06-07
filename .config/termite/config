@@ -7,6 +7,9 @@
 #font = Hermit Regular 11px
 #font = RobotoMono Nerd Font 9
 font = Hack Nerd Font 9
+#font = Gohu GohuFont 11px
+#font = xos4 Terminus 14px
+#font = Misc Termsyn 10
 
 allow_bold = true
 
@@ -28,7 +31,7 @@ background          = rgba(29, 32, 33)
 
 # Black, Gray, Silver, White
 color0  = #1d2021
-color8  = #565b5e
+color8  = #6f7579
 color7  = #d5d5d5
 color15 = #e5e5e5
 
@@ -59,8 +62,7 @@ color14 = #1ba595
 # Extra colors
 color16 = #eb8413
 color17 = #c85e0d
-color18 = #303335
-color19 = #434749
+color18 = #383c3e
+color19 = #53585b
 color20 = #cdcdcd
 color21 = #dddddd
-

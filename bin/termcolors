@@ -1,5 +1,7 @@
 #!/usr/bin/zsh
 
+
+colorbars() {
 echo " 0  1  2  3  4  5  6  7"
 cat <<EOF
 [30m[40m   [31m[41m   [32m[42m   [33m[43m   [34m[44m   [35m[45m   [36m[46m   [37m[47m   [0m
@@ -11,13 +13,20 @@ echo
 echo "16 17 18 19 20 21"
 print -P "%K{16}   %K{17}   %K{18}   %K{19}   %K{20}   %K{21}   %k"
 
+}
+
 #print -P "%B%K{0} 0 %K{1} 1 %K{2} 2 %K{3} 3 %K{4} 4 %K{5} 5 %K{6} 6 %F{0}%K{7} 7 "
 #print -P "%B%f%K{8} 8 %K{9} 9 %K{10} 10%K{11} 11%K{12} 12%K{13} 13%K{14} 14%F{0}%K{15} 15"
-
+rainbow() {
 print -P ""
-print -P "%F{red}%K{yellow}▓▒░ %F{yellow}%K{green}▓▒░ %F{green}%K{cyan}▓▒░ %F{cyan}%K{blue}▓▒░ %F{blue}%K{magenta}▓▒░ %f%k"
+print -P "%K{red} %F{red}%K{yellow}▓▒░ %F{yellow}%K{green}▓▒░ %F{green}%K{cyan}▓▒░ %F{cyan}%K{blue}▓▒░ %F{blue}%K{magenta}▓▒░ %f%k"
 print -P "%K{red}  %K{yellow}  %K{green}  %K{cyan}  %K{blue}  %K{magenta}  %f%k"
 
+print -P "%B%F{red}h%F{yellow}e%F{green}l%F{cyan}i%F{blue}o%F{magenta}s%f%k%b"
+
+}
+
+base16() {
 print -P ""
 print -P  "%K{0}    %k   %Bbase00%b"
 print -P "%K{18}    %k   %Bbase01%b"
@@ -42,6 +51,9 @@ print -P "%K{0}     %K{18}     %K{19}     %K{8}     %K{20}     %K{7}     %K{21} 
 print -P "%K{0}     %K{18}     %K{19}     %K{8}     %K{20}     %K{7}     %K{21}     %K{15}     %K{1}     %K{16}     %K{3}     %K{2}     %K{6}     %K{4}     %K{5}     %K{17}     %k"
 print -P ""
 
+}
+
+helios() {
 print -P ""
 print -P "  %K{0}       %k  %K{18}       %k  %K{19}       %k  %K{8}       %k  %K{20}       %k  %K{7}       %k  %K{21}       %k  %K{15}       %k"
 print -P "  %K{0}       %k  %K{18}       %k  %K{19}       %k  %K{8}       %k  %K{20}       %k  %K{7}       %k  %K{21}       %k  %K{15}       %k"
@@ -51,3 +63,22 @@ print -P "  %K{1}       %k  %K{16}       %k  %K{3}       %k  %K{2}       %k  %K{
 print -P "  %K{1}       %k  %K{16}       %k  %K{3}       %k  %K{2}       %k  %K{6}       %k  %K{4}       %k  %K{5}       %k  %K{17}       %k"
 print -P "  %K{1}       %k  %K{16}       %k  %K{3}       %k  %K{2}       %k  %K{6}       %k  %K{4}       %k  %K{5}       %k  %K{17}       %k"
 print -P ""
+
+
+print -P "                         %F{8}▖   %F{red}▌  %F{yellow}   %F{green}▜ %F{cyan}▗ %F{blue}   %F{magenta}   %f"
+print -P "                         %F{8}▝▚▖ %F{red}▛▀▖%F{yellow}▞▀▖%F{green}▐ %F{cyan}▄ %F{blue}▞▀▖%F{magenta}▞▀▘%f"
+print -P "                         %F{8}▞▘  %F{red}▌ ▌%F{yellow}▛▀ %F{green}▐ %F{cyan}▐ %F{blue}▌ ▌%F{magenta}▝▀▖%f"
+print -P "                         %F{8}    %F{red}▘ ▘%F{yellow}▝▀▘%F{green} ▘%F{cyan}▀▘%F{blue}▝▀ %F{magenta}▀▀ %f%F{15}▀▀▀"
+}
+
+
+[[ "$1" == "c" ]] && clear
+while [[ "$1" ]]; do
+    case "$1" in
+        "1") colorbars ;;
+        "2") rainbow ;;
+        "3") base16 ;;
+        "4") helios ;;
+    esac
+    shift
+done

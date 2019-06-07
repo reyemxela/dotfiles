@@ -4,7 +4,7 @@
 set nocompatible
 
 colorscheme noctu
-set t_Co=16
+set t_Co=256
 syntax on
 set number
 set cursorline

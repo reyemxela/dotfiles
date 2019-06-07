@@ -60,7 +60,7 @@ hostsection="$accentbg$textfg$computer$host $nobg$nofg"
 pathsection="$nobg$mainfg$folder$bold%40<..<%~%<<$unbold$nofg$nobg"
 
 line1="$mainfg$arrowline1$separator2$usersection$mainfg$accentbg$separator1$hostsection$accentfg$separator1$pathsection"
-line2="$mainfg$arrowline2$nofg "
+line2="%{$mainfg%}$arrowline2%{$nofg%} "
 
 PS1="$line1${newline}$line2"
 

@@ -50,6 +50,9 @@
 *color20:             #cdcdcd
 *color21:             #dddddd
 
+
+*alphabg:             #ff1d2021
+
 URxvt*background:      [100]#1d2021
 URxvt*cursorColor:     #dddddd
 URxvt*depth:           32
