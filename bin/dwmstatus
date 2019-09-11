@@ -2,12 +2,20 @@
 
 loop=0
 while true; do
-    [[ $(($loop % 10)) -eq 0 ]] && bat="`cat /sys/class/power_supply/BAT0/capacity`%"
-    [[ $(($loop % 5)) -eq 0 ]] && ip="`ip a show dev wlp4s0 |grep 'inet ' |cut -d '/' -f1 |cut -d ' ' -f 6`"
+    [[ $(($loop % 10)) -eq 0 ]] && bat="`cat /sys/class/power_supply/BAT0/capacity`%" && \
+                                   if [ "`cat /sys/class/power_supply/BAT0/status`" == "Charging" ]; then bat=" $bat"; fi
+    [[ $(($loop % 5)) -eq 0 ]] && ip="直 `ip a show dev wlp4s0 |grep 'inet ' |cut -d '/' -f1 |cut -d ' ' -f 6`"
 
-    date="`date +'%a, %b %d %Y %H:%M:%S'`"
+    date=" `date +'%a, %b %d %Y %H:%M:%S'`"
 
-    xsetroot -name " $bat  $ip  $date"
+    vol="`pulsemixer --get-volume |cut -d ' ' -f 1`"
+    if [ `pulsemixer --get-mute` -eq 1 ]; then
+        vol="婢 $vol"
+    else
+        vol="墳 $vol"
+    fi
+
+    xsetroot -name " $vol  $bat  $ip  $date"
 
     loop=$(($loop + 1))
     [[ $loop -eq 600 ]] && loop=0

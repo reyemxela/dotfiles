@@ -14,18 +14,18 @@ xset r rate 300 50
 xset s 3600 3600 dpms 3600 3600 3600
 
 compton &
-autorandr -c &
+autorandr -c --force
 ~/bin/setbg &
 
 
 while true; do
-    bat="`cat /sys/class/power_supply/BAT0/capacity`%"
-    date="`date +'%a, %b %d %Y %H:%M:%S'`"
-    xsetroot -name "$date // $bat"
+    ~/bin/dwmstatus
     sleep 1
 done &
 
-exec dwm
+while true; do
+    dwm
+done
 #exec i3
 #exec bspwm
 #exec awesome

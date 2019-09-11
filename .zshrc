@@ -5,8 +5,8 @@ function _installed {
     return $?
 }
 
-[ -f ~/.aliasrc ] && . ~/.aliasrc
 [ -f ~/.envrc ]   && . ~/.envrc
+[ -f ~/.aliasrc ] && source ~/.aliasrc
 
 export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 export EDITOR=vim
