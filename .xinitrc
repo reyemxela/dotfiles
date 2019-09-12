@@ -18,7 +18,7 @@ autorandr -c --force
 ~/bin/setbg &
 
 
-while true; do
+[ -f ~/bin/dwmstatus ] && while true; do
     ~/bin/dwmstatus
     sleep 1
 done &
