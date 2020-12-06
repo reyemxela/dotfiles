@@ -69,6 +69,11 @@ autocmd FileType zsh set commentstring=#%s
 autocmd FileType dosini set commentstring=;%s
 
 
+" difforig
+command! DiffOrig vert new | set bt=nofile | r# | 0d_ | diffthis | wincmd p | diffthis
+command! UnDiff wincmd p | q
+
+
 " Statusline stuff
 let g:currentmode={
     \ 'n'       : 'NORMAL',

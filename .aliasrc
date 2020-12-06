@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if command -v exa >/dev/null 2>&1; then
     alias l="command exa -l"
@@ -12,12 +12,28 @@ else
     alias ll="command ls -lhAF -v --color=auto"
 fi
 
-alias scr="sudo systemctl restart"
-alias scs="sudo systemctl start"
-alias scst="sudo systemctl stop"
 alias xc="xclip -in -selection clipboard"
 alias wifi-menu="sudo wifi-menu"
-alias pacs="sudo pacman -S"
 alias ssh="TERM=xterm ssh"
 alias wgup="sudo wg-quick up wg0"
 alias wgdown="sudo wg-quick down wg0"
+
+source /etc/os-release
+
+case "$ID" in
+    void)
+        alias xbs="xbps-query -Rs"
+        alias xbi="sudo xbps-install"
+        alias xbr="sudo xbps-remove"
+        alias xbu="sudo xbps-install -Su"
+        alias sv="sudo sv"
+
+        sve() { [ "$1" != "" ] && sudo ln -s /etc/sv/$1 /var/service/; }
+        svd() { [ -h /var/service/$1 ] && sudo unlink /var/service/$1; }
+        ;;
+    *)
+        alias scr="sudo systemctl restart"
+        alias scs="sudo systemctl start"
+        alias scst="sudo systemctl stop"
+        ;;
+esac

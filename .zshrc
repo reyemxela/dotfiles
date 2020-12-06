@@ -8,7 +8,7 @@ function _installed {
 [ -f ~/.envrc ]   && . ~/.envrc
 [ -f ~/.aliasrc ] && source ~/.aliasrc
 
-export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+export PATH="$HOME/bin:$HOME/.local/bin:$PATH:/opt/metasploit-framework/bin"
 export EDITOR=vim
 
 _installed dircolors && eval `dircolors`
