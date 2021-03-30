@@ -47,7 +47,7 @@ set wildmenu
 " new line under current position in normal mode
 nnoremap <silent><C-o> o<Esc>k
 " new line above current position in normal mode
-"nnoremap <silent>O O<Esc>j
+nnoremap <silent>O O<Esc>j
 " space toggles fold
 nnoremap <space> za
 
@@ -59,6 +59,9 @@ noremap <S-Down> G
 
 " autocomplete in insert mode
 inoremap <S-Tab> <C-P>
+
+" copy with xclip
+vnoremap <C-y> :w !xclip -selection clipboard<CR><CR>
 
 
 " Filetypes
