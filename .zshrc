@@ -5,8 +5,8 @@ function _installed {
     return $?
 }
 
-[ -f ~/.envrc ]   && . ~/.envrc
-[ -f ~/.aliasrc ] && source ~/.aliasrc
+[ -f ~/.config/_shell/env.sh ]     && source ~/.config/_shell/env.sh
+[ -f ~/.config/_shell/aliases.sh ] && source ~/.config/_shell/aliases.sh
 
 export PATH="$HOME/bin:$HOME/.local/bin:$PATH:/opt/metasploit-framework/bin"
 export EDITOR=vim

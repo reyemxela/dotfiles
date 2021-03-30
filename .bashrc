@@ -7,5 +7,5 @@
 
 PS1='[\u@\h \W]\$ '
 
-[ -f ~/.aliasrc ] && . ~/.aliasrc
-[ -f ~/.envrc ]   && . ~/.envrc
+[ -f ~/.config/_shell/aliases.sh ] && source ~/.config/_shell/aliases.sh
+[ -f ~/.config/_shell/env.sh ]     && source ~/.config/_shell/env.sh

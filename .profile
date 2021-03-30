@@ -6,4 +6,4 @@ if [ -z $DISPLAY ] && [ $(tty) = /dev/tty1 ] && $(which startx >/dev/null); then
 # if on console (checked in config), make nice tty colors
 [ -f ~/.config/_colorschemes/tty_config ] && source ~/.config/_colorschemes/tty_config
 
-[ -f ~/.aliasrc ] && source ~/.aliasrc
+#[ -f ~/.config/_shell/aliasrc ] && source ~/.config/_shell/aliasrc
