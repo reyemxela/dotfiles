@@ -135,26 +135,32 @@ zle -N cdParent
 # }}}
 
 # keybindings {{{
-# partial word search:
+# up/down to partial word search:
 bindkey "\e[A" up-line-or-beginning-search
 bindkey "\e[B" down-line-or-beginning-search
-# home/end stuff:
+# home/end:
 bindkey "\e[H" beginning-of-line
 bindkey "\e[F" end-of-line
+# putty home/end:
+bindkey "\e[1~" beginning-of-line
+bindkey "\e[4~" end-of-line
 bindkey "${terminfo[kdch1]}" delete-char
 bindkey "${terminfo[kich1]}" quoted-insert
 # ctrl+arrows to move back/forward whole words:
 bindkey "\e[1;5D" backward-word
 bindkey "\e[1;5C" forward-word
+# putty ctrl+arrows:
+bindkey "\eOD" backward-word
+bindkey "\eOC" forward-word
 # escape+./meta+. to insert last word. not sure how it broke.
 bindkey "\e." insert-last-word
 # + in menu select to add on:
 bindkey -M menuselect "+" accept-and-menu-complete
 # remove double-escape/pageup/pagedn for vi-mode:
 bindkey -r "\e"
-# run-help
+# escape+h to run-help:
 bindkey "\eh" run-help
-# custom functions
+# alt+left/up for cd shortcuts:
 bindkey "\e[1;3D" cdUndo
 bindkey "\e[1;3A" cdParent
 # }}}
