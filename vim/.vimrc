@@ -79,33 +79,35 @@ command! UnDiff wincmd p | q
 
 " Statusline stuff
 let g:currentmode={
-    \ 'n'       : 'NORMAL',
-    \ 'no'      : 'NORMAL',
-    \ 'v'       : 'VISUAL',
-    \ 'V'       : 'VILINE',
-    \ ''      : 'VIBLCK',
-    \ 'i'       : 'INSERT',
-    \ 'Rv'      : 'VIREPL'
+    \ 'n'       : ' NORMAL ',
+    \ 'no'      : ' NORMAL ',
+    \ 'v'       : ' VISUAL ',
+    \ 'V'       : ' VILINE ',
+    \ ''      : ' VIBLOCK',
+    \ 'i'       : ' INSERT ',
+    \ 'Rv'      : ' VIREPL ',
+    \ 'R'       : ' REPLACE'
 \}
 
 function GetMode()
     return get(g:currentmode, mode(), toupper('  ' . mode() . '  '))
 endfunction
 
-au InsertEnter  * hi SLmode ctermbg=003 ctermfg=000 cterm=bold | hi SepColor ctermbg=003 ctermfg=008 cterm=bold
-au InsertChange * hi SLmode ctermbg=006 ctermfg=000 cterm=bold | hi SepColor ctermbg=006 ctermfg=008 cterm=bold
-au InsertLeave  * hi SLmode ctermbg=004 ctermfg=007 cterm=bold | hi SepColor ctermbg=004 ctermfg=008 cterm=bold
+au InsertEnter  * hi SLmode ctermbg=003 ctermfg=000 cterm=bold
+au InsertChange * if v:insertmode == "r" | hi SLmode ctermbg=006 ctermfg=000 cterm=bold | else | hi SLmode ctermbg=003 ctermfg=000 cterm=bold | endif
+au InsertLeave  * hi SLmode ctermbg=004 ctermfg=007 cterm=bold
 hi SLmode ctermbg=004 ctermfg=007 cterm=bold
-hi SLbg ctermbg=008 ctermfg=007 cterm=bold
-hi SepColor ctermbg=004 ctermfg=008 cterm=bold
+hi SLbg ctermbg=007 ctermfg=000 cterm=bold
 
 set noshowmode
 set laststatus=2
 set statusline=
-set statusline+=%#SLmode#\ %<%-6{GetMode()}\ %#SepColor#░▒▓%*
-set statusline+=%#SLbg#\ <<\ %<%f\ %([%M%R]\ %)>>
-set statusline+=\ %y
+set statusline+=%#SLmode#
+set statusline+=\ %{GetMode()}\ 
+set statusline+=%#SLbg#
+set statusline+=\ <<\ %<%f\ %([%M%R]\ %)>>\ 
+set statusline+=%y
 set statusline+=%=
-set statusline+=\ %#SepColor#▓▒░%#SLmode#
+set statusline+=%#SLmode#
 set statusline+=%10.(%l,%c%)
-set statusline+=%#SLmode#\ %P%*
+set statusline+=%#SLmode#\ %P\ \ %*
