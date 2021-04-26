@@ -129,9 +129,14 @@ cdParent() {
     zle reset-prompt
     echo
 }
+insertSudo () {
+    BUFFER="sudo $BUFFER"
+    zle accept-line
+}
 
 zle -N cdUndo
 zle -N cdParent
+zle -N insertSudo
 # }}}
 
 # keybindings {{{
@@ -141,7 +146,7 @@ bindkey "\e[B" down-line-or-beginning-search
 # home/end:
 bindkey "\e[H" beginning-of-line
 bindkey "\e[F" end-of-line
-# putty home/end:
+# tmux/putty home/end:
 bindkey "\e[1~" beginning-of-line
 bindkey "\e[4~" end-of-line
 bindkey "${terminfo[kdch1]}" delete-char
@@ -160,6 +165,8 @@ bindkey -M menuselect "+" accept-and-menu-complete
 bindkey -r "\e"
 # escape+h to run-help:
 bindkey "\eh" run-help
+# escape+s to insert sudo at beginning of line
+bindkey "\es" insertSudo
 # alt+left/up for cd shortcuts:
 bindkey "\e[1;3D" cdUndo
 bindkey "\e[1;3A" cdParent
