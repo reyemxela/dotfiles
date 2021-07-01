@@ -173,7 +173,7 @@ bindkey "\e[1;3A" cdParent
 # }}}
 
 # hook functions {{{
-chpwd () { (_installed toilet && { pwd | toilet -t -f smblock 2>/dev/null } || echo "[ $(pwd) ]\n") && ls; }
+#chpwd () { (_installed toilet && { pwd | toilet -t -f smblock 2>/dev/null } || echo "[ $(pwd) ]\n") && ls; }
 
 set_title () { print -rn $'\e]0;'${${:-${(%):-$1}$2}//[^[:print:]]/_}$'\a' }
 preexec () { set_title "$1" }

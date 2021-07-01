@@ -28,9 +28,9 @@ set timeoutlen=1000 ttimeoutlen=0
 
 
 " Tab settings
-set tabstop=4           " Tab size
-set shiftwidth=4        " Shift width
-set softtabstop=4
+set tabstop=2           " Tab size
+set shiftwidth=2        " Shift width
+set softtabstop=2
 set expandtab
 
 " Search
