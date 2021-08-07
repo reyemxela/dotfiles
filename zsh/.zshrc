@@ -29,8 +29,8 @@ if [ ! -z $DISPLAY ]; then
 fi
 #separator1="▉▊▋▌▍▎▏"
 #separator2="▏▎▍▌▋▊▉"
-separator1="▓▒░ "
-separator2=" ░▒▓"
+separator1="▓▒░"
+separator2="░▒▓"
 
 if [ ${EUID} -eq 0 ]; then
     accentcolor=1
@@ -41,7 +41,7 @@ else
 fi
 accentfg="%F{$accentcolor}" accentbg="%K{$accentcolor}"
 
-maincolor="white"
+maincolor="15"
 mainfg="%F{$maincolor}" mainbg="%K{$maincolor}"
 
 textfg="%F{black}"
@@ -54,10 +54,10 @@ host="%m"
 newline=$'\n'
 
 usersection="$mainbg$textfg$bold $user $nofg$nobg$unbold"
-hostsection="$accentbg$textfg$computer$host $nobg$nofg"
+hostsection="$accentbg$textfg $computer$host $nobg$nofg"
 pathsection="$nobg$mainfg$folder$bold%40<..<%~%<<$unbold$nofg$nobg"
 
-line1="$mainfg$arrowline1$separator2$usersection$mainfg$accentbg$separator1$hostsection$accentfg$separator1$pathsection"
+line1="$mainfg$arrowline1 $separator2$usersection$mainfg$accentbg$separator1$hostsection$accentfg$separator1 $pathsection"
 line2="%{$mainfg%}$arrowline2%{$nofg%} "
 
 PS1="$line1${newline}$line2"
