@@ -1,3 +1,3 @@
 # .profile
 
-export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+PATH="$HOME/bin:$HOME/.local/bin:$HOME/go/bin:$PATH"
