@@ -16,7 +16,7 @@ let g:colors_name = "noctu"
 
 "}}}
 " Vim UI {{{
-hi Normal              ctermfg=7
+"hi Normal              ctermfg=7
 hi Cursor              ctermfg=7     ctermbg=1
 hi CursorLine          ctermbg=0     cterm=NONE
 hi MatchParen          ctermfg=7     ctermbg=NONE  cterm=underline
@@ -30,7 +30,7 @@ hi SpellCap            ctermfg=10    ctermbg=NONE  cterm=underline
 hi SpellRare           ctermfg=11    ctermbg=NONE  cterm=underline
 hi SpellLocal          ctermfg=13    ctermbg=NONE  cterm=underline
 hi NonText             ctermfg=8
-hi LineNr              ctermfg=8     ctermbg=NONE
+hi LineNr              ctermfg=8     ctermbg=0     cterm=bold
 hi CursorLineNr        ctermfg=11    ctermbg=0
 hi Visual              ctermfg=0     ctermbg=12
 hi IncSearch           ctermfg=0     ctermbg=13    cterm=NONE
@@ -72,7 +72,7 @@ hi! link SpecialKey    NonText
 "}}}
 " Generic syntax {{{
 hi Delimiter       ctermfg=7
-hi Comment         ctermfg=8
+hi Comment         ctermfg=8   cterm=bold
 hi Underlined      ctermfg=4   cterm=underline
 hi Type            ctermfg=4
 hi String          ctermfg=11
