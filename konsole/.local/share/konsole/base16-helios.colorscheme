@@ -8,13 +8,13 @@ Color=29,32,33
 Color=111,117,121
 
 [Color0]
-Color=29,32,33
+Color=49,53,56
 
 [Color0Faint]
 Color=29,32,33
 
 [Color0Intense]
-Color=111,117,121
+Color=77,81,84
 
 [Color1]
 Color=215,38,56
@@ -23,7 +23,7 @@ Color=215,38,56
 Color=215,38,56
 
 [Color1Intense]
-Color=215,38,56
+Color=235,41,64
 
 [Color2]
 Color=136,185,45
@@ -32,7 +32,7 @@ Color=136,185,45
 Color=136,185,45
 
 [Color2Intense]
-Color=136,185,45
+Color=151,205,50
 
 [Color3]
 Color=241,157,26
@@ -41,7 +41,7 @@ Color=241,157,26
 Color=241,157,26
 
 [Color3Intense]
-Color=241,157,26
+Color=255,164,28
 
 [Color4]
 Color=30,139,172
@@ -50,7 +50,7 @@ Color=30,139,172
 Color=30,139,172
 
 [Color4Intense]
-Color=30,139,172
+Color=33,158,192
 
 [Color5]
 Color=190,66,100
@@ -59,7 +59,7 @@ Color=190,66,100
 Color=190,66,100
 
 [Color5Intense]
-Color=190,66,100
+Color=210,73,112
 
 [Color6]
 Color=27,165,149
@@ -68,16 +68,16 @@ Color=27,165,149
 Color=27,165,149
 
 [Color6Intense]
-Color=27,165,149
+Color=30,185,167
 
 [Color7]
-Color=213,213,213
+Color=240,240,240
 
 [Color7Faint]
 Color=213,213,213
 
 [Color7Intense]
-Color=229,229,229
+Color=240,240,240
 
 [Foreground]
 Color=213,213,213
