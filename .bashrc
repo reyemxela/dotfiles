@@ -10,6 +10,10 @@ esac
 PATH="$HOME/bin:$HOME/.local/bin:$HOME/go/bin:$PATH"
 
 
+##### env
+export EDITOR="vi"
+
+
 ##### functions
 __have()     { type "$1" &>/dev/null; }
 __source_if() { [[ -r "$1" ]] && source "$1"; }
@@ -141,6 +145,7 @@ alias du='du -h'
 
 alias chx='chmod +x'
 
+_have vim && alias vi='vim'
 
 ##### completion
 __source_if /usr/share/bash-completion/bash_completion
