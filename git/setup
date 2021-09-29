@@ -3,6 +3,7 @@
 set -e
 
 ln -sf "$PWD/.gitconfig" "$HOME/.gitconfig"
+ln -sf "$PWD/.gitmessage" "$HOME/.gitmessage"
 
 if [[ ! -f "$HOME/.gitconfig_local" ]]; then
   read -p "git full name: " name

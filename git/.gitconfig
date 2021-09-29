@@ -28,6 +28,9 @@
   changed = red
   untracked = white dim
 
+[commit]
+  template = ~/.gitmessage
+
 [pull]
   rebase = false
 
