@@ -1,0 +1,5 @@
+#!/bin/bash
+
+if [[ -n "$TERMUX_VERSION" ]]; then
+  ln -sf "$PWD/.termux" "$HOME/.termux"
+fi

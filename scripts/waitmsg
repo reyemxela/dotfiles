@@ -1,0 +1,14 @@
+#!/bin/bash
+
+PROCESS=$1
+
+PID=$(pgrep "$1")
+
+if [[ -z "$PID" ]]; then
+  echo "No process found"
+  exit 1
+else
+  tail --pid="$PID" -f /dev/null
+  telegramsend "Process $PROCESS finished"
+  exit $?
+fi

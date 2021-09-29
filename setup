@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+ln -sf "$PWD/.bashrc" "$HOME/.bashrc"
+ln -sf "$PWD/.profile" "$HOME/.profile"
+ln -sf "$PWD/.zshrc" "$HOME/.zshrc"
+
+mkdir -p "$HOME/.local/bin/scripts"
+ln -sf "$PWD/scripts" "$HOME/.local/bin/scripts"
+
+for i in vim git tmux termux; do
+  cd $i && ./setup
+  cd -
+done

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if type tmux &>/dev/null; then
+  ln -sf "$PWD/.tmux.conf" "$HOME/.tmux.conf"
+else
+  echo "TMUX isn't installed. Skipping." && exit 1
+fi

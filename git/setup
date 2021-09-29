@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+ln -sf "$PWD/.gitconfig" "$HOME/.gitconfig"
+
+read -p "git full name: " name
+read -p "git email: " email
+read -p "github username: " user
+read -p "github token: " token
+
+cat <<EOF >"$HOME/.gitconfig_local"
+[user]
+  name = $name
+  email = $email
+
+[credential]
+  helper = store
+EOF
+
+echo "https://$user:$token@github.com" >"$HOME/.git-credentials"

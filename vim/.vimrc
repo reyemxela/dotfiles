@@ -116,7 +116,7 @@ au InsertEnter  * hi SLmode ctermbg=003 ctermfg=000 cterm=bold
 au InsertChange * if v:insertmode == "r" | hi SLmode ctermbg=006 ctermfg=000 cterm=bold | else | hi SLmode ctermbg=003 ctermfg=000 cterm=bold | endif
 au InsertLeave  * hi SLmode ctermbg=004 ctermfg=007 cterm=bold
 hi SLmode ctermbg=004 ctermfg=007 cterm=bold
-hi SLbg ctermbg=007 ctermfg=000
+hi SLbg ctermbg=015 ctermfg=000
 
 set noshowmode
 set laststatus=2

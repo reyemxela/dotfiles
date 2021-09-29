@@ -1,0 +1,18 @@
+[Desktop Entry]
+DefaultProfile=main.profile
+
+[Favorite Profiles]
+Favorites=main.profile
+
+[KonsoleWindow]
+ShowMenuBarByDefault=false
+
+[Notification Messages]
+CloseAllEmptyTabs=true
+
+[Shortcut Schemes]
+Current Scheme=shortcuts
+
+[SplitView]
+SplitViewVisibility=AlwaysHideSplitHeader
+
