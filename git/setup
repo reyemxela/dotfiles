@@ -4,12 +4,10 @@ set -e
 
 ln -sf "$PWD/.gitconfig" "$HOME/.gitconfig"
 
-read -p "git full name: " name
-read -p "git email: " email
-read -p "github username: " user
-read -p "github token: " token
-
-cat <<EOF >"$HOME/.gitconfig_local"
+if [[ ! -f "$HOME/.gitconfig_local" ]]; then
+  read -p "git full name: " name
+  read -p "git email: " email
+  cat <<EOF >"$HOME/.gitconfig_local"
 [user]
   name = $name
   email = $email
@@ -17,5 +15,11 @@ cat <<EOF >"$HOME/.gitconfig_local"
 [credential]
   helper = store
 EOF
+fi
 
-echo "https://$user:$token@github.com" >"$HOME/.git-credentials"
+if [[ ! -f "$HOME/.git-credentials" ]]; then
+  read -p "github username: " user
+  read -p "github token: " token
+
+  echo "https://$user:$token@github.com" >"$HOME/.git-credentials"
+fi
