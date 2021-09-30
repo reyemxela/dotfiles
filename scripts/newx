@@ -1,0 +1,13 @@
+#!/bin/bash
+
+[[ -z "$1" ]] && echo "File name missing" && exit 1;
+
+if [[ -e "$1" ]]; then
+  read -r -p "$1 already exists. Edit? [Y/n] " confirm
+  [[ ${confirm,,} =~ ^n ]] && exit
+  exec "${EDITOR:-vi}" "$1"
+fi
+
+printf "#!/bin/bash\n\n\n" > "$1"
+chmod +x "$1"
+exec "${EDITOR:-vi}" +3 "$1"
