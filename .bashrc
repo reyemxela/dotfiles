@@ -6,10 +6,6 @@ case $- in
 esac
 
 
-##### path
-PATH="$HOME/bin:$HOME/.local/bin:$HOME/go/bin:$PATH"
-
-
 ##### env
 export EDITOR="vi"
 
@@ -62,7 +58,7 @@ pathprepend() {
 pathprepend \
   "$HOME/.local/bin" \
   "$HOME/.local/bin/scripts" \
-  "$HOME/go/bin/"
+  "$HOME/go/bin"
 
 
 ##### prompt
@@ -132,6 +128,7 @@ if __have exa; then
     alias l='exa -lg'
     alias la='exa -laag'
     alias ll='exa -lag'
+    alias lt='exa -lagT'
 else
     alias ls='command ls -vF --color=auto'
     alias l='ls -l'
