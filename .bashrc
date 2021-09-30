@@ -150,6 +150,12 @@ __have vim && alias vi='vim'
 ##### completion
 __source_if /usr/share/bash-completion/bash_completion
 
+completion=(
+  $(cd ~/.local/bin/scripts; grep -l COMPLETION *)
+)
+
+for i in "${completion[@]}"; do complete -C "$i" "$i"; done
+
 
 ##### readline options
 bind 'set bell-style none'
