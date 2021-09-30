@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 
 CHAT_ID="$(secret telegramsend DEFAULT_CHAT_ID)"
 BOT_TOKEN="$(secret telegramsend BOT_TOKEN)"
 
-if [[ $# == 2 ]]; then
+if [ -n "$2" ]; then
   CHAT_ID="$1"
   shift
 fi
@@ -12,6 +12,6 @@ MESSAGE="$1"
 
 curl -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
      -H 'Content-Type: application/json' \
-     --data '{"chat_id":"'"$CHAT_ID"'", "parse_mode":"MarkdownV2", "text":"'"$MESSAGE"'"}' &> /dev/null
+     --data '{"chat_id":"'"$CHAT_ID"'", "parse_mode":"MarkdownV2", "text":"'"$MESSAGE"'"}' > /dev/null 2>&1
 
 exit $?
