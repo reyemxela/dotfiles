@@ -6,10 +6,10 @@ ln -sf "$PWD/.bashrc" "$HOME/.bashrc"
 ln -sf "$PWD/.profile" "$HOME/.profile"
 ln -sf "$PWD/.zshrc" "$HOME/.zshrc"
 
-mkdir -p "$HOME/.local/bin/scripts"
-ln -sf "$PWD/scripts" "$HOME/.local/bin/scripts"
+mkdir -p "$HOME/.local/bin"
+ln -sfn "$PWD/scripts" "$HOME/.local/bin/scripts"
 
 for i in vim git tmux termux; do
   cd $i && ./setup
-  cd -
+  cd - &>/dev/null
 done
