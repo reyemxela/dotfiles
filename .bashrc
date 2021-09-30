@@ -145,7 +145,7 @@ alias du='du -h'
 
 alias chx='chmod +x'
 
-_have vim && alias vi='vim'
+__have vim && alias vi='vim'
 
 ##### completion
 __source_if /usr/share/bash-completion/bash_completion
@@ -154,10 +154,12 @@ __source_if /usr/share/bash-completion/bash_completion
 ##### readline options
 bind 'set bell-style none'
 bind 'set completion-ignore-case on'          # case-insensitive tab-completion
-bind 'set menu-complete-display-prefix on'    # display matches right away
+bind 'set menu-complete-display-prefix on'    # display partial and menu right away
+bind 'set completion-prefix-display-length 3' # common prefixes become ellipsis
 bind 'set show-all-if-ambiguous on'           # muptiple possibilities show right away
 bind 'set page-completions off'               # no `more` for tab results
-bind 'set completion-prefix-display-length 3' # common prefixes become ellipsis
+bind 'set visible-stats on'                   # show filetype characters in completions
+bind 'set mark-symlinked-directories off'     # show / after symlinked directories too
 
 
 ##### keybinds
@@ -166,6 +168,6 @@ bind '"\e[B": history-search-forward'         # down arrow
 
 bind '"\t": menu-complete'                    # tab
 bind '"\e[Z": menu-complete-backward'         # shift-tab
-#bind '"\e[Z": glob-expand-word'              # shift-tab
+#bind '"": glob-expand-word'                   # 
 
 
