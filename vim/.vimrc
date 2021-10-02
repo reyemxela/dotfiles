@@ -1,19 +1,94 @@
-"
-" .vimrc
-"
 set nocompatible
 
-colorscheme noctu
-"set t_Co=256
 syntax enable
+
+
+""""" built-in colorscheme
+set background=dark
+
+" UI
+hi Normal              ctermfg=15
+hi Cursor              ctermfg=7     ctermbg=1
+hi CursorLine          ctermbg=0     cterm=NONE
+hi MatchParen          cterm=bold,underline
+hi Pmenu               ctermfg=15    ctermbg=0
+hi PmenuThumb          ctermbg=7
+hi PmenuSBar           ctermbg=8
+hi PmenuSel            ctermfg=0     ctermbg=4
+hi ColorColumn         ctermbg=0
+hi SpellBad            ctermfg=1     ctermbg=NONE  cterm=underline
+hi SpellCap            ctermfg=10    ctermbg=NONE  cterm=underline
+hi SpellRare           ctermfg=11    ctermbg=NONE  cterm=underline
+hi SpellLocal          ctermfg=13    ctermbg=NONE  cterm=underline
+hi NonText             ctermfg=8
+hi LineNr              ctermfg=8     ctermbg=0
+hi CursorLineNr        ctermfg=11    ctermbg=0
+hi Visual              ctermfg=0     ctermbg=15
+hi IncSearch           ctermfg=0     ctermbg=13    cterm=NONE
+hi Search              ctermfg=0     ctermbg=10
+hi StatusLine          ctermfg=15    ctermbg=0     cterm=bold
+hi StatusLineNC        ctermfg=8     ctermbg=0     cterm=bold
+hi VertSplit           ctermfg=0     ctermbg=0     cterm=NONE
+hi TabLine             ctermfg=8     ctermbg=0     cterm=NONE
+hi TabLineSel          ctermfg=7     ctermbg=0
+hi Folded              ctermfg=6     ctermbg=0     cterm=bold
+hi Conceal             ctermfg=6     ctermbg=NONE
+hi Directory           ctermfg=12
+hi Title               ctermfg=3     cterm=bold
+hi ErrorMsg            ctermfg=15    ctermbg=1
+hi DiffAdd             ctermfg=0     ctermbg=10
+hi DiffChange          ctermfg=0     ctermbg=14
+hi DiffDelete          ctermfg=0     ctermbg=9
+hi DiffText            ctermfg=0     ctermbg=11    cterm=bold
+hi! link CursorColumn  CursorLine
+hi! link SignColumn    LineNr
+hi! link WildMenu      Visual
+hi! link FoldColumn    SignColumn
+hi! link WarningMsg    ErrorMsg
+hi! link MoreMsg       Title
+hi! link Question      MoreMsg
+hi! link ModeMsg       MoreMsg
+hi! link TabLineFill   StatusLineNC
+hi! link SpecialKey    NonText
+
+" generic syntax
+hi Delimiter       ctermfg=14
+hi Comment         ctermfg=8   cterm=bold
+hi Underlined      ctermfg=4   cterm=underline
+hi Type            ctermfg=11
+hi String          ctermfg=10
+hi Keyword         ctermfg=14
+hi Todo            ctermfg=15  ctermbg=NONE     cterm=bold,underline
+hi Function        ctermfg=10
+hi Identifier      ctermfg=12  cterm=NONE
+hi Statement       ctermfg=9   cterm=bold
+hi Constant        ctermfg=13
+hi Number          ctermfg=12
+hi Boolean         ctermfg=13
+hi Special         ctermfg=13
+hi Ignore          ctermfg=8
+hi PreProc         ctermfg=12  cterm=bold
+hi! link Operator  Delimiter
+hi! link Error     ErrorMsg
+
+" show indentation and trailing spaces
+hi WhiteSpace ctermfg=8 cterm=underline
+match WhiteSpace /^\s\+\|\s\+$/
+
+" list mode settings
+set listchars=space:·,trail:·,extends:>,precedes:<,tab:\|\ 
+
+
+""""" settings
+
+" line numbers
 set number
+
+" current line highlighting
 set cursorline
 
-
-" rendering
-set termencoding=utf-8
-set encoding=utf-8
-set scrolloff=1         " number of lines to keep above/below cursor
+" number of lines to keep above/below cursor
+set scrolloff=1
 
 " indentation
 set autoindent
@@ -27,7 +102,6 @@ set mouse=a             " mouse mode
 set foldmethod=marker   " folding
 set timeoutlen=1000 ttimeoutlen=0
 
-
 " tab settings
 set tabstop=2           " tab size
 set shiftwidth=2        " shift width
@@ -36,6 +110,7 @@ set expandtab
 
 " search
 set hlsearch            " highlight search
+nohlsearch              " prevent search highlights when reloading vimrc
 set incsearch           " incremental searching
 set ignorecase          " case-insensitive searching...
 set smartcase           " ...unless search has an uppercase letter
@@ -48,15 +123,17 @@ set wildmenu            " tab-completion of commands as a menu
 " performance
 set lazyredraw          " don't update screen during scripts/macros
 
-
 " misc
 set formatoptions+=j    " delete comment chars when joining lines
 
-" mappings
+
+""""" key mappings
 
 " move by virtual lines
-nnoremap j gj
 nnoremap k gk
+nnoremap <Up> gk
+nnoremap j gj
+nnoremap <Down> gj
 
 " new line under current position in normal mode
 nnoremap <silent><C-o> o<Esc>k
@@ -73,30 +150,41 @@ inoremap <A-Up> <Esc>:m .-2<CR>==gi
 vnoremap <A-Down> :m '>+1<CR>gv=gv
 vnoremap <A-Up> :m '<-2<CR>gv=gv
 
-" home/end/top/bottom shortcuts on shift+arrows
-"noremap <S-Left> ^
-"noremap <S-Right> $
-"noremap <S-Up> gg
-"noremap <S-Down> G
-
 " autocomplete in insert mode
 inoremap <S-Tab> <C-P>
-
-inoremap {<cr> {<esc>o}<esc>O
 
 " copy with xclip
 vnoremap <C-y> :w !xclip -selection clipboard<CR><CR>
 
+" clear search highlight with Ctrl+L
+nnoremap <C-L> :noh<CR><C-L>
+
+" print highlight group of current item
+nnoremap <F10> :echo synIDattr(synIDtrans(synID(line("."),col("."),1)),"name")<CR>
+
+""""" command mappings
+
 " write with sudo
 command W w !sudo tee "%" > /dev/null
 
+" reload config
+nnoremap confr :source $HOME/.vimrc<CR>
 
 " difforig
 command! DiffOrig vert new | set bt=nofile | r# | 0d_ | diffthis | wincmd p | diffthis
 command! UnDiff wincmd p | q
 
 
-" Statusline stuff
+""""" code shortcuts
+inoremap {<cr> {<esc>o}<esc>O
+
+
+""""" autocmds
+" gofmt on save (needs autoread on)
+autocmd BufWritePost *.go silent execute '!gofmt -w % 2>/dev/null'
+
+
+""""" Statusline stuff
 let g:currentmode={
     \ 'n'       : ' NORMAL ',
     \ 'no'      : ' NORMAL ',
@@ -109,7 +197,7 @@ let g:currentmode={
 \}
 
 function GetMode()
-    return get(g:currentmode, mode(), toupper('  ' . mode() . '  '))
+  return get(g:currentmode, mode(), toupper('  ' . mode() . '  '))
 endfunction
 
 au InsertEnter  * hi SLmode ctermbg=003 ctermfg=000 cterm=bold

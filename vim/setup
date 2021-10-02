@@ -1,5 +1,3 @@
 #!/bin/bash
 
 ln -sf "$PWD/.vimrc" "$HOME/.vimrc"
-mkdir -p "$HOME/.vim/colors"
-ln -sf "$PWD"/.vim/colors/* "$HOME/.vim/colors/"
