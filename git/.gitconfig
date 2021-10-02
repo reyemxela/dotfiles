@@ -4,9 +4,11 @@
 [alias]
   s = "status -s -b"
   cm = "commit"
+  cmm = "commit -m"
   b = "branch -a -v"
   c = "checkout"
   cb = "checkout -b" # new branch
+  rv = "remote -v"
   dh = "diff HEAD" # all changes
   ds = "diff --staged" # staged changes
   lg = "log --graph --decorate --oneline"
