@@ -190,6 +190,24 @@ bind '"\e[B": history-search-forward'         # down arrow
 
 bind '"\t": menu-complete'                    # tab
 bind '"\e[Z": menu-complete-backward'         # shift-tab
-#bind '"": glob-expand-word'                   # 
 
 
+##### startup
+# if on a tty, interactive, and not already in a tmux session:
+if [[ -t 0 ]] && [[ $- = *i* ]] && [[ -z $TMUX ]]; then
+  if __have tmux; then
+    # grabs latest detached session
+    attach=$(tmux 2>/dev/null ls -F \
+             '#{session_attached} #{?#{==:#{session_last_attached},},1,#{session_last_attached}} #{session_id}' \
+             |awk '/^0/{if ($2 > t){t=$2;s=$3}}; END{print s}')
+    if [[ -n "$attach" ]]; then
+      out=$(tmux attach -t "$attach")
+    else
+      out=$(tmux)
+    fi
+    # if original session was exited and not detached, exit
+    if [[ $out == "[exited]" ]]; then
+      exit
+    fi
+  fi
+fi
