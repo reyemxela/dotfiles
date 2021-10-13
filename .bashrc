@@ -112,6 +112,7 @@ if __have dircolors; then
   [[ -r ~/.dircolors ]] && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
 fi
 
+
 ##### manpage colors
 export LESS_TERMCAP_mb=$'\e[1;31m'     # begin bold
 export LESS_TERMCAP_md=$'\e[1;36m'     # begin blink
@@ -122,18 +123,27 @@ export LESS_TERMCAP_us=$'\e[1;32m'     # begin underline
 export LESS_TERMCAP_ue=$'\e[0m'        # reset underline
 
 
+##### less options
+# -a: skip search results on same screen
+# -q: no bell
+# -F: just print file if it fits on screen
+# -R: allow escape characters through
+# -X: don't clear screen
+export LESS='--mouse --wheel-lines 3 -aqFRX'
+
+
 ##### aliases
 if __have exa; then
-    alias ls='exa'
-    alias l='exa -lg'
-    alias la='exa -laag'
-    alias ll='exa -lag'
-    alias lt='exa -lagT'
+  alias ls='exa'
+  alias l='exa -lg'
+  alias la='exa -laag'
+  alias ll='exa -lag'
+  alias lt='exa -lagT'
 else
-    alias ls='command ls -vF --color=auto'
-    alias l='ls -l'
-    alias la='ls -la'
-    alias ll='ls -lhA'
+  alias ls='command ls -vF --color=auto'
+  alias l='ls -l'
+  alias la='ls -la'
+  alias ll='ls -lhA'
 fi
 
 alias grep='grep --color=auto'
@@ -143,6 +153,15 @@ alias du='du -h'
 alias chx='chmod +x'
 
 __have vim && alias vi='vim'
+
+if __have apt; then
+  alias apts="apt search"
+  alias apti="sudo apt install"
+  alias aptr="sudo apt remove"
+  alias aptud="sudo apt update"
+  alias aptug="sudo apt upgrade"
+fi
+
 
 ##### completion
 __source_if /usr/share/bash-completion/bash_completion
