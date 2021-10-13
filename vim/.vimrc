@@ -99,6 +99,7 @@ set shiftround
 set autoread            " read open files again when changed outside Vim
 set ttyfast             " improves redrawing on newer computers
 set mouse=a             " mouse mode
+set ttymouse=xterm2     " make mouse work in tmux
 set foldmethod=marker   " folding
 set timeoutlen=1000 ttimeoutlen=0
 
@@ -128,6 +129,13 @@ set formatoptions+=j    " delete comment chars when joining lines
 
 
 """"" key mappings
+if &term =~ '^screen'
+	" tmux will send xterm-style keys when its xterm-keys option is on
+	execute "set <xUp>=\e[1;*A"
+	execute "set <xDown>=\e[1;*B"
+	execute "set <xRight>=\e[1;*C"
+	execute "set <xLeft>=\e[1;*D"
+endif
 
 " move by virtual lines
 nnoremap k gk
@@ -143,12 +151,12 @@ nnoremap <silent>O O<Esc>j
 nnoremap <space> za
 
 " alt+arrows to move lines up/down
-nnoremap <A-Down> :m .+1<CR>==
-nnoremap <A-Up> :m .-2<CR>==
-inoremap <A-Down> <Esc>:m .+1<CR>==gi
-inoremap <A-Up> <Esc>:m .-2<CR>==gi
-vnoremap <A-Down> :m '>+1<CR>gv=gv
-vnoremap <A-Up> :m '<-2<CR>gv=gv
+nnoremap <silent><M-Down> :m .+1<CR>==
+nnoremap <silent><M-Up> :m .-2<CR>==
+inoremap <silent><M-Down> <Esc>:m .+1<CR>==gi
+inoremap <silent><M-Up> <Esc>:m .-2<CR>==gi
+vnoremap <silent><M-Down> :m '>+1<CR>gv=gv
+vnoremap <silent><M-Up> :m '<-2<CR>gv=gv
 
 " autocomplete in insert mode
 inoremap <S-Tab> <C-P>
