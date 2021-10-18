@@ -34,7 +34,7 @@
   template = ~/.gitmessage
 
 [pull]
-  rebase = false
+  rebase = true
 
 [include]
   path = ~/.gitconfig_local
