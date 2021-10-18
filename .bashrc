@@ -90,10 +90,14 @@ __ps1() {
 
   # git branch
   branch=$(git branch --show-current 2>/dev/null)
+  dirty=
   if [[ -n "$branch" ]]; then
     col=$g
     [[ $branch == main || $branch == master ]] && col=$r
-    branch="$gr($col$branch$gr)$x"
+    if [[ -n "$(git status --porcelain -uno 2>/dev/null)" ]]; then
+      dirty="+"
+    fi
+    branch="$gr($bold$col$branch$w$bold$dirty$x$gr)$x"
   fi
 
 
@@ -167,7 +171,7 @@ fi
 __source_if /usr/share/bash-completion/bash_completion
 
 completion=(
-  $(cd ~/.local/bin/scripts; grep -l COMPLETION *)
+  $(cd ~/.local/bin/scripts || exit; grep -rl COMPLETION)
 )
 
 for i in "${completion[@]}"; do complete -C "$i" "$i"; done
