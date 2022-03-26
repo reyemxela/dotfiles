@@ -153,6 +153,7 @@ fi
 alias grep='grep --color=auto'
 alias df='df -h'
 alias du='du -h'
+alias du1='du -hd1 |sort -h'
 
 alias chx='chmod +x'
 
