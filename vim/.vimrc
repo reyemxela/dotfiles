@@ -173,7 +173,7 @@ nnoremap <F10> :echo synIDattr(synIDtrans(synID(line("."),col("."),1)),"name")<C
 """"" command mappings
 
 " write with sudo
-command W w !sudo tee "%" > /dev/null
+command W execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
 
 " reload config
 nnoremap confr :source $HOME/.vimrc<CR>
