@@ -6,13 +6,17 @@ case $- in
 esac
 
 
-##### env
-export EDITOR="vi"
-
-
 ##### functions
 __have()     { type "$1" &>/dev/null; }
 __source_if() { [[ -r "$1" ]] && source "$1"; }
+
+
+##### env
+if __have vim; then
+export EDITOR="vim"
+else
+export EDITOR="vi"
+fi
 
 
 ##### history
@@ -182,7 +186,7 @@ for i in "${completion[@]}"; do complete -C "$i" "$i"; done
 bind 'set bell-style none'
 bind 'set completion-ignore-case on'          # case-insensitive tab-completion
 bind 'set menu-complete-display-prefix on'    # display partial and menu right away
-bind 'set completion-prefix-display-length 3' # common prefixes become ellipsis
+#bind 'set completion-prefix-display-length 3' # common prefixes become ellipsis
 bind 'set show-all-if-ambiguous on'           # muptiple possibilities show right away
 bind 'set page-completions off'               # no `more` for tab results
 bind 'set visible-stats on'                   # show filetype characters in completions
