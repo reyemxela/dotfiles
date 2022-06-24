@@ -171,6 +171,10 @@ if __have apt; then
   alias aptug="sudo apt upgrade"
 fi
 
+if __have dnf; then
+  alias dnf="sudo dnf"
+fi
+
 
 ##### completion
 __source_if /usr/share/bash-completion/bash_completion
