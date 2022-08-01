@@ -62,6 +62,7 @@ pathprepend() {
 pathprepend \
   "$HOME/.local/bin" \
   "$HOME/.local/bin/scripts" \
+  "$HOME/Sync/scripts" \
   "$HOME/go/bin"
 
 
@@ -137,7 +138,8 @@ export LESS_TERMCAP_ue=$'\e[0m'        # reset underline
 # -F: just print file if it fits on screen
 # -R: allow escape characters through
 # -X: don't clear screen
-export LESS='--mouse --wheel-lines 3 -aqFRX'
+[[ $(less --version |grep -E "less [0-9]+" |cut -d " " -f 2) -ge 543 ]] && mouse='--mouse --wheel-lines 3'
+export LESS="$mouse -aqFRX"
 
 
 ##### aliases
