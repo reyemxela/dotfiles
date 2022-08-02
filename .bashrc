@@ -105,8 +105,12 @@ __ps1() {
     branch="$gr($bold$col$branch$w$bold$dirty$x$gr)$x"
   fi
 
+  # python venv
+  venv=${VIRTUAL_ENV##*/}
+  [[ -n "$venv" ]] && venv="$gr($bold$c$venv$x$gr)$x"
 
-  PS1="\n$sc╔$x $rb $yb $gb $cb $wb $k\u@\h $cb $bb $x $w$pwd$branch$x\n$sc╚═$x "
+
+  PS1="\n$sc╔$x $rb $yb $gb $cb $wb $k\u@\h $cb $bb $x $w$pwd $branch$venv$x\n$sc╚═$x "
 }
 
 PROMPT_COMMAND="__ps1"
