@@ -213,7 +213,7 @@ bind '"\e[Z": menu-complete-backward'         # shift-tab
 
 ##### startup
 # if on a tty, interactive, and not already in a tmux session:
-if [[ -t 0 ]] && [[ $- = *i* ]] && [[ -z $TMUX ]]; then
+if [[ -t 0 ]] && [[ $- = *i* ]] && [[ -z $TMUX ]] && [[ -z $SKIPTMUX ]]; then
   if __have tmux; then
     # grabs latest detached session
     attach=$(tmux 2>/dev/null ls -F \
