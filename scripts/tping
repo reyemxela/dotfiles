@@ -1,0 +1,11 @@
+#!/bin/bash
+
+[[ $# < 1 ]] && exit 1
+
+tmux splitw -h -f ping $1
+shift
+
+for i in $*; do
+  tmux splitw -v ping $i
+done
+tmux selectl -E
