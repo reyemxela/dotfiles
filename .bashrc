@@ -147,6 +147,13 @@ export LESS="$mouse -aqFRX"
 
 
 ##### aliases
+alias grep='grep --color=auto'
+alias df='df -h'
+alias du='du -h'
+alias du1='du -hd1 |sort -h'
+
+alias chx='chmod +x'
+
 if __have exa; then
   alias ls='exa'
   alias l='exa -lg'
@@ -160,25 +167,26 @@ else
   alias ll='ls -lhA'
 fi
 
-alias grep='grep --color=auto'
-alias df='df -h'
-alias du='du -h'
-alias du1='du -hd1 |sort -h'
-
-alias chx='chmod +x'
-
-__have vim && alias vi='vim'
+if __have vim; then
+  alias vi='vim'
+fi
 
 if __have apt; then
-  alias apts="apt search"
-  alias apti="sudo apt install"
-  alias aptr="sudo apt remove"
-  alias aptud="sudo apt update"
-  alias aptug="sudo apt upgrade"
+  alias apt="sudo apt"
 fi
 
 if __have dnf; then
   alias dnf="sudo dnf"
+fi
+
+if __have systemctl; then
+  alias sc="systemctl"
+  alias scs="systemctl start"
+  alias scst="systemctl stop"
+  alias scr="systemctl restart"
+  alias sce="systemctl enable"
+  alias scstat="systemctl status"
+  alias scu="systemctl --user"
 fi
 
 
