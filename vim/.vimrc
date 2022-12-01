@@ -109,6 +109,10 @@ set shiftwidth=2        " shift width
 set softtabstop=2
 set expandtab
 
+filetype indent on
+let g:python_recommended_style=0
+
+
 " search
 set hlsearch            " highlight search
 nohlsearch              " prevent search highlights when reloading vimrc
