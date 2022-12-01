@@ -147,10 +147,17 @@ export LESS="$mouse -aqFRX"
 
 
 ##### aliases
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias -- -='cd -'
+
 alias grep='grep --color=auto'
 alias df='df -h'
 alias du='du -h'
 alias du1='du -hd1 |sort -h'
+alias nst='netstat -nap --inet'
 
 alias chx='chmod +x'
 
@@ -208,7 +215,8 @@ bind 'set menu-complete-display-prefix on'    # display partial and menu right a
 bind 'set show-all-if-ambiguous on'           # muptiple possibilities show right away
 bind 'set page-completions off'               # no `more` for tab results
 bind 'set visible-stats on'                   # show filetype characters in completions
-bind 'set mark-symlinked-directories off'     # show / after symlinked directories too
+bind 'set colored-stats on'                   # color file/folder completions like ls
+bind 'set mark-symlinked-directories on'      # show / after symlinked directories too
 
 
 ##### keybinds
