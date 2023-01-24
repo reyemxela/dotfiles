@@ -196,6 +196,19 @@ if __have systemctl; then
   alias scu="systemctl --user"
 fi
 
+if __have docker; then
+  if __have docker-compose; then
+    alias dc='docker-compose'
+  else
+    alias dc='docker compose'
+  fi
+  alias dcd='dc down'
+  alias dcu='dc up'
+  alias dcud='dc up -d'
+  alias de='docker exec -it'
+  alias dps='docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Networks}}"'
+  alias dpsa='dps -a'
+fi
 
 ##### completion
 __source_if /usr/share/bash-completion/bash_completion
