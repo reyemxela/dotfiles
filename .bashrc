@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2034,SC1090,SC2032,SC2033
 
 case $- in
   *i*) ;;
@@ -62,55 +63,59 @@ pathprepend() {
 pathprepend \
   "$HOME/.local/bin" \
   "$HOME/.local/bin/scripts" \
+  "$HOME/.local/bin-distrobox" \
   "$HOME/Sync/scripts" \
   "$HOME/go/bin"
 
+BLACKFG="\[$(tput setaf 0)\]"   REDFG="\[$(tput setaf 1)\]"       GREENFG="\[$(tput setaf 2)\]"    YELLOWFG="\[$(tput setaf 3)\]"    \
+BLUEFG="\[$(tput setaf 4)\]"    PURPLEFG="\[$(tput setaf 5)\]"    CYANFG="\[$(tput setaf 6)\]"     WHITEFG="\[$(tput setaf 7)\]"     \
+BRBLACKFG="\[$(tput setaf 8)\]" BRREDFG="\[$(tput setaf 9)\]"     BRGREENFG="\[$(tput setaf 10)\]" BRYELLOWFG="\[$(tput setaf 11)\]" \
+BRBLUEFG="\[$(tput setaf 12)\]" BRPURPLEFG="\[$(tput setaf 13)\]" BRCYANFG="\[$(tput setaf 14)\]"  BRWHITEFG="\[$(tput setaf 15)\]"
+
+BLACKBG="\[$(tput setab 0)\]"   REDBG="\[$(tput setab 1)\]"       GREENBG="\[$(tput setab 2)\]"    YELLOWBG="\[$(tput setab 3)\]"    \
+BLUEBG="\[$(tput setab 4)\]"    PURPLEBG="\[$(tput setab 5)\]"    CYANBG="\[$(tput setab 6)\]"     WHITEBG="\[$(tput setab 7)\]"     \
+BRBLACKBG="\[$(tput setab 8)\]" BRREDBG="\[$(tput setab 9)\]"     BRGREENBG="\[$(tput setab 10)\]" BRYELLOWBG="\[$(tput setab 11)\]" \
+BRBLUEBG="\[$(tput setab 12)\]" BRPURPLEBG="\[$(tput setab 13)\]" BRCYANBG="\[$(tput setab 14)\]"  BRWHITEBG="\[$(tput setab 15)\]"
+
+BOLD="\[$(tput bold)\]" RESET="\[$(tput sgr0)\]"
 
 ##### prompt
 __ps1() {
   status=$?
 
-  # fg
-  local r='\[\e[91m\]' g='\[\e[92m\]' y='\[\e[93m\]' \
-        b='\[\e[94m\]' p='\[\e[95m\]' c='\[\e[96m\]' \
-        w='\[\e[97m\]' gr='\[\e[37m\]' k='\[\e[30m\]'
-
-  # bg
-  local rb='\[\e[101m\]' gb='\[\e[102m\]' yb='\[\e[103m\]' \
-        bb='\[\e[104m\]' pb='\[\e[105m\]' cb='\[\e[106m\]' \
-        wb='\[\e[107m\]' kb='\[\e[40m\]'
-
-  # misc
-  local bold='\[\e[1m\]' x='\[\e[0m\]'
-
   # status
-  sc=$c
-  [[ $status != 0 ]] && sc=$r
+  sc=${BRCYANFG}
+  [[ ${status} != 0 ]] && sc=${BRREDFG}
 
   # trim pwd
   local pwd="${PWD/#$HOME/\~}"
   local maxlen=35
   (( maxlen > $((COLUMNS - 50)) )) && maxlen=$((COLUMNS - 55))
-  (( ${#pwd} > maxlen )) && pwd="..$(echo -n "$pwd" |tail -c$maxlen)"
+  (( ${#pwd} > maxlen )) && pwd="..$(echo -n "${pwd}" |tail -c${maxlen})"
 
   # git branch
   branch=$(git branch --show-current 2>/dev/null)
   dirty=
-  if [[ -n "$branch" ]]; then
-    col=$g
-    [[ $branch == main || $branch == master ]] && col=$r
+  if [[ -n "${branch}" ]]; then
+    col=${BRGREENFG}
+    [[ ${branch} == main || ${branch} == master ]] && col=${BRREDFG}
     if [[ -n "$(git status --porcelain -uno 2>/dev/null)" ]]; then
       dirty="+"
     fi
-    branch="$gr($bold$col$branch$w$bold$dirty$x$gr)$x"
+    branch="${WHITEFG}(${BOLD}${col}${branch}${BRWHITEFG}${BOLD}${dirty}${RESET}${WHITEFG})${RESET}"
   fi
 
   # python venv
   venv=${VIRTUAL_ENV##*/}
-  [[ -n "$venv" ]] && venv="$gr($bold$c$venv$x$gr)$x"
+  [[ -n "$venv" ]] && venv="${WHITEFG}(${BOLD}${BRCYANFG}${venv}${RESET}${WHITEFG})${RESET}"
 
+  if [ -f /run/.containerenv ] || [ -f /.dockerenv ]; then
+    userhost="${BRBLACKBG}${BRWHITEFG} \u@\h "
+  else
+    userhost="${BRWHITEBG}${BLACKFG} \u@\h "
+  fi
 
-  PS1="\n$sc╔$x $rb $yb $gb $cb $wb $k\u@\h $cb $bb $x $w$pwd $branch$venv$x\n$sc╚═$x "
+  PS1="\n${sc}╔${RESET} ${BRREDBG} ${BRYELLOWBG} ${BRGREENBG} ${BRCYANBG} ${userhost}${BRCYANBG} ${BRBLUEBG} ${RESET} ${BRWHITEFG}${pwd} ${branch}${venv}${RESET}\n${sc}╚═${RESET} "
 }
 
 PROMPT_COMMAND="__ps1"
@@ -122,6 +127,7 @@ PROMPT_COMMAND="__ps1"
 
 ##### dircolors
 if __have dircolors; then
+# shellcheck disable=SC2015
   [[ -r ~/.dircolors ]] && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
 fi
 
@@ -179,21 +185,25 @@ if __have vim; then
 fi
 
 if __have apt; then
-  alias apt="sudo apt"
+  alias apt='sudo apt'
 fi
 
 if __have dnf; then
-  alias dnf="sudo dnf"
+  alias dnf='sudo dnf'
+fi
+
+if __have pacman; then
+  alias pacman='sudo pacman'
 fi
 
 if __have systemctl; then
-  alias sc="systemctl"
-  alias scs="systemctl start"
-  alias scst="systemctl stop"
-  alias scr="systemctl restart"
-  alias sce="systemctl enable"
-  alias scstat="systemctl status"
-  alias scu="systemctl --user"
+  alias sc='systemctl'
+  alias scs='systemctl start'
+  alias scst='systemctl stop'
+  alias scr='systemctl restart'
+  alias sce='systemctl enable'
+  alias scstat='systemctl status'
+  alias scu='systemctl --user'
 fi
 
 if __have docker; then
@@ -210,9 +220,23 @@ if __have docker; then
   alias dpsa='dps -a'
 fi
 
+if __have distrobox; then
+  alias db='distrobox'
+  alias dbe='distrobox enter -- bash -l'
+fi
+
+if __have distrobox-export; then
+  alias dbex='distrobox-export'
+fi
+
+if __have distrobox-host-exec; then
+  alias dbh='distrobox-host-exec'
+fi
+
 ##### completion
 __source_if /usr/share/bash-completion/bash_completion
 
+# shellcheck disable=SC2207
 completion=(
   $(cd ~/.local/bin/scripts || exit; grep -rl COMPLETION)
 )
