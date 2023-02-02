@@ -67,25 +67,25 @@ pathprepend \
   "$HOME/Sync/scripts" \
   "$HOME/go/bin"
 
-BLACKFG="\[$(tput setaf 0)\]"   REDFG="\[$(tput setaf 1)\]"       GREENFG="\[$(tput setaf 2)\]"    YELLOWFG="\[$(tput setaf 3)\]"    \
-BLUEFG="\[$(tput setaf 4)\]"    PURPLEFG="\[$(tput setaf 5)\]"    CYANFG="\[$(tput setaf 6)\]"     WHITEFG="\[$(tput setaf 7)\]"     \
-BRBLACKFG="\[$(tput setaf 8)\]" BRREDFG="\[$(tput setaf 9)\]"     BRGREENFG="\[$(tput setaf 10)\]" BRYELLOWFG="\[$(tput setaf 11)\]" \
-BRBLUEFG="\[$(tput setaf 12)\]" BRPURPLEFG="\[$(tput setaf 13)\]" BRCYANFG="\[$(tput setaf 14)\]"  BRWHITEFG="\[$(tput setaf 15)\]"
+BLACKFG="$(tput setaf 0)"   REDFG="$(tput setaf 1)"       GREENFG="$(tput setaf 2)"    YELLOWFG="$(tput setaf 3)"    \
+BLUEFG="$(tput setaf 4)"    PURPLEFG="$(tput setaf 5)"    CYANFG="$(tput setaf 6)"     WHITEFG="$(tput setaf 7)"     \
+BRBLACKFG="$(tput setaf 8)" BRREDFG="$(tput setaf 9)"     BRGREENFG="$(tput setaf 10)" BRYELLOWFG="$(tput setaf 11)" \
+BRBLUEFG="$(tput setaf 12)" BRPURPLEFG="$(tput setaf 13)" BRCYANFG="$(tput setaf 14)"  BRWHITEFG="$(tput setaf 15)"
 
-BLACKBG="\[$(tput setab 0)\]"   REDBG="\[$(tput setab 1)\]"       GREENBG="\[$(tput setab 2)\]"    YELLOWBG="\[$(tput setab 3)\]"    \
-BLUEBG="\[$(tput setab 4)\]"    PURPLEBG="\[$(tput setab 5)\]"    CYANBG="\[$(tput setab 6)\]"     WHITEBG="\[$(tput setab 7)\]"     \
-BRBLACKBG="\[$(tput setab 8)\]" BRREDBG="\[$(tput setab 9)\]"     BRGREENBG="\[$(tput setab 10)\]" BRYELLOWBG="\[$(tput setab 11)\]" \
-BRBLUEBG="\[$(tput setab 12)\]" BRPURPLEBG="\[$(tput setab 13)\]" BRCYANBG="\[$(tput setab 14)\]"  BRWHITEBG="\[$(tput setab 15)\]"
+BLACKBG="$(tput setab 0)"   REDBG="$(tput setab 1)"       GREENBG="$(tput setab 2)"    YELLOWBG="$(tput setab 3)"    \
+BLUEBG="$(tput setab 4)"    PURPLEBG="$(tput setab 5)"    CYANBG="$(tput setab 6)"     WHITEBG="$(tput setab 7)"     \
+BRBLACKBG="$(tput setab 8)" BRREDBG="$(tput setab 9)"     BRGREENBG="$(tput setab 10)" BRYELLOWBG="$(tput setab 11)" \
+BRBLUEBG="$(tput setab 12)" BRPURPLEBG="$(tput setab 13)" BRCYANBG="$(tput setab 14)"  BRWHITEBG="$(tput setab 15)"
 
-BOLD="\[$(tput bold)\]" RESET="\[$(tput sgr0)\]"
+BOLD="$(tput bold)" RESET="$(tput sgr0)"
 
 ##### prompt
 __ps1() {
   status=$?
 
   # status
-  sc=${BRCYANFG}
-  [[ ${status} != 0 ]] && sc=${BRREDFG}
+  sc="${BRCYANFG}"
+  [[ ${status} != 0 ]] && sc="${BRREDFG}"
 
   # trim pwd
   local pwd="${PWD/#$HOME/\~}"
@@ -97,25 +97,25 @@ __ps1() {
   branch=$(git branch --show-current 2>/dev/null)
   dirty=
   if [[ -n "${branch}" ]]; then
-    col=${BRGREENFG}
-    [[ ${branch} == main || ${branch} == master ]] && col=${BRREDFG}
+    col="${BRGREENFG}"
+    [[ ${branch} == main || ${branch} == master ]] && col="${BRREDFG}"
     if [[ -n "$(git status --porcelain -uno 2>/dev/null)" ]]; then
       dirty="+"
     fi
-    branch="${WHITEFG}(${BOLD}${col}${branch}${BRWHITEFG}${BOLD}${dirty}${RESET}${WHITEFG})${RESET}"
+    branch="\[${WHITEFG}\](\[${BOLD}\]\[${col}\]${branch}\[${BRWHITEFG}\]\[${BOLD}\]${dirty}\[${RESET}\]\[${WHITEFG}\])\[${RESET}\]"
   fi
 
   # python venv
   venv=${VIRTUAL_ENV##*/}
-  [[ -n "$venv" ]] && venv="${WHITEFG}(${BOLD}${BRCYANFG}${venv}${RESET}${WHITEFG})${RESET}"
+  [[ -n "$venv" ]] && venv="\[${WHITEFG}\](\[${BOLD}\]\[${BRCYANFG}\]${venv}\[${RESET}\]\[${WHITEFG}\])\[${RESET}\]"
 
   if [ -f /run/.containerenv ] || [ -f /.dockerenv ]; then
-    userhost="${BRBLACKBG}${BRWHITEFG} \u@\h "
+    userhost="\[${BRBLACKBG}\]\[${BRWHITEFG}\] \u@\h "
   else
-    userhost="${BRWHITEBG}${BLACKFG} \u@\h "
+    userhost="\[${BRWHITEBG}\]\[${BLACKFG}\] \u@\h "
   fi
 
-  PS1="\n${sc}╔${RESET} ${BRREDBG} ${BRYELLOWBG} ${BRGREENBG} ${BRCYANBG} ${userhost}${BRCYANBG} ${BRBLUEBG} ${RESET} ${BRWHITEFG}${pwd} ${branch}${venv}${RESET}\n${sc}╚═${RESET} "
+  PS1="\n\[${sc}\]╔\[${RESET}\] \[${BRREDBG}\] \[${BRYELLOWBG}\] \[${BRGREENBG}\] \[${BRCYANBG}\] ${userhost}\[${BRCYANBG}\] \[${BRBLUEBG}\] \[${RESET}\] \[${BRWHITEFG}\]${pwd} ${branch}${venv}\[${RESET}\]\n\[${sc}\]╚═\[${RESET}\] "
 }
 
 PROMPT_COMMAND="__ps1"
@@ -133,13 +133,13 @@ fi
 
 
 ##### manpage colors
-export LESS_TERMCAP_mb=$'\e[1;31m'     # begin bold
-export LESS_TERMCAP_md=$'\e[1;36m'     # begin blink
-export LESS_TERMCAP_me=$'\e[0m'        # reset bold/blink
-export LESS_TERMCAP_so=$'\e[01;44;33m' # begin reverse video
-export LESS_TERMCAP_se=$'\e[0m'        # reset reverse video
-export LESS_TERMCAP_us=$'\e[1;32m'     # begin underline
-export LESS_TERMCAP_ue=$'\e[0m'        # reset underline
+export LESS_TERMCAP_mb="${BOLD}${REDFG}"              # begin bold
+export LESS_TERMCAP_md="${BOLD}${CYANFG}"             # begin blink
+export LESS_TERMCAP_me="${RESET}"                     # reset bold/blink
+export LESS_TERMCAP_so="${BOLD}${BLUEBG}${YELLOWFG}"  # begin reverse video
+export LESS_TERMCAP_se="${RESET}"                     # reset reverse video
+export LESS_TERMCAP_us="${BOLD}${GREENFG}"            # begin underline
+export LESS_TERMCAP_ue="${RESET}"                     # reset underline
 
 
 ##### less options
