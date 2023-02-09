@@ -1,6 +1,10 @@
 #!/bin/bash
 
-set -e
+function confirm {
+  read -p "$1 [Y/n]: " conf
+  [[ ! ${conf,,} =~ ^n ]]
+}
+
 
 ln -sf "$PWD/.bashrc" "$HOME/.bashrc"
 ln -sf "$PWD/.profile" "$HOME/.profile"
@@ -9,7 +13,9 @@ ln -sf "$PWD/.zshrc" "$HOME/.zshrc"
 mkdir -p "$HOME/.local/bin"
 ln -sfn "$PWD/scripts" "$HOME/.local/bin/scripts"
 
-for i in vim git tmux termux; do
-  cd $i && ./setup
-  cd - &>/dev/null
+for i in vim tmux git sudo konsole termux; do
+  if confirm "Set up ${i} config?"$'\t'; then
+    cd $i && ./setup
+    cd - &>/dev/null
+  fi
 done
