@@ -76,7 +76,9 @@ hi WhiteSpace ctermfg=8 cterm=underline
 match WhiteSpace /^\s\+\|\s\+$/
 
 " list mode settings
-set listchars=space:·,trail:·,extends:>,precedes:<,tab:\|\ 
+" causes some issues with older versions, and I don't use it much.
+" disabling for now.
+" set listchars=space:·,trail:·,extends:>,precedes:<,tab:\|\ 
 
 
 """"" settings
