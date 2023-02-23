@@ -264,6 +264,8 @@ bind '"\t": menu-complete'                    # tab
 bind '"\e[Z": menu-complete-backward'         # shift-tab
 
 
+__source_if $HOME/.bash_local
+
 ##### startup
 # if on a tty, interactive, and not already in a tmux session:
 if [[ -t 0 ]] && [[ $- = *i* ]] && [[ -z $TMUX ]] && [[ -z $SKIPTMUX ]]; then
