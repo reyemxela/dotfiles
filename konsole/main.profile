@@ -1,7 +1,7 @@
 [Appearance]
 AntiAliasFonts=true
 BoldIntense=true
-ColorScheme=AdaptaNokto
+ColorScheme=Gruvbox_dark
 Font=Hack,11,-1,5,50,0,0,0,0,0
 UseFontLineChararacters=false
 
