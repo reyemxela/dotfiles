@@ -13,7 +13,7 @@ ln -sf "$PWD/.zshrc" "$HOME/.zshrc"
 mkdir -p "$HOME/.local/bin"
 ln -sfn "$PWD/scripts" "$HOME/.local/bin/scripts"
 
-for i in vim tmux git sudo konsole termux; do
+for i in vim tmux git sudo konsole alacritty termux; do
   if confirm "Set up ${i} config?"$'\t'; then
     cd $i && ./setup
     cd - &>/dev/null

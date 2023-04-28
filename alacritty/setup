@@ -1,0 +1,5 @@
+#!/bin/bash
+
+mkdir -p "$HOME/.config/alacritty"
+
+ln -sf "$PWD/alacritty.yml" "$HOME/.config/alacritty/alacritty.yml"
