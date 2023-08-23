@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if type tmux &>/dev/null; then
   ln -sf "$PWD/.tmux.conf" "$HOME/.tmux.conf"

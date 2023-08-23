@@ -13,28 +13,53 @@ font:
 draw_bold_text_with_bright_colors: true
 
 # Gruvbox
+# colors:
+#   primary:
+#     background: '#282828'
+#     foreground: '#fbf1c7'
+#   normal:
+#     black:      '#3c3836'
+#     red:        '#cc241d'
+#     green:      '#98971a'
+#     yellow:     '#d79921'
+#     blue:       '#458588'
+#     magenta:    '#b16286'
+#     cyan:       '#689d6a'
+#     white:      '#a89984'
+#   bright:
+#     black:      '#928374'
+#     red:        '#fb4934'
+#     green:      '#b8bb26'
+#     yellow:     '#fabd2f'
+#     blue:       '#83a598'
+#     magenta:    '#d3869b'
+#     cyan:       '#8ec07c'
+#     white:      '#ebdbb2'
+
+# Material
 colors:
   primary:
-    background: '#282828'
-    foreground: '#fbf1c7'
+    background:        '#263238'
+    foreground:        '#d3dae3'
+    bright_foreground: '#fcfcfc'
   normal:
-    black:      '#3c3836'
-    red:        '#cc241d'
-    green:      '#98971a'
-    yellow:     '#d79921'
-    blue:       '#458588'
-    magenta:    '#b16286'
-    cyan:       '#689d6a'
-    white:      '#a89984'
+    black:      '#222d32'
+    red:        '#e14245'
+    green:      '#5ca75b'
+    yellow:     '#f6ab32'
+    blue:       '#4877b1'
+    magenta:    '#a660c3'
+    cyan:       '#00bcd4'
+    white:      '#a9a9aa'
   bright:
-    black:      '#928374'
-    red:        '#fb4934'
-    green:      '#b8bb26'
-    yellow:     '#fabd2f'
-    blue:       '#83a598'
-    magenta:    '#d3869b'
-    cyan:       '#8ec07c'
-    white:      '#ebdbb2'
+    black:      '#556064'
+    red:        '#e16f7e'
+    green:      '#add488'
+    yellow:     '#fdc35f'
+    blue:       '#8ca9bf'
+    magenta:    '#e2afec'
+    cyan:       '#73c5e2'
+    white:      '#fcfcfc'
 
 mouse:
   hide_when_typing: true

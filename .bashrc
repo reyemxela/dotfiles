@@ -1,4 +1,3 @@
-#!/bin/bash
 # shellcheck disable=SC2034,SC1090,SC2032,SC2033
 
 case $- in

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if type konsole &>/dev/null; then
   mkdir -p "$HOME/.local/share/konsole/shortcuts"
