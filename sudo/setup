@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+sudo echo "${USER} ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers

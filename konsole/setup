@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
-if type konsole &>/dev/null; then
-  mkdir -p "$HOME/.local/share/konsole/shortcuts"
+cd $(dirname ${BASH_SOURCE[0]})
 
-  cp konsolerc "$HOME/.config/konsolerc"
-  
-  ln -sf "$PWD/main.profile" "$HOME/.local/share/konsole/main.profile"
-  ln -sf "$PWD/AdaptaNokto.colorscheme" "$HOME/.local/share/konsole/AdaptaNokto.colorscheme"
-  ln -sf "$PWD/shortcuts" "$HOME/.local/share/konsole/shortcuts/shortcuts"
-fi
+mkdir -p "$HOME/.local/share/konsole/shortcuts"
+
+mkdir -p "$HOME/.config"
+cp konsolerc "$HOME/.config/konsolerc"
+
+ln -sf "$PWD/main.profile" "$HOME/.local/share/konsole/main.profile"
+ln -sf "$PWD/AdaptaNokto.colorscheme" "$HOME/.local/share/konsole/AdaptaNokto.colorscheme"
+ln -sf "$PWD/shortcuts" "$HOME/.local/share/konsole/shortcuts/shortcuts"

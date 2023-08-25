@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 [[ -z "$1" ]] && echo "File name missing" && exit 1;
 
@@ -8,6 +8,6 @@ if [[ -e "$1" ]]; then
   exec "${EDITOR:-vi}" "$1"
 fi
 
-printf "#!/bin/bash\n\n\n" > "$1"
+printf "#!/usr/bin/env bash\n\n\n" > "$1"
 chmod +x "$1"
 exec "${EDITOR:-vi}" +3 "$1"

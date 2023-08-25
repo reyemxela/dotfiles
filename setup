@@ -1,21 +1,39 @@
 #!/usr/bin/env bash
 
 function confirm {
-  read -p "$1 [Y/n]: " conf
+  printf "Set up %-12s [Y/n]: " "${1}?"
+  read conf
   [[ ! ${conf,,} =~ ^n ]]
 }
 
 
 ln -sf "$PWD/.bashrc" "$HOME/.bashrc"
 ln -sf "$PWD/.profile" "$HOME/.profile"
-ln -sf "$PWD/.zshrc" "$HOME/.zshrc"
 
 mkdir -p "$HOME/.local/bin"
 ln -sfn "$PWD/scripts" "$HOME/.local/bin/scripts"
 
-for i in vim tmux git sudo konsole alacritty termux; do
-  if confirm "Set up ${i} config?"$'\t'; then
-    cd $i && ./setup
-    cd - &>/dev/null
+
+auto=(
+  git
+  vim
+  termux # skips itself if not in a termux session
+  tmux
+)
+
+optional=(
+  konsole
+  alacritty
+)
+
+
+for i in ${auto[@]}; do
+  echo "Setting up ${i}"
+  ${i}/setup
+done
+
+for i in ${optional[@]}; do
+  if confirm "${i}"; then
+    ${i}/setup
   fi
 done

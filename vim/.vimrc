@@ -176,6 +176,8 @@ nnoremap <C-L> :noh<CR><C-L>
 " print highlight group of current item
 nnoremap <F10> :echo synIDattr(synIDtrans(synID(line("."),col("."),1)),"name")<CR>
 
+set pastetoggle=<F11>
+
 """"" command mappings
 
 " write with sudo

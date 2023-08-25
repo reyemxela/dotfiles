@@ -33,5 +33,12 @@
 [commit]
   template = ~/.gitmessage
 
+[user]
+  name = Alex Meyer
+  email = alexwreyem@gmail.com
+
+[credential]
+  helper = store
+
 [include]
   path = ~/.gitconfig_local

@@ -88,9 +88,18 @@ __ps1() {
 
   # trim pwd
   local pwd="${PWD/#$HOME/\~}"
-  local maxlen=35
+  local maxlen=45
   (( maxlen > $((COLUMNS - 50)) )) && maxlen=$((COLUMNS - 55))
-  (( ${#pwd} > maxlen )) && pwd="..$(echo -n "${pwd}" |tail -c${maxlen})"
+  (( maxlen < 5 )) && maxlen=5
+  (( ${#pwd} > maxlen )) && pwd="..${pwd: -${maxlen}}"
+
+  if [[ -O ${PWD} ]]; then
+    pwd="\[${BRGREENFG}\]${pwd}\[${RESET}\]"
+  elif [[ -w ${PWD} ]]; then
+    pwd="\[${BRCYANFG}\]${pwd}\[${RESET}\]"
+  else
+    pwd="\[${BRREDFG}\]${pwd}\[${RESET}\]"
+  fi
 
   # git branch
   branch=$(git branch --show-current 2>/dev/null)
@@ -109,12 +118,15 @@ __ps1() {
   [[ -n "$venv" ]] && venv="\[${WHITEFG}\](\[${BOLD}\]\[${BRCYANFG}\]${venv}\[${RESET}\]\[${WHITEFG}\])\[${RESET}\]"
 
   if [ -f /run/.containerenv ] || [ -f /.dockerenv ]; then
-    userhost="\[${BRBLACKBG}\]\[${BRWHITEFG}\] \u@\h "
+    userhost="\[${RESET}\]\[${BRBLACKBG}\]\[${BRWHITEFG}\] \u@\h \[${RESET}\]"
   else
-    userhost="\[${BRWHITEBG}\]\[${BLACKFG}\] \u@\h "
+    userhost="\[${RESET}\]\[${BRWHITEBG}\]\[${BLACKFG}\] \u@\h \[${RESET}\]"
   fi
 
-  PS1="\n\[${sc}\]╔\[${RESET}\] \[${BRREDBG}\] \[${BRYELLOWBG}\] \[${BRGREENBG}\] \[${BRCYANBG}\] ${userhost}\[${BRCYANBG}\] \[${BRBLUEBG}\] \[${RESET}\] \[${BRWHITEFG}\]${pwd} ${branch}${venv}\[${RESET}\]\n\[${sc}\]╚═\[${RESET}\] "
+  COLORBARS1="\[${RESET}\]\[${BRREDBG}\] \[${BRYELLOWBG}\] \[${BRGREENBG}\] \[${BRCYANBG}\] \[${RESET}\]"
+  COLORBARS2="\[${RESET}\]\[${BRCYANBG}\] \[${BRBLUEBG}\] \[${RESET}\]"
+
+  PS1="\[${RESET}\]\n\[${sc}\]╔\[${RESET}\] ${COLORBARS1}${userhost}${COLORBARS2} ${pwd} ${branch}${venv}\n\[${sc}\]╚═\[${RESET}\] "
 }
 
 PROMPT_COMMAND="__ps1"
@@ -179,6 +191,10 @@ else
   alias ll='ls -lhA'
 fi
 
+if __have bat; then
+  alias cat='bat'
+fi
+
 if __have vim; then
   alias vi='vim'
 fi
@@ -196,12 +212,7 @@ if __have pacman; then
 fi
 
 if __have systemctl; then
-  alias sc='systemctl'
-  alias scs='systemctl start'
-  alias scst='systemctl stop'
-  alias scr='systemctl restart'
-  alias sce='systemctl enable'
-  alias scstat='systemctl status'
+  alias sc='sudo systemctl'
   alias scu='systemctl --user'
 fi
 

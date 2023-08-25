@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 CHAT_ID="$(secret telegramsend DEFAULT_CHAT_ID)"
 BOT_TOKEN="$(secret telegramsend BOT_TOKEN)"

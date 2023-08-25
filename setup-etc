@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+function confirm {
+  printf "Set up %-12s [Y/n]: " "${1}?"
+  read conf
+  [[ ! ${conf,,} =~ ^n ]]
+}
+
+
+auto=(
+)
+
+optional=(
+  sudo
+)
+
+
+for i in ${auto[@]}; do
+  ${i}/setup
+done
+
+for i in ${optional[@]}; do
+  if confirm "${i}"; then
+    ${i}/setup
+  fi
+done

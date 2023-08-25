@@ -1,26 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+cd $(dirname ${BASH_SOURCE[0]})
 
 ln -sf "$PWD/.gitconfig" "$HOME/.gitconfig"
 ln -sf "$PWD/.gitmessage" "$HOME/.gitmessage"
-
-if [[ ! -f "$HOME/.gitconfig_local" ]]; then
-  read -p "git full name: " name
-  read -p "git email: " email
-  cat <<EOF >"$HOME/.gitconfig_local"
-[user]
-  name = $name
-  email = $email
-
-[credential]
-  helper = store
-EOF
-fi
-
-if [[ ! -f "$HOME/.git-credentials" ]]; then
-  read -p "github username: " user
-  read -p "github token: " token
-
-  echo "https://$user:$token@github.com" >"$HOME/.git-credentials"
-fi
