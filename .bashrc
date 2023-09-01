@@ -192,7 +192,7 @@ else
 fi
 
 if __have bat; then
-  alias cat='bat'
+  alias cat='bat --theme ansi'
 fi
 
 if __have vim; then
