@@ -117,6 +117,10 @@ __ps1() {
   venv=${VIRTUAL_ENV##*/}
   [[ -n "$venv" ]] && venv="\[${WHITEFG}\](\[${BOLD}\]\[${BRCYANFG}\]${venv}\[${RESET}\]\[${WHITEFG}\])\[${RESET}\]"
 
+  # nix SHLVL
+  [[ $SHLVL > 1 ]] && subshell="\[${WHITEFG}\](\[${BOLD}\]\[${PURPLEFG}\]nix:${SHLVL}\[${RESET}\]\[${WHITEFG}\])\[${RESET}\]"
+
+  # distrobox prompt color change
   if [ -f /run/.containerenv ] || [ -f /.dockerenv ]; then
     userhost="\[${RESET}\]\[${BRBLACKBG}\]\[${BRWHITEFG}\] \u@\h \[${RESET}\]"
   else
@@ -126,7 +130,7 @@ __ps1() {
   COLORBARS1="\[${RESET}\]\[${BRREDBG}\] \[${BRYELLOWBG}\] \[${BRGREENBG}\] \[${BRCYANBG}\] \[${RESET}\]"
   COLORBARS2="\[${RESET}\]\[${BRCYANBG}\] \[${BRBLUEBG}\] \[${RESET}\]"
 
-  PS1="\[${RESET}\]\n\[${sc}\]╔\[${RESET}\] ${COLORBARS1}${userhost}${COLORBARS2} ${pwd} ${branch}${venv}\n\[${sc}\]╚═\[${RESET}\] "
+  PS1="\[${RESET}\]\n\[${sc}\]╔\[${RESET}\] ${COLORBARS1}${userhost}${COLORBARS2} ${pwd} ${branch}${venv}${subshell}\n\[${sc}\]╚═\[${RESET}\] "
 }
 
 PROMPT_COMMAND="__ps1"
@@ -275,6 +279,13 @@ bind '"\e[Z": menu-complete-backward'         # shift-tab
 
 
 __source_if $HOME/.bash_local
+
+
+##### Nix
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+fi
+
 
 ##### startup
 # if on a tty, interactive, and not already in a tmux session:
