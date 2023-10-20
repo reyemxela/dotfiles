@@ -88,6 +88,7 @@ __ps1() {
 
   # trim pwd
   local pwd="${PWD/#$HOME/\~}"
+  pwd="${pwd/#\/var$HOME/\~}" # handle /var/home/$USER too for immutable distros
   local maxlen=45
   (( maxlen > $((COLUMNS - 50)) )) && maxlen=$((COLUMNS - 55))
   (( maxlen < 5 )) && maxlen=5
@@ -117,20 +118,17 @@ __ps1() {
   venv=${VIRTUAL_ENV##*/}
   [[ -n "$venv" ]] && venv="\[${WHITEFG}\](\[${BOLD}\]\[${BRCYANFG}\]${venv}\[${RESET}\]\[${WHITEFG}\])\[${RESET}\]"
 
-  # nix SHLVL
-  [[ $SHLVL > 1 ]] && subshell="\[${WHITEFG}\](\[${BOLD}\]\[${PURPLEFG}\]nix:${SHLVL}\[${RESET}\]\[${WHITEFG}\])\[${RESET}\]"
-
   # distrobox prompt color change
   if [ -f /run/.containerenv ] || [ -f /.dockerenv ]; then
-    userhost="\[${RESET}\]\[${BRBLACKBG}\]\[${BRWHITEFG}\] \u@\h \[${RESET}\]"
+    userhost="\[${RESET}\]\[${BRBLACKBG}\]\[${BRWHITEFG}\] \u@\H \[${RESET}\]"
   else
-    userhost="\[${RESET}\]\[${BRWHITEBG}\]\[${BLACKFG}\] \u@\h \[${RESET}\]"
+    userhost="\[${RESET}\]\[${BRWHITEBG}\]\[${BLACKFG}\] \u@\H \[${RESET}\]"
   fi
 
   COLORBARS1="\[${RESET}\]\[${BRREDBG}\] \[${BRYELLOWBG}\] \[${BRGREENBG}\] \[${BRCYANBG}\] \[${RESET}\]"
   COLORBARS2="\[${RESET}\]\[${BRCYANBG}\] \[${BRBLUEBG}\] \[${RESET}\]"
 
-  PS1="\[${RESET}\]\n\[${sc}\]╔\[${RESET}\] ${COLORBARS1}${userhost}${COLORBARS2} ${pwd} ${branch}${venv}${subshell}\n\[${sc}\]╚═\[${RESET}\] "
+  PS1="\[${RESET}\]\n\[${sc}\]╔\[${RESET}\] ${COLORBARS1}${userhost}${COLORBARS2} ${pwd} ${branch}${venv}\n\[${sc}\]╚═\[${RESET}\] "
 }
 
 PROMPT_COMMAND="__ps1"
@@ -167,7 +165,7 @@ export LESS_TERMCAP_ue="${RESET}"                     # reset underline
 export LESS="$mouse -aqFRX"
 
 
-##### aliases
+##### aliases/functions
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -215,6 +213,10 @@ if __have pacman; then
   alias pacman='sudo pacman'
 fi
 
+if __have yay; then
+  alias yay='yay --color always --nocleanmenu --nodiffmenu --noeditmenu'
+fi
+
 if __have systemctl; then
   alias sc='sudo systemctl'
   alias scu='systemctl --user'
@@ -236,7 +238,14 @@ fi
 
 if __have distrobox; then
   alias db='distrobox'
-  alias dbe='distrobox enter -- bash -l'
+  dbe() {
+    if [ -n "$1" ]; then
+      args="$@"
+    else
+      args=$(distrobox ls --no-color |tail -n+2 |awk '{print $3;exit}')
+    fi
+    distrobox-enter ${args}
+  }
 fi
 
 if __have distrobox-export; then
@@ -279,12 +288,6 @@ bind '"\e[Z": menu-complete-backward'         # shift-tab
 
 
 __source_if $HOME/.bash_local
-
-
-##### Nix
-if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-fi
 
 
 ##### startup
