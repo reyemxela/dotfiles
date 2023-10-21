@@ -294,14 +294,15 @@ __source_if $HOME/.bash_local
 # if on a tty, interactive, and not already in a tmux session:
 if [[ -t 0 ]] && [[ $- = *i* ]] && [[ -z $TMUX ]] && [[ -z $SKIPTMUX ]]; then
   if __have tmux; then
+    export TMUX_TMPDIR=/var/tmp
     # grabs latest detached session
-    attach=$(tmux -L${HOSTNAME} 2>/dev/null ls -F \
+    attach=$(tmux 2>/dev/null ls -F \
              '#{session_attached} #{?#{==:#{session_last_attached},},1,#{session_last_attached}} #{session_id}' \
              |awk '/^0/{if ($2 > t){t=$2;s=$3}}; END{print s}')
     if [[ -n "$attach" ]]; then
-      out=$(tmux -L${HOSTNAME} attach -t "$attach")
+      out=$(tmux attach -t "$attach")
     else
-      out=$(tmux -L${HOSTNAME})
+      out=$(tmux)
     fi
     # if original session was exited and not detached, exit
     if [[ $out == "[exited]" ]]; then
