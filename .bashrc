@@ -182,10 +182,10 @@ alias chx='chmod +x'
 
 if __have exa; then
   alias ls='exa'
-  alias l='exa -lg'
-  alias la='exa -laag'
-  alias ll='exa -lag'
-  alias lt='exa -lagT'
+  alias l='exa -lg --git'
+  alias la='exa -laag --git'
+  alias ll='exa -lag --git'
+  alias lt='exa -lagT --git'
 else
   alias ls='command ls -vF --color=auto'
   alias l='ls -l'
@@ -295,13 +295,13 @@ __source_if $HOME/.bash_local
 if [[ -t 0 ]] && [[ $- = *i* ]] && [[ -z $TMUX ]] && [[ -z $SKIPTMUX ]]; then
   if __have tmux; then
     # grabs latest detached session
-    attach=$(tmux 2>/dev/null ls -F \
+    attach=$(tmux -L${HOSTNAME} 2>/dev/null ls -F \
              '#{session_attached} #{?#{==:#{session_last_attached},},1,#{session_last_attached}} #{session_id}' \
              |awk '/^0/{if ($2 > t){t=$2;s=$3}}; END{print s}')
     if [[ -n "$attach" ]]; then
-      out=$(tmux attach -t "$attach")
+      out=$(tmux -L${HOSTNAME} attach -t "$attach")
     else
-      out=$(tmux)
+      out=$(tmux -L${HOSTNAME})
     fi
     # if original session was exited and not detached, exit
     if [[ $out == "[exited]" ]]; then
