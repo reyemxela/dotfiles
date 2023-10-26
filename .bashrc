@@ -62,21 +62,20 @@ pathprepend() {
 pathprepend \
   "$HOME/.local/bin" \
   "$HOME/.local/bin/scripts" \
-  "$HOME/.local/bin-distrobox" \
   "$HOME/Sync/scripts" \
   "$HOME/go/bin"
 
-BLACKFG="$(tput setaf 0)"   REDFG="$(tput setaf 1)"       GREENFG="$(tput setaf 2)"    YELLOWFG="$(tput setaf 3)"    \
-BLUEFG="$(tput setaf 4)"    PURPLEFG="$(tput setaf 5)"    CYANFG="$(tput setaf 6)"     WHITEFG="$(tput setaf 7)"     \
-BRBLACKFG="$(tput setaf 8)" BRREDFG="$(tput setaf 9)"     BRGREENFG="$(tput setaf 10)" BRYELLOWFG="$(tput setaf 11)" \
-BRBLUEFG="$(tput setaf 12)" BRPURPLEFG="$(tput setaf 13)" BRCYANFG="$(tput setaf 14)"  BRWHITEFG="$(tput setaf 15)"
+BLACKFG=$'\e[30m'   REDFG=$'\e[31m'       GREENFG=$'\e[32m'   YELLOWFG=$'\e[33m'   \
+BLUEFG=$'\e[34m'    PURPLEFG=$'\e[35m'    CYANFG=$'\e[36m'    WHITEFG=$'\e[37m'    \
+BRBLACKFG=$'\e[90m' BRREDFG=$'\e[91m'     BRGREENFG=$'\e[92m' BRYELLOWFG=$'\e[93m' \
+BRBLUEFG=$'\e[94m'  BRPURPLEFG=$'\e[95m'  BRCYANFG=$'\e[96m'  BRWHITEFG=$'\e[97m'
 
-BLACKBG="$(tput setab 0)"   REDBG="$(tput setab 1)"       GREENBG="$(tput setab 2)"    YELLOWBG="$(tput setab 3)"    \
-BLUEBG="$(tput setab 4)"    PURPLEBG="$(tput setab 5)"    CYANBG="$(tput setab 6)"     WHITEBG="$(tput setab 7)"     \
-BRBLACKBG="$(tput setab 8)" BRREDBG="$(tput setab 9)"     BRGREENBG="$(tput setab 10)" BRYELLOWBG="$(tput setab 11)" \
-BRBLUEBG="$(tput setab 12)" BRPURPLEBG="$(tput setab 13)" BRCYANBG="$(tput setab 14)"  BRWHITEBG="$(tput setab 15)"
+BLACKBG=$'\e[40m'    REDBG=$'\e[41m'       GREENBG=$'\e[42m'    YELLOWBG=$'\e[43m'    \
+BLUEBG=$'\e[44m'     PURPLEBG=$'\e[45m'    CYANBG=$'\e[46m'     WHITEBG=$'\e[47m'     \
+BRBLACKBG=$'\e[100m' BRREDBG=$'\e[101m'    BRGREENBG=$'\e[102m' BRYELLOWBG=$'\e[103m' \
+BRBLUEBG=$'\e[104m'  BRPURPLEBG=$'\e[105m' BRCYANBG=$'\e[106m'  BRWHITEBG=$'\e[107m'
 
-BOLD="$(tput bold)" RESET="$(tput sgr0)"
+BOLD=$'\e[1m' RESET=$'\e[0m'
 
 ##### prompt
 __ps1() {
@@ -180,16 +179,17 @@ alias nst='netstat -nap --inet'
 
 alias chx='chmod +x'
 
-if __have exa; then
+if __have eza; then
+  alias ls='eza'
+  alias l='eza -lg --git'
+  alias ll='eza -lag --git'
+elif __have exa; then
   alias ls='exa'
   alias l='exa -lg --git'
-  alias la='exa -laag --git'
   alias ll='exa -lag --git'
-  alias lt='exa -lagT --git'
 else
   alias ls='command ls -vF --color=auto'
   alias l='ls -l'
-  alias la='ls -la'
   alias ll='ls -lhA'
 fi
 
@@ -255,6 +255,11 @@ fi
 if __have distrobox-host-exec; then
   alias dbh='distrobox-host-exec'
 fi
+
+if __have just; then
+  alias just='just --unstable'
+fi
+
 
 ##### completion
 __source_if /usr/share/bash-completion/bash_completion
