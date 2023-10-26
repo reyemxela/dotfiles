@@ -180,13 +180,15 @@ alias nst='netstat -nap --inet'
 alias chx='chmod +x'
 
 if __have eza; then
+  if eza -v |grep -q '+git'; then git='--git'; fi
   alias ls='eza'
-  alias l='eza -lg --git'
-  alias ll='eza -lag --git'
+  alias l="eza -lg ${git}"
+  alias ll="eza -lag ${git}"
 elif __have exa; then
+  if exa -v |grep -q '+git'; then git='--git'; fi
   alias ls='exa'
-  alias l='exa -lg --git'
-  alias ll='exa -lag --git'
+  alias l="exa -lg ${git}"
+  alias ll="exa -lag ${git}"
 else
   alias ls='command ls -vF --color=auto'
   alias l='ls -l'
