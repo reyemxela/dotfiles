@@ -24,6 +24,9 @@ main() {
     s|status)
       status
       ;;
+    r|reload)
+      systemctl --user daemon-reload
+      ;;
     start)
       shift
       start "$@"
@@ -34,6 +37,9 @@ main() {
       ;;
     setup)
       setup
+      ;;
+    dryrun)
+      /usr/libexec/podman/quadlet -dryrun -user
       ;;
     h|help|-h|--help)
       usage
@@ -54,8 +60,10 @@ usage() {
   echo '  e, enable    symlinks a unit file into ~/.config/containers/systemd'
   echo '  d, disable   removes an existing symlink'
   echo '  s, status    print symlink state and podman status'
+  echo '  r, reload       does a user daemon-reload to regenerate systemd files'
   echo '  start        starts [service] via systemctl'
   echo '  stop         stops [service] via systemctl'
+  echo '  dryrun       runs quadlet -dryrun -user to parse files'
   echo '  setup        initial setup, creates folder structure'
 }
 
@@ -83,30 +91,34 @@ _get_ct_name() {
 
 
 enable() {
+  update=0
   for svc in "$@"; do
     local svcfilename=$(_find_svc "${availdir}" "${svc}")
     if [ -n "${svcfilename}" ]; then
       ln -sf "${availdir}/${svcfilename}" "${enabledir}/${svcfilename}"
       echo "symlink ${availdir}/${svcfilename} -> ${enabledir}/${svcfilename}"
-      systemctl --user daemon-reload
+      update=1
     else
       echo "Error: unable to find ${service} in ${availdir}"
     fi
   done
+  [ $update -eq 1 ] && systemctl --user daemon-reload
 }
 
 
 disable() {
+  update=0
   for svc in "$@"; do
     local svcfilename=$(_find_svc "${enabledir}" "${svc}")
     if [ -n "${svcfilename}" ]; then
       unlink "${enabledir}/${svcfilename}"
       echo "unlink ${enabledir}/${svcfilename}"
-      systemctl --user daemon-reload
+      update=1
     else
       echo "Error: unable to find ${service} in ${availdir}"
     fi
   done
+  [ $update -eq 1 ] && systemctl --user daemon-reload
 }
 
 
