@@ -165,6 +165,11 @@ export LESS="$mouse -aqFRX"
 
 
 ##### aliases/functions
+
+alias brl='source ~/.bashrc'
+
+alias npi='nix profile install'
+
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -216,7 +221,16 @@ if __have pacman; then
 fi
 
 if __have yay; then
-  alias yay='yay --color always --nocleanmenu --nodiffmenu --noeditmenu'
+  alias yay='yay --color always --cleanmenu=false --diffmenu=false --editmenu=false'
+fi
+
+if __have paru; then
+  alias paru='paru --skipreview --bottomup'
+fi
+
+if __have flatpak; then
+  alias fp='flatpak --system'
+  alias fpu='flatpak --user'
 fi
 
 if __have systemctl; then
@@ -242,11 +256,17 @@ if __have distrobox; then
   alias db='distrobox'
   dbe() {
     if [ -n "$1" ]; then
-      args="$@"
+      box="$1"
     else
-      args=$(distrobox ls --no-color |tail -n+2 |awk '{print $3;exit}')
+      boxes=$(distrobox ls --no-color |tail -n+2 |cut -d'|' -f2)
+      # default to 'arch'
+      box=$(echo "$boxes" |grep 'arch' |head -n1)
+      if [ -z "$box" ]; then
+        # if arch doesn't exist, fallback to first entry
+        box=$(echo "$boxes" |head -n1)
+      fi
     fi
-    distrobox-enter ${args}
+    distrobox-enter ${box}
   }
 fi
 
@@ -295,6 +315,12 @@ bind '"\e[Z": menu-complete-backward'         # shift-tab
 
 
 __source_if $HOME/.bash_local
+
+
+##### nix
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+fi
 
 
 ##### startup
