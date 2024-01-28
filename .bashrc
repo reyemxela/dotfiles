@@ -235,7 +235,9 @@ fi
 
 if __have systemctl; then
   alias sc='sudo systemctl'
+  alias scdr='sudo systemctl daemon-reload'
   alias scu='systemctl --user'
+  alias scudr='systemctl --user daemon-reload'
 fi
 
 if __have docker; then
@@ -250,6 +252,11 @@ if __have docker; then
   alias de='docker exec -it'
   alias dps='docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Networks}}"'
   alias dpsa='dps -a'
+fi
+
+if __have podman; then
+  alias pps='podman ps'
+  alias ppsa='podman ps -a'
 fi
 
 if __have distrobox; then
@@ -288,7 +295,7 @@ __source_if /usr/share/bash-completion/bash_completion
 
 # shellcheck disable=SC2207
 completion=(
-  $(cd ~/.local/bin/scripts || exit; grep -rl COMPLETION)
+  $(cd ~/.local/bin/scripts 2>/dev/null || exit; grep -rl COMPLETION)
 )
 
 for i in "${completion[@]}"; do complete -C "$i" "$i"; done
