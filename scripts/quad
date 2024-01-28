@@ -3,8 +3,6 @@
 shopt -s nullglob
 
 enabledir="${HOME}/.config/containers/systemd"
-availdir="${HOME}/containers/quadlets"
-
 
 main() {
   if [ $# -lt 1 ]; then
@@ -60,7 +58,7 @@ usage() {
   echo '  e, enable    symlinks a unit file into ~/.config/containers/systemd'
   echo '  d, disable   removes an existing symlink'
   echo '  s, status    print symlink state and podman status'
-  echo '  r, reload       does a user daemon-reload to regenerate systemd files'
+  echo '  r, reload    does a user daemon-reload to regenerate systemd files'
   echo '  start        starts [service] via systemctl'
   echo '  stop         stops [service] via systemctl'
   echo '  dryrun       runs quadlet -dryrun -user to parse files'
@@ -68,79 +66,25 @@ usage() {
 }
 
 
-_find_svc() {
-  local dir="$1"
-  local service="$2"
-  for suffix in '' '.container' '.network' '.volume' '.kube'; do
-    if [ -f "${dir}/${service}${suffix}" ]; then
-      local svcfilename="${service}${suffix}"
-      break
-    fi
-  done
-
-  echo "${svcfilename}"
-}
-
-
-_get_ct_name() {
-  local filename ct_name
-  filename="$1"
-  ct_name=$(awk -F= '/ContainerName/ {print $2}' "${filename}")
-  echo ${ct_name:-$(basename -s '.container' "${filename}")}
-}
-
-
 enable() {
-  update=0
-  for svc in "$@"; do
-    local svcfilename=$(_find_svc "${availdir}" "${svc}")
-    if [ -n "${svcfilename}" ]; then
-      ln -sf "${availdir}/${svcfilename}" "${enabledir}/${svcfilename}"
-      echo "symlink ${availdir}/${svcfilename} -> ${enabledir}/${svcfilename}"
-      update=1
-    else
-      echo "Error: unable to find ${service} in ${availdir}"
-    fi
-  done
-  [ $update -eq 1 ] && systemctl --user daemon-reload
+  local file="$(readlink -f "$1")"
+  local target="${2:-$(basename "$file")}"
+  ln -sf "${file}" "${enabledir}/${target}"
 }
-
 
 disable() {
-  update=0
-  for svc in "$@"; do
-    local svcfilename=$(_find_svc "${enabledir}" "${svc}")
-    if [ -n "${svcfilename}" ]; then
-      unlink "${enabledir}/${svcfilename}"
-      echo "unlink ${enabledir}/${svcfilename}"
-      update=1
-    else
-      echo "Error: unable to find ${service} in ${availdir}"
-    fi
-  done
-  [ $update -eq 1 ] && systemctl --user daemon-reload
+  local file="$1"
+  unlink "${enabledir}/${file}"
 }
 
-
-status () {
-  local basefile status ct_name pod_status
-
-  printf '%-40s %-18s %-18s\n' "UNIT" "STATUS" "PODMAN STATUS"
-  for filename in "${availdir}"/*; do
-    basefile=$(basename "${filename}")
-    if [ -f "${enabledir}/${basefile}" ]; then
-      status='enabled'
-    else
-      status='disabled'
-    fi
-
-    pod_status=''
-    case $basefile in *.container)
-      ct_name=$(_get_ct_name "${filename}")
-      pod_status=$(podman container inspect --format '{{.State.Status}}' $ct_name 2>/dev/null)
-    ;; esac
-
-    printf '%-40s %-18s %-18s\n' "${basefile}" "${status}" "${pod_status}"
+status() {
+  printf '%-30s %-30s %s\n' "LINK" "TARGET" "PODMAN STATUS"
+  for e in "${enabledir}"/*.container; do
+    local ctrname=$(basename -s .container "$e")
+    local servicename="$(awk -F= '/^ContainerName=/ {print $2}' $e)"
+    servicename="${servicename:-"systemd-${ctrname}"}"
+    pod_status=$(podman container inspect --format '{{.State.Status}}' "$ctrname" 2>/dev/null)
+    printf '%-30s %-30s %s\n' "$(basename "$e")" "$(basename "$(readlink -f "$e")")" "${pod_status:--}"
   done
 }
 
@@ -156,11 +100,9 @@ stop() {
 
 
 setup() {
-  echo 'Creating folders: '
+  echo 'Creating folder: '
   echo "  ${enabledir}"
   mkdir -p "${enabledir}"
-  echo "  ${availdir}"
-  mkdir -p "${availdir}"
 }
 
 
