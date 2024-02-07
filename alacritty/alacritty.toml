@@ -1,0 +1,43 @@
+[colors]
+draw_bold_text_with_bright_colors = true
+
+[colors.bright]
+black = "#556064"
+blue = "#8ca9bf"
+cyan = "#73c5e2"
+green = "#add488"
+magenta = "#e2afec"
+red = "#e16f7e"
+white = "#fcfcfc"
+yellow = "#fdc35f"
+
+[colors.normal]
+black = "#222d32"
+blue = "#4877b1"
+cyan = "#00bcd4"
+green = "#5ca75b"
+magenta = "#a660c3"
+red = "#e14245"
+white = "#a9a9aa"
+yellow = "#f6ab32"
+
+[colors.primary]
+background = "#263238"
+bright_foreground = "#fcfcfc"
+foreground = "#d3dae3"
+
+[env]
+WINIT_X11_SCALE_FACTOR = "1.0"
+
+[font]
+builtin_box_drawing = true
+size = 10.0
+
+[font.normal]
+family = "Hack"
+
+[mouse]
+hide_when_typing = true
+
+[window]
+startup_mode = "Maximized"

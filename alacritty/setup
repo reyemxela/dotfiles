@@ -4,4 +4,4 @@ cd $(dirname ${BASH_SOURCE[0]})
 
 mkdir -p "$HOME/.config/alacritty"
 
-ln -sf "$PWD/alacritty.yml" "$HOME/.config/alacritty/alacritty.yml"
+ln -sf "$PWD/alacritty.toml" "$HOME/.config/alacritty/alacritty.toml"

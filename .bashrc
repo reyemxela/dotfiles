@@ -168,8 +168,6 @@ export LESS="$mouse -aqFRX"
 
 alias brl='source ~/.bashrc'
 
-alias npi='nix profile install'
-
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -255,8 +253,13 @@ if __have docker; then
 fi
 
 if __have podman; then
+  alias p='podman'
   alias pps='podman ps'
   alias ppsa='podman ps -a'
+  alias px='podman exec -it'
+  alias pr='podman run -it'
+  alias prm='podman run -it --rm'
+  alias pun='podman unshare'
 fi
 
 if __have distrobox; then
@@ -283,6 +286,18 @@ fi
 
 if __have distrobox-host-exec; then
   alias dbh='distrobox-host-exec'
+fi
+
+if __have nix; then
+  npi() {
+    case "$1" in
+      *#*) nix profile install "$@" ;;
+      *) nix profile install "nixpkgs#$1" ;;
+    esac
+  }
+  npr() {
+    nix profile remove "$(nix profile list |awk "/\.$1/ {print \$3}")"
+  }
 fi
 
 if __have just; then
