@@ -5,6 +5,14 @@ case $- in
     *) return;;
 esac
 
+if [[ $TERM == *-tmux* ]]; then
+  if [[ $TERM == *-re ]]; then
+    TMUXRECONNECT=1
+  elif [[ $TERM == *-no ]]; then
+    TMUXSKIP=1
+  fi
+  TERM=${TERM/-tmux*/}
+fi
 
 ##### functions
 __have()     { type "$1" &>/dev/null; }
@@ -182,6 +190,9 @@ alias nst='netstat -nap --inet'
 
 alias chx='chmod +x'
 
+alias sshre='TERM=${TERM}-tmux-re ssh'
+alias sshno='TERM=${TERM}-tmux-no ssh'
+
 if __have eza; then
   if eza -v |grep -q '+git'; then git='--git'; fi
   alias ls='eza'
@@ -347,13 +358,14 @@ fi
 
 ##### startup
 # if on a tty, interactive, and not already in a tmux session:
-if [[ -t 0 ]] && [[ $- = *i* ]] && [[ -z $TMUX ]] && [[ -z $SKIPTMUX ]]; then
+if [[ -t 0 ]] && [[ $- = *i* ]] && [[ -z $TMUX ]] && [[ -z $TMUXSKIP ]]; then
   if __have tmux; then
     export TMUX_TMPDIR=/var/tmp
     # grabs latest detached session
+    t=${TMUXRECONNECT-0}
     attach=$(tmux 2>/dev/null ls -F \
              '#{session_attached} #{?#{==:#{session_last_attached},},1,#{session_last_attached}} #{session_id}' \
-             |awk '/^0/{if ($2 > t){t=$2;s=$3}}; END{print s}')
+             |awk '/^'$t'/{if ($2 > t){t=$2;s=$3}}; END{print s}')
     if [[ -n "$attach" ]]; then
       out=$(tmux attach -t "$attach")
     else
