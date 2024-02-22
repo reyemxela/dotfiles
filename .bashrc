@@ -19,6 +19,19 @@ fi
 __have()     { type "$1" &>/dev/null; }
 __source_if() { [[ -r "$1" ]] && source "$1"; }
 
+color() {
+  local __colors
+  if [[ $1 == '-w' ]]; then
+    __colors=(255 253 251 249 247)
+    shift
+  else
+    __colors=(196 202 208 214 220 226 190 154 118 082 046 047 048 049 050 051 045 039 033 027 021 057 093 129 165 201 200 199 198 197)
+  fi
+  while read line; do
+    c=$(( (c + 1) % ${#__colors[@]} ))
+    printf '\e[38;5;%sm%s\e[0m\n' "${__colors[$c]}" "$line"
+  done < <("$@")
+}
 
 ##### env
 if __have vim; then
@@ -188,6 +201,8 @@ alias df='df -h'
 alias du='du -h'
 alias du1='du -hd1 |sort -h'
 alias nst='netstat -nap --inet'
+
+alias ping='color -w ping'
 
 alias chx='chmod +x'
 
