@@ -5,6 +5,7 @@ case $- in
     *) return;;
 esac
 
+# "smuggling" settings over SSH via TERM variable
 if [[ $TERM == *-tmux* ]]; then
   if [[ $TERM == *-re ]]; then
     TMUXRECONNECT=1
@@ -271,6 +272,9 @@ if __have podman; then
   alias pr='podman run -it'
   alias prm='podman run -it --rm'
   alias pun='podman unshare'
+  alias pl='podman logs'
+  alias plf='podman logs -f'
+  alias plfs='podman logs -f --since'
 fi
 
 if __have distrobox; then
@@ -357,15 +361,17 @@ fi
 
 
 ##### startup
-# if on a tty, interactive, and not already in a tmux session:
+# if on a tty, interactive, not already in a tmux session, and TMUXSKIP not set:
 if [[ -t 0 ]] && [[ $- = *i* ]] && [[ -z $TMUX ]] && [[ -z $TMUXSKIP ]]; then
   if __have tmux; then
-    export TMUX_TMPDIR=/var/tmp
-    # grabs latest detached session
-    t=${TMUXRECONNECT-0}
+    export TMUX_TMPDIR=/var/tmp # this helps prevent conflicts with distroboxes
+    [[ -z ${TMUXRECONNECT+x} ]] && t=0
+             # vvv prints tmux sessions in the format `[0/1 (detached/attached)] [timestamp] [id]`
     attach=$(tmux 2>/dev/null ls -F \
              '#{session_attached} #{?#{==:#{session_last_attached},},1,#{session_last_attached}} #{session_id}' \
              |awk '/^'$t'/{if ($2 > t){t=$2;s=$3}}; END{print s}')
+             # ^^^ if `t` is 0, grabs latest detached session
+             #     if `t` is '', grabs latest session, attached or detached
     if [[ -n "$attach" ]]; then
       out=$(tmux attach -t "$attach")
     else
