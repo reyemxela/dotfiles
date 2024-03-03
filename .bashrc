@@ -1,9 +1,17 @@
-# shellcheck disable=SC2034,SC1090,SC2032,SC2033
 
+#region setup {{{
 case $- in
   *i*) ;;
     *) return;;
 esac
+
+if [[ -n "$ZSH_VERSION" ]]; then
+  IS_BASH=false
+  IS_ZSH=true
+else
+  IS_BASH=true
+  IS_ZSH=false
+fi
 
 # "smuggling" settings over SSH via TERM variable
 if [[ $TERM == *-tmux* ]]; then
@@ -14,50 +22,122 @@ if [[ $TERM == *-tmux* ]]; then
   fi
   TERM=${TERM/-tmux*/}
 fi
+#endregion setup }}}
 
-##### functions
+
+#region functions {{{
 __have()     { type "$1" &>/dev/null; }
 __source_if() { [[ -r "$1" ]] && source "$1"; }
+#endregion functions }}}
 
-color() {
-  local __colors
-  if [[ $1 == '-w' ]]; then
-    __colors=(255 253 251 249 247)
-    shift
-  else
-    __colors=(196 202 208 214 220 226 190 154 118 082 046 047 048 049 050 051 045 039 033 027 021 057 093 129 165 201 200 199 198 197)
-  fi
-  while read line; do
-    c=$(( (c + 1) % ${#__colors[@]} ))
-    printf '\e[38;5;%sm%s\e[0m\n' "${__colors[$c]}" "$line"
-  done < <("$@")
-}
 
-##### env
+#region env {{{
 if __have vim; then
 export EDITOR="vim"
 else
 export EDITOR="vi"
 fi
+#endregion env }}}
 
 
-##### history
-HISTCONTROL=ignoreboth
-HISTSIZE=5000
-HISTFILESIZE=10000
+#region zsh modules {{{
+if $IS_ZSH; then
+  autoload -Uz add-zsh-hook
+  autoload -U compinit && compinit
+  zmodload -i zsh/complist
+  autoload -U run-help
+  autoload -U up-line-or-beginning-search
+  autoload -U down-line-or-beginning-search
 
-shopt -s histappend
+  zle -N up-line-or-beginning-search
+  zle -N down-line-or-beginning-search
+fi
+#endregion zsh modules }}}
 
 
-##### bash options
-shopt -s checkwinsize
-shopt -s expand_aliases
-shopt -s globstar
-shopt -s dotglob
-shopt -s extglob
+#region completion {{{
+if $IS_BASH; then
+  __source_if /usr/share/bash-completion/bash_completion
+fi
+
+if $IS_ZSH; then
+  zstyle ':completion:*' completer _extensions _complete _approximate
+  zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} # colors
+  zstyle ':completion:*' rehash true # auto-update PATH
+  zstyle ':completion:*' menu select # menu completion
+  zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' # case-insensitive completion
+
+fi
+#endregion completion }}}
 
 
-##### path
+#region readline/keybinds {{{
+if $IS_BASH; then
+  bind 'set bell-style none'
+  bind 'set completion-ignore-case on'          # case-insensitive tab-completion
+  bind 'set menu-complete-display-prefix on'    # display partial and menu right away
+  bind 'set show-all-if-ambiguous on'           # muptiple possibilities show right away
+  bind 'set page-completions off'               # no `more` for tab results
+  bind 'set visible-stats on'                   # show filetype characters in completions
+  bind 'set colored-stats on'                   # color file/folder completions like ls
+  bind 'set mark-symlinked-directories on'      # show / after symlinked directories too
+
+  bind '"\e[A": history-search-backward'        # up arrow
+  bind '"\e[B": history-search-forward'         # down arrow
+  bind '"\t": menu-complete'                    # tab
+  bind '"\e[Z": menu-complete-backward'         # shift-tab
+fi
+
+if $IS_ZSH; then
+  bindkey "^[[A" up-line-or-beginning-search           # up arrow
+  bindkey "^[[B" down-line-or-beginning-search         # down arrow
+  bindkey -M menuselect "+" accept-and-menu-complete   # + in menu select to add on
+fi
+#endregion readline/keybinds }}}
+
+
+#region options {{{
+if $IS_BASH; then
+  shopt -s globstar # ‘**’ matches all files and zero or more directories/subdirectories
+  shopt -s dotglob # include .files
+  shopt -s extglob # extended pattern matching
+fi
+
+if $IS_ZSH; then
+  setopt autocd # if cmd fails and is name of folder, cd into folder
+  setopt autopushd # make cd push old directory onto directory stack
+  setopt completeinword # cursor stays in place and completion is done from both ends
+  setopt correct # try to correct the spelling of commands
+  setopt extendedglob # treat ‘#’/‘~’/‘^’ characters as part of patterns
+  setopt nobeep # don't beep on error
+  setopt nohup # don't HUP background jobs
+  setopt interactivecomments # allow comments in interactive shells
+  setopt extendedhistory # save each command’s beginning timestamp and duration
+  setopt sharehistory # imports new commands from, and appends commands to history
+  setopt histignorealldups # remove older duplicates
+  setopt histignorespace # remove from history when first character is a space
+fi
+#endregion options }}}
+
+
+#region history {{{
+if $IS_BASH; then
+  HISTCONTROL=ignoreboth
+  HISTSIZE=10000
+  HISTFILESIZE=10000
+
+  shopt -s histappend
+fi
+
+if $IS_ZSH; then
+  HISTFILE=~/.zsh_history
+  HISTSIZE=10000
+  SAVEHIST=10000
+fi
+#endregion history }}}
+
+
+#region path {{{
 # path stuff stolen from https://github.com/rwxrob/dot
 # because it's brilliant
 pathappend() {
@@ -86,87 +166,106 @@ pathprepend \
   "$HOME/.local/bin/scripts" \
   "$HOME/Sync/scripts" \
   "$HOME/go/bin"
+#endregion path }}}
 
-BLACKFG=$'\e[30m'   REDFG=$'\e[31m'       GREENFG=$'\e[32m'   YELLOWFG=$'\e[33m'   \
-BLUEFG=$'\e[34m'    PURPLEFG=$'\e[35m'    CYANFG=$'\e[36m'    WHITEFG=$'\e[37m'    \
-BRBLACKFG=$'\e[90m' BRREDFG=$'\e[91m'     BRGREENFG=$'\e[92m' BRYELLOWFG=$'\e[93m' \
-BRBLUEFG=$'\e[94m'  BRPURPLEFG=$'\e[95m'  BRCYANFG=$'\e[96m'  BRWHITEFG=$'\e[97m'
 
-BLACKBG=$'\e[40m'    REDBG=$'\e[41m'       GREENBG=$'\e[42m'    YELLOWBG=$'\e[43m'    \
-BLUEBG=$'\e[44m'     PURPLEBG=$'\e[45m'    CYANBG=$'\e[46m'     WHITEBG=$'\e[47m'     \
-BRBLACKBG=$'\e[100m' BRREDBG=$'\e[101m'    BRGREENBG=$'\e[102m' BRYELLOWBG=$'\e[103m' \
+#region colors {{{
+__have dircolors && eval "$(dircolors -b)"
+
+BLACKFG=$'\e[30m'    REDFG=$'\e[31m'       GREENFG=$'\e[32m'    YELLOWFG=$'\e[33m'
+BLUEFG=$'\e[34m'     PURPLEFG=$'\e[35m'    CYANFG=$'\e[36m'     WHITEFG=$'\e[37m'
+BRBLACKFG=$'\e[90m'  BRREDFG=$'\e[91m'     BRGREENFG=$'\e[92m'  BRYELLOWFG=$'\e[93m'
+BRBLUEFG=$'\e[94m'   BRPURPLEFG=$'\e[95m'  BRCYANFG=$'\e[96m'   BRWHITEFG=$'\e[97m'
+
+BLACKBG=$'\e[40m'    REDBG=$'\e[41m'       GREENBG=$'\e[42m'    YELLOWBG=$'\e[43m'
+BLUEBG=$'\e[44m'     PURPLEBG=$'\e[45m'    CYANBG=$'\e[46m'     WHITEBG=$'\e[47m'
+BRBLACKBG=$'\e[100m' BRREDBG=$'\e[101m'    BRGREENBG=$'\e[102m' BRYELLOWBG=$'\e[103m'
 BRBLUEBG=$'\e[104m'  BRPURPLEBG=$'\e[105m' BRCYANBG=$'\e[106m'  BRWHITEBG=$'\e[107m'
 
 BOLD=$'\e[1m' RESET=$'\e[0m'
+#endregion colors }}}
 
-##### prompt
-__ps1() {
-  status=$?
 
-  # status
-  sc="${BRCYANFG}"
-  [[ ${status} != 0 ]] && sc="${BRREDFG}"
+#region common prompt {{{
+COLORBARS1="${BRREDBG} ${BRYELLOWBG} ${BRGREENBG} ${BRCYANBG} ${RESET}"
+COLORBARS2="${BRCYANBG} ${BRBLUEBG} ${RESET}"
 
-  # trim pwd
-  local pwd="${PWD/#$HOME/\~}"
-  pwd="${pwd/#\/var$HOME/\~}" # handle /var/home/$USER too for immutable distros
-  local maxlen=45
-  (( maxlen > $((COLUMNS - 50)) )) && maxlen=$((COLUMNS - 55))
-  (( maxlen < 5 )) && maxlen=5
-  (( ${#pwd} > maxlen )) && pwd="..${pwd: -${maxlen}}"
+NEWLINE=$'\n'
 
-  if [[ -O ${PWD} ]]; then
-    pwd="\[${BRGREENFG}\]${pwd}\[${RESET}\]"
-  elif [[ -w ${PWD} ]]; then
-    pwd="\[${BRCYANFG}\]${pwd}\[${RESET}\]"
-  else
-    pwd="\[${BRREDFG}\]${pwd}\[${RESET}\]"
+userhoststr='\u@\H'
+$IS_ZSH && userhoststr='%n@%m'
+
+__common_prompt() {
+  # statuscolor
+  exitstatus=$?
+  statuscolor="${BRCYANFG}"
+  [[ ${exitstatus} != 0 ]] && statuscolor="${BRREDFG}"
+
+  # pwd
+  pwd=${PWD/#$HOME/'~'}
+  pwd=${pwd/#\/var$HOME/'~'}
+  if [[ -O ${PWD} ]]; then # owned
+    pwd="${BRGREENFG}${pwd}${RESET}"
+  elif [[ -w ${PWD} ]]; then # writable
+    pwd="${BRCYANFG}${pwd}${RESET}"
+  else # read-only
+    pwd="${BRREDFG}${pwd}${RESET}"
   fi
 
-  # git branch
+  # git branch/status
   branch=$(git branch --show-current 2>/dev/null)
-  dirty=
   if [[ -n "${branch}" ]]; then
+    dirty=
     col="${BRGREENFG}"
     [[ ${branch} == main || ${branch} == master ]] && col="${BRREDFG}"
     if [[ -n "$(git status --porcelain -uno 2>/dev/null)" ]]; then
       dirty="+"
     fi
-    branch="\[${WHITEFG}\](\[${BOLD}\]\[${col}\]${branch}\[${BRWHITEFG}\]\[${BOLD}\]${dirty}\[${RESET}\]\[${WHITEFG}\])\[${RESET}\]"
+    branch="${WHITEFG}(${BOLD}${col}${branch}${BRWHITEFG}${BOLD}${dirty}${RESET}${WHITEFG})${RESET}"
   fi
 
   # python venv
   venv=${VIRTUAL_ENV##*/}
-  [[ -n "$venv" ]] && venv="\[${WHITEFG}\](\[${BOLD}\]\[${BRCYANFG}\]${venv}\[${RESET}\]\[${WHITEFG}\])\[${RESET}\]"
+  [[ -n "$venv" ]] && venv="${WHITEFG}(${BOLD}${BRCYANFG}${venv}${RESET}${WHITEFG})${RESET}"
 
   # distrobox prompt color change
   if [ -f /run/.containerenv ] || [ -f /.dockerenv ]; then
-    userhost="\[${RESET}\]\[${BRBLACKBG}\]\[${BRWHITEFG}\] \u@\H \[${RESET}\]"
+    userhost="${RESET}${BRBLACKBG}${BRWHITEFG} ${userhoststr} ${RESET}"
   else
-    userhost="\[${RESET}\]\[${BRWHITEBG}\]\[${BLACKFG}\] \u@\H \[${RESET}\]"
+    userhost="${RESET}${BRWHITEBG}${BLACKFG} ${userhoststr} ${RESET}"
   fi
-
-  COLORBARS1="\[${RESET}\]\[${BRREDBG}\] \[${BRYELLOWBG}\] \[${BRGREENBG}\] \[${BRCYANBG}\] \[${RESET}\]"
-  COLORBARS2="\[${RESET}\]\[${BRCYANBG}\] \[${BRBLUEBG}\] \[${RESET}\]"
-
-  PS1="\[${RESET}\]\n\[${sc}\]╔\[${RESET}\] ${COLORBARS1}${userhost}${COLORBARS2} ${pwd} ${branch}${venv}\n\[${sc}\]╚═\[${RESET}\] "
 }
-
-PROMPT_COMMAND="__ps1"
-
-
-#### lesspipe
-[[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
+#endregion common prompt }}}
 
 
-##### dircolors
-if __have dircolors; then
-# shellcheck disable=SC2015
-  [[ -r ~/.dircolors ]] && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+#region bash prompt {{{
+if $IS_BASH; then
+  __bash_prompt() {
+    __common_prompt
+    line1="${statuscolor}╔${RESET} ${COLORBARS1}${userhost}${COLORBARS2} ${pwd} ${branch}${venv}"
+    line2="\[${statuscolor}\]╚═\[${RESET}\] "
+    PS1="${RESET}${NEWLINE}${line1}${NEWLINE}${line2}"
+  }
+  PROMPT_COMMAND="__bash_prompt"
 fi
+#endregion bash prompt }}}
 
 
-##### manpage colors
+#region zsh prompt {{{
+if $IS_ZSH; then
+  __zsh_prompt() {
+    __common_prompt
+    line1="${statuscolor}┏${RESET} ${COLORBARS1}${userhost}${COLORBARS2} ${pwd} ${branch}${venv}"
+    line2="%2{${statuscolor}┗━${RESET}%} "
+    PROMPT="${RESET}${NEWLINE}${line1}${NEWLINE}${line2}"
+  }
+
+  add-zsh-hook precmd __zsh_prompt
+fi
+#endregion zsh prompt }}}
+
+
+#region manpage colors {{{
 export LESS_TERMCAP_mb="${BOLD}${REDFG}"              # begin bold
 export LESS_TERMCAP_md="${BOLD}${CYANFG}"             # begin blink
 export LESS_TERMCAP_me="${RESET}"                     # reset bold/blink
@@ -174,9 +273,10 @@ export LESS_TERMCAP_so="${BOLD}${BLUEBG}${YELLOWFG}"  # begin reverse video
 export LESS_TERMCAP_se="${RESET}"                     # reset reverse video
 export LESS_TERMCAP_us="${BOLD}${GREENFG}"            # begin underline
 export LESS_TERMCAP_ue="${RESET}"                     # reset underline
+#endregion manpage colors }}}
 
 
-##### less options
+#region less options {{{
 # -a: skip search results on same screen
 # -q: no bell
 # -F: just print file if it fits on screen
@@ -184,10 +284,10 @@ export LESS_TERMCAP_ue="${RESET}"                     # reset underline
 # -X: don't clear screen
 [[ $(less --version |grep -E "less [0-9]+" |cut -d " " -f 2) -ge 543 ]] && mouse='--mouse --wheel-lines 3'
 export LESS="$mouse -aqFRX"
+#endregion less options }}}
 
 
-##### aliases/functions
-
+#region aliases/functions {{{
 alias brl='source ~/.bashrc'
 
 alias ..='cd ..'
@@ -254,7 +354,7 @@ if __have paru; then
 fi
 
 if __have flatpak; then
-  alias fp='flatpak --system'
+  alias fp='flatpak'
   alias fpu='flatpak --user'
 fi
 
@@ -295,13 +395,13 @@ fi
 if __have distrobox; then
   alias db='distrobox'
   dbe() {
-    if [ -n "$1" ]; then
+    if [[ -n "$1" ]]; then
       box="$1"
     else
-      boxes=$(distrobox ls --no-color |tail -n+2 |cut -d'|' -f2)
+      boxes=$(distrobox ls --no-color |tail -n+2 |awk -F'|' '{gsub(/^ */,"",$2); gsub(/ *$/,"",$2); print $2}')
       # default to 'arch'
       box=$(echo "$boxes" |grep 'arch' |head -n1)
-      if [ -z "$box" ]; then
+      if [[ -z "$box" ]]; then
         # if arch doesn't exist, fallback to first entry
         box=$(echo "$boxes" |head -n1)
       fi
@@ -333,49 +433,10 @@ fi
 if __have just; then
   alias just='just --unstable'
 fi
+#endregion aliases/functions }}}
 
 
-##### completion
-__source_if /usr/share/bash-completion/bash_completion
-
-# shellcheck disable=SC2207
-completion=(
-  $(cd ~/.local/bin/scripts 2>/dev/null || exit; grep -rl COMPLETION)
-)
-
-for i in "${completion[@]}"; do complete -C "$i" "$i"; done
-
-
-##### readline options
-bind 'set bell-style none'
-bind 'set completion-ignore-case on'          # case-insensitive tab-completion
-bind 'set menu-complete-display-prefix on'    # display partial and menu right away
-#bind 'set completion-prefix-display-length 3' # common prefixes become ellipsis
-bind 'set show-all-if-ambiguous on'           # muptiple possibilities show right away
-bind 'set page-completions off'               # no `more` for tab results
-bind 'set visible-stats on'                   # show filetype characters in completions
-bind 'set colored-stats on'                   # color file/folder completions like ls
-bind 'set mark-symlinked-directories on'      # show / after symlinked directories too
-
-
-##### keybinds
-bind '"\e[A": history-search-backward'        # up arrow
-bind '"\e[B": history-search-forward'         # down arrow
-
-bind '"\t": menu-complete'                    # tab
-bind '"\e[Z": menu-complete-backward'         # shift-tab
-
-
-__source_if $HOME/.bash_local
-
-
-##### nix
-if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-fi
-
-
-##### startup
+#region tmux startup {{{
 # if on a tty, interactive, not already in a tmux session, and TMUXSKIP not set:
 if [[ -t 0 ]] && [[ $- = *i* ]] && [[ -z $TMUX ]] && [[ -z $TMUXSKIP ]]; then
   if __have tmux; then
@@ -398,3 +459,4 @@ if [[ -t 0 ]] && [[ $- = *i* ]] && [[ -z $TMUX ]] && [[ -z $TMUXSKIP ]]; then
     fi
   fi
 fi
+#endregion tmux startup }}}

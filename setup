@@ -8,6 +8,7 @@ function confirm {
 
 
 ln -sf "$PWD/.bashrc" "$HOME/.bashrc"
+ln -sf "$PWD/.bashrc" "$HOME/.zshrc"
 ln -sf "$PWD/.profile" "$HOME/.profile"
 
 mkdir -p "$HOME/.local/bin"
