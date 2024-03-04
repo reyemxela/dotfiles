@@ -33,15 +33,37 @@ __source_if() { [[ -r "$1" ]] && source "$1"; }
 
 #region env {{{
 if __have vim; then
-export EDITOR="vim"
+  export EDITOR="vim"
 else
-export EDITOR="vi"
+  export EDITOR="vi"
 fi
 #endregion env }}}
 
 
 #region zsh modules {{{
 if $IS_ZSH; then
+  # redraw and cd functions adapted from https://github.com/romkatv/zsh4humans
+  function redraw-prompt() {
+    emulate -L zsh
+    local f
+    for f in chpwd $chpwd_functions precmd $precmd_functions; do
+      (( $+functions[$f] )) && $f &>/dev/null
+    done
+    zle .reset-prompt
+    zle -R
+  }
+
+  function cd-rotate() {
+    emulate -L zsh
+    while (( $#dirstack )) && ! pushd -q $1 &>/dev/null; do
+      popd -q $1 &>/dev/null
+    done
+    if (( $#dirstack )); then redraw-prompt; fi
+  }
+  function cd-back() { cd-rotate +1; }
+  function cd-forward() { cd-rotate -0; }
+  function cd-up() { cd ..; redraw-prompt; }
+
   autoload -Uz add-zsh-hook
   autoload -U compinit && compinit
   zmodload -i zsh/complist
@@ -49,6 +71,9 @@ if $IS_ZSH; then
   autoload -U up-line-or-beginning-search
   autoload -U down-line-or-beginning-search
 
+  zle -N cd-forward
+  zle -N cd-back
+  zle -N cd-up
   zle -N up-line-or-beginning-search
   zle -N down-line-or-beginning-search
 fi
@@ -89,9 +114,42 @@ if $IS_BASH; then
 fi
 
 if $IS_ZSH; then
-  bindkey "^[[A" up-line-or-beginning-search           # up arrow
-  bindkey "^[[B" down-line-or-beginning-search         # down arrow
-  bindkey -M menuselect "+" accept-and-menu-complete   # + in menu select to add on
+  bindkey -e # EDITOR=vi/vim causes zsh to use vi-mode, so reset that here
+
+  # translate between application/raw/TTY codes
+  bindkey -s '^[OH' '^[[H'   # home
+  bindkey -s '^[[1~' '^[[H'  # home
+  bindkey -s '^[OF' '^[[F'   # end
+  bindkey -s '^[[4~' '^[[F'  # end
+  bindkey -s '^[OA' '^[[A'   # up
+  bindkey -s '^[OB' '^[[B'   # down
+  bindkey -s '^[OD' '^[[D'   # left
+  bindkey -s '^[OC' '^[[C'   # right
+  bindkey -s '^[[5~' ''      # do nothing on pageup
+  bindkey -s '^[[6~' ''      # do nothing on pagedown
+
+  bindkey '^[[A'    up-line-or-beginning-search          # up arrow
+  bindkey '^[[B'    down-line-or-beginning-search        # down arrow
+  bindkey '^[[D'    backward-char                        # left
+  bindkey '^[[C'    forward-char                         # right
+  bindkey '^[[H'    beginning-of-line                    # home
+  bindkey '^[[F'    end-of-line                          # end
+  bindkey '^?'      backward-delete-char                 # backspace
+  bindkey '^[[3~'   delete-char                          # delete
+  bindkey '^[[1;5C' forward-word                         # ctrl+right
+  bindkey '^[[1;5D' backward-word                        # ctrl+left
+  bindkey '^H'      backward-kill-word                   # ctrl+backspace
+  bindkey '^[[3;5~' kill-word                            # ctrl+del
+
+  bindkey '^_'      undo                                 # ctrl+/
+  bindkey '^\'      redo                                 # ctrl+\
+
+  bindkey '^[[1;3D' cd-back                              # alt+left   cd to prev
+  bindkey '^[[1;3C' cd-forward                           # alt+right  cd to next
+  bindkey '^[[1;3A' cd-up                                # alt+up     cd ..
+
+  bindkey '^[/' run-help                                 # alt+/ (?)
+  bindkey -M menuselect '+' accept-and-menu-complete     # + in menu select to add selection
 fi
 #endregion readline/keybinds }}}
 
@@ -288,7 +346,8 @@ export LESS="$mouse -aqFRX"
 
 
 #region aliases/functions {{{
-alias brl='source ~/.bashrc'
+$IS_BASH && alias brl='exec bash'
+$IS_ZSH && alias zrl='exec zsh'
 
 alias ..='cd ..'
 alias ...='cd ../..'
