@@ -64,6 +64,8 @@ if $IS_ZSH; then
   function cd-forward() { cd-rotate -0; }
   function cd-up() { cd ..; redraw-prompt; }
 
+  function insert-sudo { BUFFER="sudo $BUFFER"; zle accept-line; }
+
   autoload -Uz add-zsh-hook
   autoload -U compinit && compinit
   zmodload -i zsh/complist
@@ -74,6 +76,7 @@ if $IS_ZSH; then
   zle -N cd-forward
   zle -N cd-back
   zle -N cd-up
+  zle -N insert-sudo
   zle -N up-line-or-beginning-search
   zle -N down-line-or-beginning-search
 fi
@@ -147,6 +150,7 @@ if $IS_ZSH; then
   bindkey '^[[1;3D' cd-back                              # alt+left   cd to prev
   bindkey '^[[1;3C' cd-forward                           # alt+right  cd to next
   bindkey '^[[1;3A' cd-up                                # alt+up     cd ..
+  bindkey '^[s'     insert-sudo                          # alt+s      insert 'sudo' and run
 
   bindkey '^[/' run-help                                 # alt+/ (?)
   bindkey -M menuselect '+' accept-and-menu-complete     # + in menu select to add selection
@@ -171,7 +175,7 @@ if $IS_ZSH; then
   setopt nohup # don't HUP background jobs
   setopt interactivecomments # allow comments in interactive shells
   setopt extendedhistory # save each command’s beginning timestamp and duration
-  setopt sharehistory # imports new commands from, and appends commands to history
+  setopt incappendhistory # appends commands to history immediately
   setopt histignorealldups # remove older duplicates
   setopt histignorespace # remove from history when first character is a space
 fi
