@@ -64,7 +64,17 @@ if $IS_ZSH; then
   function cd-forward() { cd-rotate -0; }
   function cd-up() { cd ..; redraw-prompt; }
 
-  function insert-sudo { BUFFER="sudo $BUFFER"; zle accept-line; }
+  function insert-sudo() { BUFFER="sudo $BUFFER"; zle accept-line; }
+
+  function toggle-comment() {
+    if [[ $BUFFER[1] == '#' ]]; then
+      if [[ $CURSOR -lt $#BUFFER ]]; then ((CURSOR--)); fi
+      BUFFER=$BUFFER[2,-1]
+    else
+      BUFFER="#$BUFFER"
+      ((CURSOR++))
+    fi
+  }
 
   autoload -Uz add-zsh-hook
   autoload -U compinit && compinit
@@ -73,12 +83,13 @@ if $IS_ZSH; then
   autoload -U up-line-or-beginning-search
   autoload -U down-line-or-beginning-search
 
+  zle -N up-line-or-beginning-search
+  zle -N down-line-or-beginning-search
   zle -N cd-forward
   zle -N cd-back
   zle -N cd-up
   zle -N insert-sudo
-  zle -N up-line-or-beginning-search
-  zle -N down-line-or-beginning-search
+  zle -N toggle-comment
 fi
 #endregion zsh modules }}}
 
@@ -94,6 +105,8 @@ if $IS_ZSH; then
   zstyle ':completion:*' rehash true # auto-update PATH
   zstyle ':completion:*' menu select # menu completion
   zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' # case-insensitive completion
+  zstyle ':completion:*' group-name '' # group matches under descriptions
+  zstyle ':completion:*:descriptions' format '%F{10}[%d]%f' # format descriptions
 
 fi
 #endregion completion }}}
@@ -118,6 +131,7 @@ fi
 
 if $IS_ZSH; then
   bindkey -e # EDITOR=vi/vim causes zsh to use vi-mode, so reset that here
+  KEYTIMEOUT=1 # escape key timeout to minimum
 
   # translate between application/raw/TTY codes
   bindkey -s '^[OH' '^[[H'   # home
@@ -144,16 +158,17 @@ if $IS_ZSH; then
   bindkey '^H'      backward-kill-word                   # ctrl+backspace
   bindkey '^[[3;5~' kill-word                            # ctrl+del
 
-  bindkey '^_'      undo                                 # ctrl+/
-  bindkey '^\'      redo                                 # ctrl+\
+  bindkey '^[/'     undo                                 # alt+/
 
   bindkey '^[[1;3D' cd-back                              # alt+left   cd to prev
   bindkey '^[[1;3C' cd-forward                           # alt+right  cd to next
   bindkey '^[[1;3A' cd-up                                # alt+up     cd ..
   bindkey '^[s'     insert-sudo                          # alt+s      insert 'sudo' and run
+  bindkey '^_'      toggle-comment                       # ctrl+/
 
-  bindkey '^[/' run-help                                 # alt+/ (?)
-  bindkey -M menuselect '+' accept-and-menu-complete     # + in menu select to add selection
+  bindkey '^[?' run-help                                 # alt+shift+/ (?)
+  bindkey -M menuselect '+'   accept-and-menu-complete   # + in menu select to add selection
+  bindkey -M menuselect '^['  send-break                 # escape cancels menu
 fi
 #endregion readline/keybinds }}}
 
@@ -178,6 +193,7 @@ if $IS_ZSH; then
   setopt incappendhistory # appends commands to history immediately
   setopt histignorealldups # remove older duplicates
   setopt histignorespace # remove from history when first character is a space
+  setopt menucomplete # immediate menu completion
 fi
 #endregion options }}}
 
