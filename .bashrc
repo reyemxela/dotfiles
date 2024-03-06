@@ -167,8 +167,9 @@ if $IS_ZSH; then
   bindkey '^_'      toggle-comment                       # ctrl+/
 
   bindkey '^[?' run-help                                 # alt+shift+/ (?)
-  bindkey -M menuselect '+'   accept-and-menu-complete   # + in menu select to add selection
-  bindkey -M menuselect '^['  send-break                 # escape cancels menu
+  bindkey -M menuselect '+'    accept-and-menu-complete  # + in menu select to add selection
+  bindkey -M menuselect '^[[Z' reverse-menu-complete     # shift+tab
+  bindkey -M menuselect '^['   send-break                # escape cancels menu
 fi
 #endregion readline/keybinds }}}
 
@@ -193,7 +194,7 @@ if $IS_ZSH; then
   setopt incappendhistory # appends commands to history immediately
   setopt histignorealldups # remove older duplicates
   setopt histignorespace # remove from history when first character is a space
-  setopt menucomplete # immediate menu completion
+  # setopt menucomplete # immediate menu completion
 fi
 #endregion options }}}
 
