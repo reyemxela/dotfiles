@@ -413,6 +413,12 @@ if __have vim; then
   alias vi='vim'
 fi
 
+if __have python; then
+  pyv() { python -m venv "${1:-.venv}"; }
+  pya() { source "${1:-.venv}/bin/activate"; }
+  alias pyd='__have deactivate && deactivate'
+fi
+
 if __have apt; then
   alias apt='sudo apt'
 fi
@@ -517,10 +523,10 @@ fi
 
 
 #region tmux startup {{{
-# if on a tty, interactive, not already in a tmux session, and TMUXSKIP not set:
-if [[ -t 0 ]] && [[ $- = *i* ]] && [[ -z $TMUX ]] && [[ -z $TMUXSKIP ]]; then
-  if __have tmux; then
-    export TMUX_TMPDIR=/var/tmp # this helps prevent conflicts with distroboxes
+if __have tmux; then
+  export TMUX_TMPDIR=/var/tmp # this helps prevent conflicts with distroboxes
+  # if on a tty, interactive, not already in a tmux session, and TMUXSKIP not set:
+  if [[ -t 0 ]] && [[ $- = *i* ]] && [[ -z $TMUX ]] && [[ -z $TMUXSKIP ]]; then
     [[ -z ${TMUXRECONNECT+x} ]] && t=0
              # vvv prints tmux sessions in the format `[0/1 (detached/attached)] [timestamp] [id]`
     attach=$(tmux 2>/dev/null ls -F \
@@ -529,12 +535,12 @@ if [[ -t 0 ]] && [[ $- = *i* ]] && [[ -z $TMUX ]] && [[ -z $TMUXSKIP ]]; then
              # ^^^ if `t` is 0, grabs latest detached session
              #     if `t` is '', grabs latest session, attached or detached
     if [[ -n "$attach" ]]; then
-      out=$(tmux attach -t "$attach")
+      out="$(tmux attach -t "$attach")"
     else
-      out=$(tmux)
+      out="$(tmux)"
     fi
     # if original session was exited and not detached, exit
-    if [[ $out == "[exited]" ]]; then
+    if [[ "$out" == "[exited]" ]]; then
       exit
     fi
   fi
