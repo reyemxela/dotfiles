@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+cd $(dirname ${BASH_SOURCE[0]})
+
+mkdir -p "$HOME/.config/distrobox"
+
+ln -sf "$PWD/distrobox.conf" "$HOME/.config/distrobox/distrobox.conf"

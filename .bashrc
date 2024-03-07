@@ -272,7 +272,7 @@ COLORBARS2="${BRCYANBG} ${BRBLUEBG} ${RESET}"
 NEWLINE=$'\n'
 
 userhoststr='\u@\H'
-$IS_ZSH && userhoststr='%n@%m'
+$IS_ZSH && userhoststr='%n@%M'
 
 __common_prompt() {
   # statuscolor
@@ -480,20 +480,7 @@ fi
 
 if __have distrobox; then
   alias db='distrobox'
-  dbe() {
-    if [[ -n "$1" ]]; then
-      box="$1"
-    else
-      boxes=$(distrobox ls --no-color |tail -n+2 |awk -F'|' '{gsub(/^ */,"",$2); gsub(/ *$/,"",$2); print $2}')
-      # default to 'arch'
-      box=$(echo "$boxes" |grep 'arch' |head -n1)
-      if [[ -z "$box" ]]; then
-        # if arch doesn't exist, fallback to first entry
-        box=$(echo "$boxes" |head -n1)
-      fi
-    fi
-    distrobox-enter ${box}
-  }
+  alias dbe='distrobox-enter'
 fi
 
 if __have distrobox-export; then

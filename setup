@@ -16,6 +16,7 @@ ln -sfn "$PWD/scripts" "$HOME/.local/bin/scripts"
 
 
 auto=(
+  distrobox
   git
   vim
   termux # skips itself if not in a termux session
