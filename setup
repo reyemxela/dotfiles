@@ -16,6 +16,7 @@ ln -sfn "$PWD/scripts" "$HOME/.local/bin/scripts"
 
 
 auto=(
+  alacritty
   distrobox
   git
   vim
@@ -24,8 +25,6 @@ auto=(
 )
 
 optional=(
-  konsole
-  alacritty
 )
 
 
