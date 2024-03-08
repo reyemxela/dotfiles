@@ -77,7 +77,7 @@ if $IS_ZSH; then
   }
 
   autoload -Uz add-zsh-hook
-  autoload -U compinit && compinit
+  autoload -U compinit && compinit -u
   zmodload -i zsh/complist
   autoload -U run-help
   autoload -U up-line-or-beginning-search
@@ -478,7 +478,7 @@ fi
 
 if __have distrobox; then
   alias db='distrobox'
-  alias dbe='distrobox-enter'
+  alias dbe='distrobox enter'
 fi
 
 if __have distrobox-export; then
