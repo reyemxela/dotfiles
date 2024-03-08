@@ -382,8 +382,6 @@ alias du='du -h'
 alias du1='du -hd1 |sort -h'
 alias nst='netstat -nap --inet'
 
-alias ping='color -w ping'
-
 alias chx='chmod +x'
 
 alias sshre='TERM=${TERM}-tmux-re ssh'
