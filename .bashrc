@@ -486,7 +486,13 @@ if __have distrobox-export; then
 fi
 
 if __have distrobox-host-exec; then
-  alias dbh='distrobox-host-exec'
+  function dbh() {
+    if [[ -z ${@:+x} ]]; then
+      distrobox-host-exec sh -c 'exec $SHELL'
+    else
+      distrobox-host-exec "$@"
+    fi
+  }
 fi
 
 if __have nix; then
