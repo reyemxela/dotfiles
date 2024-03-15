@@ -100,14 +100,15 @@ if $IS_BASH; then
 fi
 
 if $IS_ZSH; then
-  zstyle ':completion:*' completer _extensions _complete _approximate
+  zstyle ':completion:*' completer _extensions _complete _correct
   zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} # colors
   zstyle ':completion:*' rehash true # auto-update PATH
   zstyle ':completion:*' menu select # menu completion
   zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' # case-insensitive completion
   zstyle ':completion:*' group-name '' # group matches under descriptions
+  zstyle ':completion:*' expand prefix # expand prefix even if last part is ambiguous
+  zstyle ':completion:*' list-prompt '' # disable 'do you wish to see all...' prompt
   zstyle ':completion:*:descriptions' format '%F{10}[%d]%f' # format descriptions
-
 fi
 #endregion completion }}}
 
@@ -187,14 +188,15 @@ if $IS_ZSH; then
   setopt completeinword # cursor stays in place and completion is done from both ends
   setopt correct # try to correct the spelling of commands
   setopt extendedglob # treat ‘#’/‘~’/‘^’ characters as part of patterns
-  setopt nobeep # don't beep on error
-  setopt nohup # don't HUP background jobs
   setopt interactivecomments # allow comments in interactive shells
   setopt extendedhistory # save each command’s beginning timestamp and duration
   setopt incappendhistory # appends commands to history immediately
   setopt histignorealldups # remove older duplicates
   setopt histignorespace # remove from history when first character is a space
-  # setopt menucomplete # immediate menu completion
+  setopt listpacked # vary column widths for more compact menu
+  setopt nobeep # don't beep on error
+  setopt nohup # don't HUP background jobs
+  setopt nolistambiguous # show list immediately when ambiguous matches
 fi
 #endregion options }}}
 
@@ -334,7 +336,7 @@ fi
 if $IS_ZSH; then
   __zsh_prompt() {
     __common_prompt
-    line1="${statuscolor}┏${RESET} ${COLORBARS1}${userhost}${COLORBARS2} ${pwd} ${branch}${venv}"
+    line1="%{${statuscolor}┏${RESET} ${COLORBARS1}${userhost}${COLORBARS2} ${pwd} ${branch}${venv}%}"
     line2="%2{${statuscolor}┗━${RESET}%} "
     PROMPT="${RESET}${NEWLINE}${line1}${NEWLINE}${line2}"
   }
