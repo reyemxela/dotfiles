@@ -100,7 +100,7 @@ if $IS_BASH; then
 fi
 
 if $IS_ZSH; then
-  zstyle ':completion:*' completer _extensions _complete _correct
+  zstyle ':completion:*' completer _extensions _complete _correct _approximate
   zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} # colors
   zstyle ':completion:*' rehash true # auto-update PATH
   zstyle ':completion:*' menu select # menu completion
@@ -108,7 +108,7 @@ if $IS_ZSH; then
   zstyle ':completion:*' group-name '' # group matches under descriptions
   zstyle ':completion:*' expand prefix # expand prefix even if last part is ambiguous
   zstyle ':completion:*' list-prompt '' # disable 'do you wish to see all...' prompt
-  zstyle ':completion:*:descriptions' format '%F{10}[%d]%f' # format descriptions
+  zstyle ':completion:*:descriptions' format '%B%F{green}━━━━ %d ━━━━%f%b' # format descriptions
 fi
 #endregion completion }}}
 
@@ -168,6 +168,7 @@ if $IS_ZSH; then
   bindkey '^_'      toggle-comment                       # ctrl+/
 
   bindkey '^[?' run-help                                 # alt+shift+/ (?)
+  bindkey -M menuselect '^M'   .accept-line              # enter accepts and runs line
   bindkey -M menuselect '+'    accept-and-menu-complete  # + in menu select to add selection
   bindkey -M menuselect '^[[Z' reverse-menu-complete     # shift+tab
   bindkey -M menuselect '^['   send-break                # escape cancels menu
