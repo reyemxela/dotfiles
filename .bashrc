@@ -1,3 +1,4 @@
+# vim: set ft=zsh:
 
 #region setup {{{
 case $- in
@@ -197,6 +198,7 @@ if $IS_ZSH; then
   setopt listpacked # vary column widths for more compact menu
   setopt nobeep # don't beep on error
   setopt nohup # don't HUP background jobs
+  setopt noautoremoveslash # keep trailing slash
   setopt nolistambiguous # show list immediately when ambiguous matches
 fi
 #endregion options }}}
@@ -390,6 +392,8 @@ alias chx='chmod +x'
 alias sshre='TERM=${TERM}-tmux-re ssh'
 alias sshno='TERM=${TERM}-tmux-no ssh'
 
+alias dotup='(cd ~/.dotfiles && git pull && ./setup)'
+
 if __have eza; then
   if eza -v |grep -q '+git'; then git='--git'; fi
   alias ls='eza'
@@ -407,7 +411,7 @@ else
 fi
 
 if __have bat; then
-  alias cat='bat --theme ansi'
+  alias cat='bat --theme=ansi --style=grid,header,header-filesize'
 fi
 
 if __have vim; then
@@ -508,10 +512,6 @@ if __have nix; then
   npr() {
     nix profile remove "$(nix profile list |awk "/\.$1/ {print \$3}")"
   }
-fi
-
-if __have just; then
-  alias just='just --unstable'
 fi
 #endregion aliases/functions }}}
 
