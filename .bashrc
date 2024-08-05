@@ -276,9 +276,6 @@ COLORBARS2="${BRCYANBG} ${BRBLUEBG} ${RESET}"
 
 NEWLINE=$'\n'
 
-userhoststr='\u@\H'
-$IS_ZSH && userhoststr='%n@%M'
-
 __common_prompt() {
   # statuscolor
   exitstatus=$?
@@ -311,6 +308,11 @@ __common_prompt() {
   # python venv
   venv=${VIRTUAL_ENV##*/}
   [[ -n "$venv" ]] && venv="${WHITEFG}(${BOLD}${BRCYANFG}${venv}${RESET}${WHITEFG})${RESET}"
+
+  # user@host text
+  ctr="${CONTAINER_ID:+${CONTAINER_ID}.}"
+  userhoststr="\u@${ctr}\H"
+  $IS_ZSH && userhoststr="%n@${ctr}%M"
 
   # distrobox prompt color change
   if [ -f /run/.containerenv ] || [ -f /.dockerenv ]; then
@@ -429,7 +431,7 @@ if __have apt; then
 fi
 
 if __have dnf; then
-  alias dnf='sudo dnf'
+  alias dnf='sudo dnf --setopt defaultyes=True'
 fi
 
 if __have pacman; then
