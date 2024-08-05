@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+sudo grub2-reboot "$(sudo grep -i "^menuentry 'Windows" /boot/grub2/grub.cfg |cut -d "'" -f 2)"
+sudo reboot
