@@ -32,6 +32,44 @@ __source_if() { [[ -r "$1" ]] && source "$1"; }
 #endregion functions }}}
 
 
+#region auto-zsh {{{
+# Only trigger if:
+# - zsh is installed
+# - We did not call: bash -c '...'
+# - 'zsh' is not the parent process of this shell
+if $IS_BASH && __have zsh && [[ -z ${BASH_EXECUTION_STRING} && $(ps --no-header --pid=$PPID --format=comm) != "zsh" ]]; then
+  shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''
+  exec zsh $LOGIN_OPTION
+fi
+#endregion auto-zsh }}}
+
+
+#region tmux startup {{{
+if __have tmux; then
+  export TMUX_TMPDIR=/var/tmp # this helps prevent conflicts with distroboxes
+  # if on a tty, interactive, not already in a tmux session, and TMUXSKIP not set:
+  if [[ -t 0 ]] && [[ $- = *i* ]] && [[ -z $TMUX ]] && [[ -z $TMUXSKIP ]]; then
+    [[ -z ${TMUXRECONNECT+x} ]] && t=0
+             # vvv prints tmux sessions in the format `[0/1 (detached/attached)] [timestamp] [id]`
+    attach=$(tmux 2>/dev/null ls -F \
+             '#{session_attached} #{?#{==:#{session_last_attached},},1,#{session_last_attached}} #{session_id}' \
+             |awk '/^'$t'/{if ($2 > t){t=$2;s=$3}}; END{print s}')
+             # ^^^ if `t` is 0, grabs latest detached session
+             #     if `t` is '', grabs latest session, attached or detached
+    if [[ -n "$attach" ]]; then
+      out="$(tmux attach -t "$attach")"
+    else
+      out="$(tmux)"
+    fi
+    # if original session was exited and not detached, exit
+    if [[ "$out" == "[exited]" ]]; then
+      exit
+    fi
+  fi
+fi
+#endregion tmux startup }}}
+
+
 #region env {{{
 if __have vim; then
   export EDITOR="vim"
@@ -516,29 +554,3 @@ if __have nix; then
   }
 fi
 #endregion aliases/functions }}}
-
-
-#region tmux startup {{{
-if __have tmux; then
-  export TMUX_TMPDIR=/var/tmp # this helps prevent conflicts with distroboxes
-  # if on a tty, interactive, not already in a tmux session, and TMUXSKIP not set:
-  if [[ -t 0 ]] && [[ $- = *i* ]] && [[ -z $TMUX ]] && [[ -z $TMUXSKIP ]]; then
-    [[ -z ${TMUXRECONNECT+x} ]] && t=0
-             # vvv prints tmux sessions in the format `[0/1 (detached/attached)] [timestamp] [id]`
-    attach=$(tmux 2>/dev/null ls -F \
-             '#{session_attached} #{?#{==:#{session_last_attached},},1,#{session_last_attached}} #{session_id}' \
-             |awk '/^'$t'/{if ($2 > t){t=$2;s=$3}}; END{print s}')
-             # ^^^ if `t` is 0, grabs latest detached session
-             #     if `t` is '', grabs latest session, attached or detached
-    if [[ -n "$attach" ]]; then
-      out="$(tmux attach -t "$attach")"
-    else
-      out="$(tmux)"
-    fi
-    # if original session was exited and not detached, exit
-    if [[ "$out" == "[exited]" ]]; then
-      exit
-    fi
-  fi
-fi
-#endregion tmux startup }}}
