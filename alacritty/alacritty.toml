@@ -41,3 +41,5 @@ hide_when_typing = true
 
 [window]
 startup_mode = "Maximized"
+opacity = 0.97
+blur = true
