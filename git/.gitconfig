@@ -41,5 +41,15 @@
 [credential]
   helper = store
 
+[credential "https://github.com"]
+  helper =
+  helper = "!/usr/bin/gh auth git-credential 2>/dev/null"
+  helper = store
+
+[credential "https://gist.github.com"]
+  helper =
+  helper = "!/usr/bin/gh auth git-credential 2>/dev/null"
+  helper = store
+
 [include]
   path = ~/.gitconfig_local
