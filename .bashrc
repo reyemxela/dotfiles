@@ -431,6 +431,8 @@ alias chx='chmod +x'
 
 alias sshre='TERM=${TERM}-tmux-re ssh'
 alias sshno='TERM=${TERM}-tmux-no ssh'
+alias sshl='ssh -oKexAlgorithms=+diffie-hellman-group1-sha1,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1 \
+            -oHostKeyAlgorithms=+ssh-rsa -oCiphers=+aes128-ctr,aes128-cbc -oPubkeyAcceptedKeyTypes=+ssh-rsa -oRequiredRSASize=1024'
 
 alias dotup='(cd ~/.dotfiles && git pull && ./setup)'
 
