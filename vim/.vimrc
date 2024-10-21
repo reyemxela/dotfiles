@@ -167,9 +167,6 @@ vnoremap <silent><M-Up> :m '<-2<CR>gv=gv
 " autocomplete in insert mode
 inoremap <S-Tab> <C-P>
 
-" copy with xclip/wl-copy
-vnoremap <C-y> :w !_copy<CR><CR>
-
 " clear search highlight with Ctrl+L
 nnoremap <C-L> :noh<CR><C-L>
 
