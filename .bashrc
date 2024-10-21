@@ -37,7 +37,7 @@ __source_if() { [[ -r "$1" ]] && source "$1"; }
 # - zsh is installed
 # - We did not call: bash -c '...'
 # - 'zsh' is not the parent process of this shell
-if $IS_BASH && __have zsh && [[ -z ${BASH_EXECUTION_STRING} && "$(cat /proc/$PPID/comm)" != "zsh" ]]; then
+if $IS_BASH && __have zsh && [[ -z ${BASH_EXECUTION_STRING} && "$(cat /proc/$PPID/comm 2>/dev/null)" != "zsh" ]]; then
   shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''
   export SHELL=$(which zsh)
   exec zsh $LOGIN_OPTION
