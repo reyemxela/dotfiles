@@ -37,8 +37,9 @@ __source_if() { [[ -r "$1" ]] && source "$1"; }
 # - zsh is installed
 # - We did not call: bash -c '...'
 # - 'zsh' is not the parent process of this shell
-if $IS_BASH && __have zsh && [[ -z ${BASH_EXECUTION_STRING} && $(ps --no-header --pid=$PPID --format=comm) != "zsh" ]]; then
+if $IS_BASH && __have zsh && [[ -z ${BASH_EXECUTION_STRING} && "$(cat /proc/$PPID/comm)" != "zsh" ]]; then
   shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''
+  export SHELL=$(which zsh)
   exec zsh $LOGIN_OPTION
 fi
 #endregion auto-zsh }}}
@@ -46,7 +47,10 @@ fi
 
 #region tmux startup {{{
 if __have tmux; then
-  export TMUX_TMPDIR=/var/tmp # this helps prevent conflicts with distroboxes
+  # keep distrobox instances seperate from host/each other
+  export TMUX_TMPDIR="/tmp/tmux${CONTAINER_ID:+-${CONTAINER_ID}}"
+  [[ ! -d "$TMUX_TMPDIR" ]] && mkdir -p "$TMUX_TMPDIR"
+
   # if on a tty, interactive, not already in a tmux session, and TMUXSKIP not set:
   if [[ -t 0 ]] && [[ $- = *i* ]] && [[ -z $TMUX ]] && [[ -z $TMUXSKIP ]]; then
     [[ -z ${TMUXRECONNECT+x} ]] && t=0
@@ -406,7 +410,7 @@ export LESS_TERMCAP_ue="${RESET}"                     # reset underline
 # -F: just print file if it fits on screen
 # -R: allow escape characters through
 # -X: don't clear screen
-[[ $(less --version |grep -E "less [0-9]+" |cut -d " " -f 2) -ge 543 ]] && mouse='--mouse --wheel-lines 3'
+[[ $(less --version 2>/dev/null |grep -E "less [0-9]+" |cut -d " " -f 2) -ge 543 ]] && mouse='--mouse --wheel-lines 3'
 export LESS="$mouse -aqFRX"
 #endregion less options }}}
 
@@ -472,6 +476,10 @@ fi
 
 if __have dnf; then
   alias dnf='sudo dnf --setopt defaultyes=True'
+fi
+
+if __have apk; then
+  alias apk='sudo apk'
 fi
 
 if __have pacman; then
