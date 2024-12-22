@@ -474,10 +474,6 @@ if __have apt; then
   alias apt='sudo apt'
 fi
 
-if __have dnf; then
-  alias dnf='sudo dnf --setopt defaultyes=True'
-fi
-
 if __have apk; then
   alias apk='sudo apk'
 fi
@@ -496,7 +492,6 @@ fi
 
 if __have flatpak; then
   alias fp='flatpak'
-  alias fpu='flatpak --user'
 fi
 
 if __have systemctl; then
@@ -504,6 +499,11 @@ if __have systemctl; then
   alias scdr='sudo systemctl daemon-reload'
   alias scu='systemctl --user'
   alias scudr='systemctl --user daemon-reload'
+fi
+
+if __have journalctl; then
+  alias jc='sudo journalctl'
+  alias jcu='journalctl --user'
 fi
 
 if __have docker; then
