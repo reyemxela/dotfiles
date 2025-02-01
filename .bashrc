@@ -146,7 +146,7 @@ if $IS_ZSH; then
   zstyle ':completion:*' completer _extensions _complete _correct _approximate
   zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} # colors
   zstyle ':completion:*' rehash true # auto-update PATH
-  zstyle ':completion:*' menu select # menu completion
+  zstyle ':completion:*' menu select search # menu + search completion
   zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' # case-insensitive completion
   zstyle ':completion:*' group-name '' # group matches under descriptions
   zstyle ':completion:*' expand prefix # expand prefix even if last part is ambiguous
@@ -211,10 +211,11 @@ if $IS_ZSH; then
   bindkey '^_'      toggle-comment                       # ctrl+/
 
   bindkey '^[?' run-help                                 # alt+shift+/ (?)
-  bindkey -M menuselect '^M'   .accept-line              # enter accepts and runs line
+  bindkey -M menuselect '^M'   accept-line               # enter accepts but doesn't run line
   bindkey -M menuselect '+'    accept-and-menu-complete  # + in menu select to add selection
   bindkey -M menuselect '^[[Z' reverse-menu-complete     # shift+tab
   bindkey -M menuselect '^['   send-break                # escape cancels menu
+  bindkey -M menuselect '?'    history-incremental-search-forward # ? in menu enters search mode
 fi
 #endregion readline/keybinds }}}
 
@@ -472,6 +473,10 @@ fi
 
 if __have apt; then
   alias apt='sudo apt'
+fi
+
+if __have dnf; then
+  alias dnf='sudo dnf'
 fi
 
 if __have apk; then
