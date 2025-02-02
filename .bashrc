@@ -146,7 +146,7 @@ if $IS_ZSH; then
   zstyle ':completion:*' completer _extensions _complete _correct _approximate
   zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} # colors
   zstyle ':completion:*' rehash true # auto-update PATH
-  zstyle ':completion:*' menu select search # menu + search completion
+  zstyle ':completion:*' menu select # menu + search completion
   zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' # case-insensitive completion
   zstyle ':completion:*' group-name '' # group matches under descriptions
   zstyle ':completion:*' expand prefix # expand prefix even if last part is ambiguous
