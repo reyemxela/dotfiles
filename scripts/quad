@@ -2,7 +2,8 @@
 
 shopt -s nullglob
 
-enabledir="${HOME}/.config/containers/systemd"
+ENABLEDIR="${HOME}/.config/containers/systemd"
+
 
 main() {
   if [ $# -lt 1 ]; then
@@ -23,7 +24,7 @@ main() {
       status
       ;;
     r|reload)
-      systemctl --user daemon-reload
+      reload
       ;;
     start)
       shift
@@ -37,7 +38,8 @@ main() {
       setup
       ;;
     dryrun)
-      /usr/libexec/podman/quadlet -dryrun -user
+      shift
+      dryrun "$@"
       ;;
     h|help|-h|--help)
       usage
@@ -50,13 +52,14 @@ main() {
   esac
 }
 
+
 usage() {
-  echo 'quad COMMAND [service]'
+  echo 'quad COMMAND [service(s)]'
   echo 'Manages podman quadlet files'
   echo
   echo 'Commands:'
-  echo '  e, enable    symlinks a unit file into ~/.config/containers/systemd'
-  echo '  d, disable   removes an existing symlink'
+  echo '  e, enable    symlinks unit files into ~/.config/containers/systemd'
+  echo '  d, disable   removes existing symlinks'
   echo '  s, status    print symlink state and podman status'
   echo '  r, reload    does a user daemon-reload to regenerate systemd files'
   echo '  start        starts [service] via systemctl'
@@ -67,42 +70,74 @@ usage() {
 
 
 enable() {
-  local file="$(readlink -f "$1")"
-  local target="${2:-$(basename "$file")}"
-  ln -sf "${file}" "${enabledir}/${target}"
+  local file target
+  for file in "$@"; do
+    target="$(readlink -f "$file")"
+    echo "Enabling $file"
+    ln -sf "${target}" "${ENABLEDIR}/${file}"
+  done
+  reload
 }
+
 
 disable() {
-  local file="$1"
-  unlink "${enabledir}/${file}"
+  local file
+  for file in "$@"; do
+    echo "Disabling $file"
+    unlink "${ENABLEDIR}/${file}"
+  done
+  reload
 }
 
+
 status() {
+  local pod_status file ctrname servicename status
+  pod_status="$(podman ps -a --format '[{{.Names}}]={{.State}}')"
   printf '%-30s %-30s %s\n' "LINK" "TARGET" "PODMAN STATUS"
-  for e in "${enabledir}"/*.container; do
-    local ctrname=$(basename -s .container "$e")
-    local servicename="$(awk -F= '/^ContainerName=/ {print $2}' $e)"
+  for file in "${ENABLEDIR}"/*.container; do
+    ctrname=$(basename -s .container "$file")
+    servicename="$(awk -F= '/^ContainerName=/ {name = $2} END {print name}' "$file")"
     servicename="${servicename:-"systemd-${ctrname}"}"
-    pod_status=$(podman container inspect --format '{{.State.Status}}' "$ctrname" 2>/dev/null)
-    printf '%-30s %-30s %s\n' "$(basename "$e")" "$(basename "$(readlink -f "$e")")" "${pod_status:--}"
+    status="$(awk -F= "/\[$servicename\]/ {print \$2}" <<< "$pod_status")"
+    printf '%-30s %-30s %s\n' "$(basename "$file")" "$(basename "$(readlink -f "$file")")" "${status:--}"
   done
 }
 
 
+reload() {
+  echo "Reloading..."
+  systemctl --user daemon-reload
+}
+
+
 start() {
-  systemctl --user start "$1"
+  systemctl --user start "$@"
 }
 
 
 stop() {
-  systemctl --user stop "$1"
+  systemctl --user stop "$@"
 }
 
 
 setup() {
   echo 'Creating folder: '
-  echo "  ${enabledir}"
-  mkdir -p "${enabledir}"
+  echo "  ${ENABLEDIR}"
+  mkdir -p "${ENABLEDIR}"
+}
+
+dryrun() {
+  if [ $# -eq 1 ]; then
+    # only print section between the ---*.service--- separators
+    /usr/libexec/podman/quadlet -dryrun -user \
+      |awk "/---$1.service---/"'{flag=1;print;next}/---.*.service---/{flag=0}flag'
+  else
+    # print all
+    /usr/libexec/podman/quadlet -dryrun -user
+  fi \
+    2> >(sed $'s,.*,\e[34m&\e[m,' 1>&2) \
+    |sed $'s!---.*.service---!\e[01;32m&\e[0m!g'
+    # colorize stderr and ---*.service--- titles
 }
 
 
