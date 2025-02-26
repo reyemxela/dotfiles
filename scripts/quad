@@ -98,6 +98,7 @@ status() {
     ctrname=$(basename -s .container "$file")
     servicename="$(awk -F= '/^ContainerName=/ {name = $2} END {print name}' "$file")"
     servicename="${servicename:-"systemd-${ctrname}"}"
+    servicename="${servicename//\%N/"${ctrname}"}"
     status="$(awk -F= "/\[$servicename\]/ {print \$2}" <<< "$pod_status")"
     printf '%-30s %-30s %s\n' "$(basename "$file")" "$(basename "$(readlink -f "$file")")" "${status:--}"
   done
