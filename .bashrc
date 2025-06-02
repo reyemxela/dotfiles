@@ -441,6 +441,9 @@ alias sshl='ssh -oKexAlgorithms=+diffie-hellman-group1-sha1,diffie-hellman-group
 
 alias dotup='(cd ~/.dotfiles && git pull && ./setup)'
 
+# q (quiet) runs commands disconnected from current term and without stdout/stderr (browser, file explorer)
+function q() { (nohup "$@" &>/dev/null &); }
+
 if __have eza; then
   if eza -v |grep -q '+git'; then git='--git'; fi
   alias ls='eza'
@@ -512,17 +515,16 @@ if __have journalctl; then
 fi
 
 if __have docker; then
-  if __have docker-compose; then
-    alias dc='docker-compose'
-  else
-    alias dc='docker compose'
-  fi
-  alias dcd='dc down'
-  alias dcu='dc up'
-  alias dcud='dc up -d'
-  alias de='docker exec -it'
-  alias dps='docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Networks}}"'
-  alias dpsa='dps -a'
+  alias d='docker'
+  alias dc='docker compose'
+  alias dps='docker ps'
+  alias dpsa='docker ps -a'
+  alias dx='docker exec -it'
+  alias dr='docker run -it'
+  alias drm='docker run -it --rm'
+  alias dl='docker logs'
+  alias dlf='docker logs -f'
+  alias dlfs='docker logs -f --since'
 fi
 
 if __have podman; then
@@ -554,18 +556,6 @@ if __have distrobox-host-exec; then
     else
       distrobox-host-exec "$@"
     fi
-  }
-fi
-
-if __have nix; then
-  npi() {
-    case "$1" in
-      *#*) nix profile install "$@" ;;
-      *) nix profile install "nixpkgs#$1" ;;
-    esac
-  }
-  npr() {
-    nix profile remove "$(nix profile list |awk "/\.$1/ {print \$3}")"
   }
 fi
 #endregion aliases/functions }}}
