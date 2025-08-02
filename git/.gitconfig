@@ -33,6 +33,7 @@
 
 [commit]
   template = ~/.gitmessage
+  verbose = true
 
 [user]
   name = Alex Meyer
