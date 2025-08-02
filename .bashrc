@@ -138,7 +138,7 @@ fi
 
 
 #region completion {{{
-if $IS_BASH; then
+if $IS_BASH && [ -z "${BASH_COMPLETION_VERSINFO-}" ]; then
   __source_if /usr/share/bash-completion/bash_completion
 fi
 
