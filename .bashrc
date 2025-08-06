@@ -6,12 +6,12 @@ case $- in
     *) return;;
 esac
 
+IS_ZSH=
+IS_BASH=
 if [[ -n "$ZSH_VERSION" ]]; then
-  IS_BASH=false
-  IS_ZSH=true
+  IS_ZSH=1
 else
-  IS_BASH=true
-  IS_ZSH=false
+  IS_BASH=1
 fi
 
 # "smuggling" settings over SSH via TERM variable
@@ -36,11 +36,14 @@ __source_if() { [[ -r "$1" ]] && source "$1"; }
 # Only trigger if:
 # - zsh is installed
 # - We did not call: bash -c '...'
+# - $ZSHSKIP is not set
 # - 'zsh' is not the parent process of this shell
-if $IS_BASH && __have zsh && [[ -z ${BASH_EXECUTION_STRING} && "$(cat /proc/$PPID/comm 2>/dev/null)" != "zsh" ]]; then
+if __have zsh && [ "$IS_BASH" ] && [[ -z "$ZSHSKIP" && -z "$BASH_EXECUTION_STRING" && "$(cat /proc/$PPID/comm 2>/dev/null)" != "zsh" ]]; then
   shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''
   export SHELL=$(which zsh)
   exec zsh $LOGIN_OPTION
+else
+  export SHELL=$(which bash)
 fi
 #endregion auto-zsh }}}
 
@@ -52,7 +55,7 @@ if __have tmux; then
   [[ ! -d "$TMUX_TMPDIR" ]] && mkdir -p "$TMUX_TMPDIR"
 
   # if on a tty, interactive, not already in a tmux session, and TMUXSKIP not set:
-  if [[ -t 0 ]] && [[ $- = *i* ]] && [[ -z $TMUX ]] && [[ -z $TMUXSKIP ]]; then
+  if [[ -t 0 ]] && [[ $- = *i* ]] && [[ -z "$TMUX" ]] && [[ -z "$TMUXSKIP" ]]; then
     [[ -z ${TMUXRECONNECT+x} ]] && t=0
              # vvv prints tmux sessions in the format `[0/1 (detached/attached)] [timestamp] [id]`
     attach=$(tmux 2>/dev/null ls -F \
@@ -84,7 +87,7 @@ fi
 
 
 #region zsh modules {{{
-if $IS_ZSH; then
+if [ "$IS_ZSH" ]; then
   # redraw and cd functions adapted from https://github.com/romkatv/zsh4humans
   function redraw-prompt() {
     emulate -L zsh
@@ -138,11 +141,11 @@ fi
 
 
 #region completion {{{
-if $IS_BASH && [ -z "${BASH_COMPLETION_VERSINFO-}" ]; then
+if [ "$IS_BASH" ] && [ -z "${BASH_COMPLETION_VERSINFO-}" ]; then
   __source_if /usr/share/bash-completion/bash_completion
 fi
 
-if $IS_ZSH; then
+if [ "$IS_ZSH" ]; then
   zstyle ':completion:*' completer _extensions _complete _correct _approximate
   zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} # colors
   zstyle ':completion:*' rehash true # auto-update PATH
@@ -157,7 +160,7 @@ fi
 
 
 #region readline/keybinds {{{
-if $IS_BASH; then
+if [ "$IS_BASH" ]; then
   bind 'set bell-style none'
   bind 'set completion-ignore-case on'          # case-insensitive tab-completion
   bind 'set menu-complete-display-prefix on'    # display partial and menu right away
@@ -173,7 +176,7 @@ if $IS_BASH; then
   bind '"\e[Z": menu-complete-backward'         # shift-tab
 fi
 
-if $IS_ZSH; then
+if [ "$IS_ZSH" ]; then
   bindkey -e # EDITOR=vi/vim causes zsh to use vi-mode, so reset that here
   KEYTIMEOUT=1 # escape key timeout to minimum
 
@@ -221,13 +224,13 @@ fi
 
 
 #region options {{{
-if $IS_BASH; then
+if [ "$IS_BASH" ]; then
   shopt -s globstar # ‘**’ matches all files and zero or more directories/subdirectories
   shopt -s dotglob # include .files
   shopt -s extglob # extended pattern matching
 fi
 
-if $IS_ZSH; then
+if [ "$IS_ZSH" ]; then
   setopt autocd # if cmd fails and is name of folder, cd into folder
   setopt autopushd # make cd push old directory onto directory stack
   setopt completeinword # cursor stays in place and completion is done from both ends
@@ -248,7 +251,7 @@ fi
 
 
 #region history {{{
-if $IS_BASH; then
+if [ "$IS_BASH" ]; then
   HISTCONTROL=ignoreboth
   HISTSIZE=10000
   HISTFILESIZE=10000
@@ -256,7 +259,7 @@ if $IS_BASH; then
   shopt -s histappend
 fi
 
-if $IS_ZSH; then
+if [ "$IS_ZSH" ]; then
   HISTFILE=~/.zsh_history
   HISTSIZE=10000
   SAVEHIST=10000
@@ -355,7 +358,7 @@ __common_prompt() {
   # user@host text
   ctr="${CONTAINER_ID:+${CONTAINER_ID}.}"
   userhoststr="\u@${ctr}\H"
-  $IS_ZSH && userhoststr="%n@${ctr}%M"
+  [ "$IS_ZSH" ] && userhoststr="%n@${ctr}%M"
 
   # distrobox prompt color change
   if [ -f /run/.containerenv ] || [ -f /.dockerenv ]; then
@@ -368,7 +371,7 @@ __common_prompt() {
 
 
 #region bash prompt {{{
-if $IS_BASH; then
+if [ "$IS_BASH" ]; then
   __bash_prompt() {
     __common_prompt
     line1="${statuscolor}╔${RESET} ${COLORBARS1}${userhost}${COLORBARS2} ${pwd} ${branch}${venv}"
@@ -381,7 +384,7 @@ fi
 
 
 #region zsh prompt {{{
-if $IS_ZSH; then
+if [ "$IS_ZSH" ]; then
   __zsh_prompt() {
     __common_prompt
     line1="%{${statuscolor}┏${RESET} ${COLORBARS1}${userhost}${COLORBARS2} ${pwd} ${branch}${venv}%}"
@@ -417,8 +420,8 @@ export LESS="$mouse -aqFRX"
 
 
 #region aliases/functions {{{
-$IS_BASH && alias brl='exec bash'
-$IS_ZSH && alias zrl='exec zsh'
+[ "$IS_BASH" ] && alias brl='exec bash'
+[ "$IS_ZSH" ] && alias zrl='exec zsh'
 
 alias ..='cd ..'
 alias ...='cd ../..'

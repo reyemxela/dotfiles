@@ -9,7 +9,10 @@ function confirm {
 
 ln -sf "$PWD/.bashrc" "$HOME/.bashrc"
 ln -sf "$PWD/.bashrc" "$HOME/.zshrc"
+
 ln -sf "$PWD/.profile" "$HOME/.profile"
+ln -sf "$PWD/.profile" "$HOME/.bash_profile"
+ln -sf "$PWD/.profile" "$HOME/.zprofile"
 
 mkdir -p "$HOME/.local/bin"
 ln -sfn "$PWD/scripts" "$HOME/.local/bin/scripts"
