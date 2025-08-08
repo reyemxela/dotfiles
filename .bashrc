@@ -42,7 +42,7 @@ if __have zsh && [ "$IS_BASH" ] && [[ -z "$ZSHSKIP" && -z "$BASH_EXECUTION_STRIN
   shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''
   export SHELL=$(which zsh)
   exec zsh $LOGIN_OPTION
-else
+elif [ "$IS_BASH" ]; then
   export SHELL=$(which bash)
 fi
 #endregion auto-zsh }}}
