@@ -13,16 +13,6 @@ if [[ -n "$ZSH_VERSION" ]]; then
 else
   IS_BASH=1
 fi
-
-# "smuggling" settings over SSH via TERM variable
-if [[ $TERM == *-tmux* ]]; then
-  if [[ $TERM == *-re ]]; then
-    TMUXRECONNECT=1
-  elif [[ $TERM == *-no ]]; then
-    TMUXSKIP=1
-  fi
-  TERM=${TERM/-tmux*/}
-fi
 #endregion setup }}}
 
 
@@ -56,13 +46,11 @@ if __have tmux; then
 
   # if on a tty, interactive, not already in a tmux session, and TMUXSKIP not set:
   if [[ -t 0 ]] && [[ $- = *i* ]] && [[ -z "$TMUX" ]] && [[ -z "$TMUXSKIP" ]]; then
-    [[ -z ${TMUXRECONNECT+x} ]] && t=0
-             # vvv prints tmux sessions in the format `[0/1 (detached/attached)] [timestamp] [id]`
+             # vvv prints tmux sessions in the format `[0/1 (detached/attached)] [timestamp] [id] [session_name]`
     attach=$(tmux 2>/dev/null ls -F \
-             '#{session_attached} #{?#{==:#{session_last_attached},},1,#{session_last_attached}} #{session_id}' \
-             |awk '/^'$t'/{if ($2 > t){t=$2;s=$3}}; END{print s}')
-             # ^^^ if `t` is 0, grabs latest detached session
-             #     if `t` is '', grabs latest session, attached or detached
+             '#{session_attached} #{?#{==:#{session_last_attached},},1,#{session_last_attached}} #{session_id} #{s/ /_/:session_name}' \
+             |awk '/^0/ {if ($2 > t && $4~/^[0-9]+$/) {t=$2;s=$3}}; END{print s}')
+             # ^^^ only auto-reconnect to detached sessions with default (number) session names
     if [[ -n "$attach" ]]; then
       out="$(tmux attach -t "$attach")"
     else
