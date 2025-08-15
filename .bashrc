@@ -49,8 +49,8 @@ if __have tmux; then
              # vvv prints tmux sessions in the format `[0/1 (detached/attached)] [timestamp] [id] [session_name]`
     attach=$(tmux 2>/dev/null ls -F \
              '#{session_attached} #{?#{==:#{session_last_attached},},1,#{session_last_attached}} #{session_id} #{s/ /_/:session_name}' \
-             |awk '/^0/ {if ($2 > t && $4~/^[0-9]+$/) {t=$2;s=$3}}; END{print s}')
-             # ^^^ only auto-reconnect to detached sessions with default (number) session names
+             |awk '/^0/ {if ($2 > t && $4 !~ /^_/) {t=$2;s=$3}}; END{print s}')
+    # ^^^ only auto-reconnect to detached sessions that don't start with _
     if [[ -n "$attach" ]]; then
       out="$(tmux attach -t "$attach")"
     else
