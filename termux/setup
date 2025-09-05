@@ -3,5 +3,8 @@
 cd $(dirname ${BASH_SOURCE[0]})
 
 if [[ -n "$TERMUX_VERSION" ]]; then
+  if [[ ! -L "$HOME/.termux" ]]; then
+    mv "$HOME/.termux" "$HOME/.termux.old"
+  fi
   ln -sfn "$PWD/.termux" "$HOME/.termux"
 fi

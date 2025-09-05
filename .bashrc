@@ -30,10 +30,10 @@ __source_if() { [[ -r "$1" ]] && source "$1"; }
 # - 'zsh' is not the parent process of this shell
 if __have zsh && [ "$IS_BASH" ] && [[ -z "$ZSHSKIP" && -z "$BASH_EXECUTION_STRING" && "$(cat /proc/$PPID/comm 2>/dev/null)" != "zsh" ]]; then
   shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''
-  export SHELL=$(which zsh)
+  export SHELL=$(command -v zsh)
   exec zsh $LOGIN_OPTION
 elif [ "$IS_BASH" ]; then
-  export SHELL=$(which bash)
+  export SHELL=$(command -v bash)
 fi
 #endregion auto-zsh }}}
 
@@ -41,7 +41,7 @@ fi
 #region tmux startup {{{
 if __have tmux; then
   # keep distrobox instances seperate from host/each other
-  export TMUX_TMPDIR="/tmp/tmux${CONTAINER_ID:+-${CONTAINER_ID}}"
+  export TMUX_TMPDIR="${TERMUX__PREFIX:-}/tmp/tmux${CONTAINER_ID:+-${CONTAINER_ID}}"
   [[ ! -d "$TMUX_TMPDIR" ]] && mkdir -p "$TMUX_TMPDIR"
 
   # if on a tty, interactive, not already in a tmux session, and TMUXSKIP not set:
